@@ -150,7 +150,7 @@ export default {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost/Ecommerce/vue-project/src/backend/api.php"
+          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProducts"
         );
         console.log("API Response Data:", response.data);
         products.value = response.data;
@@ -168,18 +168,26 @@ export default {
     };
 
     // filter by category
-    const filterByCategory = (id) => {
-      if (id) {
-        const filteredProducts = products.value.filter(
-          (p) => p.category_id === id
+    // Use axios.post instead of axios.get, and pass data in the request body
+    const filterByCategory = async (id) => {
+      try {
+        const response = await axios.post(
+          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=fetchCategory",
+          { id: id }, // Send data as an object
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
-        products.value = filteredProducts;
-        console.log(`Filtered by Category ID: ${id}`);
-      } else {
-        // Fetch all products if no category ID is provided
-        fetchProducts();
-        console.log("Fetched all products");
+
+        console.log(response.data.cat); // Use response.data.cat to access the 'cat' property
+        products.value = response.data.cat;
+      } catch (error) {
+        console.error(error);
       }
+
+      console.log(`Filtered by Category ID: ${id}`);
     };
 
     onMounted(fetchProducts(), getCategories());

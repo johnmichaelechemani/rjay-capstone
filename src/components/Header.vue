@@ -37,9 +37,7 @@
             <span class="pl-10 hidden lg:flex"> Search any things... </span>
           </div>
         </button>
-        <!--  -->
 
-        <!--  -->
         <SearchModal
           :is-visible="showSearch"
           @search="handleSearch"

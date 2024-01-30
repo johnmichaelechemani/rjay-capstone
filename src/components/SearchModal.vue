@@ -48,6 +48,8 @@
 <script>
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
 export default {
   props: {
     isVisible: {
@@ -63,6 +65,7 @@ export default {
   setup(props) {
     const searchQuery = ref("");
     const searchProduct = ref([]);
+    const router = useRouter();
     const searchrecent = ref([
       {
         productName: "intel i9 13gen",
@@ -86,6 +89,7 @@ export default {
       }
 
       searchQuery.value = "";
+      router.push("/search_products");
     };
 
     return {

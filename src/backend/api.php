@@ -7,6 +7,50 @@ header("Access-Control-Allow-Origin: http://localhost:5173"); // Update this to 
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
+
+
+$res = ['error' => false];
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+switch ($action) {
+    case 'getProducts':
+        fetchProducts();
+        break;
+    case 'fetchCategory':
+        fetchCategory();
+        break;
+
+    default:
+        $res['error'] = true;
+        $res['message'] = 'Invalid action.';
+        echo json_encode($res);
+        break;
+}
+function fetchCategory()
+{
+    global $conn;
+
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['id'];
+
+    // Use prepared statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM products WHERE category_id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    $cat = [];
+    while ($row = $result->fetch_assoc()) {
+        $row['image'] = base64_encode($row['image']);
+        $cat[] = $row;
+    }
+
+    $res = ['cat' => $cat];
+    echo json_encode($res);
+}
+
+
 function fetchProducts()
 {
     global $conn;
@@ -26,9 +70,5 @@ function fetchProducts()
     // Close the connection
     $conn->close();
 
-    return $products;
+    echo json_encode($products);
 }
-
-// Return data as JSON
-header('Content-Type: application/json');
-echo json_encode(fetchProducts());

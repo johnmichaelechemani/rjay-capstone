@@ -1,16 +1,17 @@
 <template>
-  <Header />
   <div>
-    <Products />
+    <Header />
+
+    <div>
+      <h1>products item</h1>
+    </div>
   </div>
 </template>
 <script>
 import Header from "@/components/Header.vue";
-import Products from "@/components/Products.vue";
 export default {
   components: {
     Header,
-    Products,
   },
 };
 </script>
