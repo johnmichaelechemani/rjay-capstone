@@ -120,7 +120,7 @@ export default {
         const response = await axios.get(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php"
         );
-        console.log("API Response Data:", response);
+        //  console.log("API Response Data:", response);
         products.value = response.data;
       } catch (error) {
         console.error("Error fetching products: ", error);

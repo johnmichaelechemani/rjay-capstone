@@ -74,22 +74,19 @@ export default {
     ]);
     const send = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost/Ecommerce/vue-project/src/backend/search.php",
-          {
-            params: {
-              query: searchQuery.value,
-            },
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const url = `http://localhost/Ecommerce/vue-project/src/backend/search.php?query=${searchQuery.value}`;
+        console.log("Request URL:", url);
+
+        const response = await axios.get(url, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         // Assuming response.data is an array of products
         searchProduct.value = response.data;
-        console.log(searchProduct.value);
-        console.log(searchQuery.value);
+        console.log("Response:", searchProduct.value);
+        console.log("Search Query:", searchQuery.value);
       } catch (error) {
         console.log(error);
       }
