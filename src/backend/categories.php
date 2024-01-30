@@ -10,7 +10,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 $res = ['error' => false];
 global $conn;
 // Use prepared statements to prevent SQL injection
-$stmt = $conn->prepare("SELECT name FROM categories");
+$stmt = $conn->prepare("SELECT * FROM categories");
 $stmt->execute();
 $result = $stmt->get_result();
 $stmt->close();

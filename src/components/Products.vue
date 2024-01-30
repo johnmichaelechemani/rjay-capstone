@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- after navigator -->
-    <div class="flex py-2 pl-2 sm:pl-10 bg-slate-200 gap-2 sm:text-sm text-xs">
+    <div class="flex py-2 pl-2 sm:pl-8 bg-slate-200 gap-2 sm:text-sm text-xs">
       <button
         @click="handleSidebarCategory"
         class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold shadow"
@@ -9,7 +9,10 @@
         Category
       </button>
       <RouterLink
-        to="/"
+        to="/home"
+        :class="{
+          'bg-sky-700 text-white': $route.path === '/home',
+        }"
         class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold shadow"
         >Home</RouterLink
       >
@@ -19,17 +22,17 @@
   <div :class="showCategory ? 'flex relative' : ''">
     <div
       v-if="showCategory"
-      class="text-base h-full w-72 shadow absolute z-20 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
+      class="text-base h-full w-72 shadow absolute z-10 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
     >
       <div class="h-screen">
         <p class="px-3 pt-5 text-sky-800">Catergories</p>
         <hr class="my-2" />
-        <div v-for="item in categories">
+        <div v-for="item in categories" :key="item.category_id">
           <div
             v-for="(cat, index) in item"
             :key="index"
             class="mx-3"
-            @click="filterByCategory(index)"
+            @click="filterByCategory(cat.category_id)"
           >
             <button class="py-1 text-sm my-1 px-2 rounded-md">
               {{ cat.name }}
@@ -121,10 +124,6 @@ export default {
     const selectedProduct = ref(null);
     const showCategory = ref(false);
     const categories = ref([]);
-    // filter by category
-    const filterByCategory = (index) => {
-      console.log(index);
-    };
 
     // get categories
     const getCategories = async () => {
@@ -153,14 +152,12 @@ export default {
         const response = await axios.get(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php"
         );
-        //  console.log("API Response Data:", response);
+        console.log("API Response Data:", response.data);
         products.value = response.data;
       } catch (error) {
         console.error("Error fetching products: ", error);
       }
     };
-
-    onMounted(fetchProducts);
 
     const getStars = (averageRating) => {
       const totalStars = 5;
@@ -168,6 +165,13 @@ export default {
       return Array.from({ length: totalStars }, (_, i) => {
         return { id: i, colored: i < roundedRating };
       });
+    };
+
+    // filter by category
+    const filterByCategory = (id) => {
+      const f = products.value.map((item) => item.category_id === id);
+      products.value = f;
+      console.log(id);
     };
 
     onMounted(fetchProducts(), getCategories());
