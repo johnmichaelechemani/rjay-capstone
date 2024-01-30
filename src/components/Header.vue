@@ -23,11 +23,11 @@
     <!-- Search bar -->
     <div class="md:ml-12">
       <div
-        class="flex justify-between bg-none lg:bg-white border rounded-2xl overflow-hidden"
+        class="flex justify-between bg-none lg:bg-white border rounded-full overflow-hidden"
       >
         <button
           @click="showSearch = true"
-          class="w-50 lg:w-80 p-2 hover:bg-gray-200"
+          class="w-50 lg:w-80 p-2 hover:bg-gray-200/20"
         >
           <div class="flex items-center text-white lg:text-black">
             <Icon

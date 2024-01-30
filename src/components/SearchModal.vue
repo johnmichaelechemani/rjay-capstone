@@ -10,7 +10,7 @@
     >
       <div class="mt-3 text-center">
         <div class="mt-2">
-          <form @submit.prevent="send">
+          <form @submit.prevent="send" method="get">
             <input
               type="text"
               class="border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -47,7 +47,8 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import axios from "axios";
+import { ref, onMounted } from "vue";
 export default {
   props: {
     isVisible: {
@@ -62,6 +63,7 @@ export default {
   },
   setup() {
     const searchQuery = ref("");
+    const searchProduct = ref([]);
     const searchrecent = ref([
       {
         productName: "intel i9 13gen",
@@ -70,10 +72,28 @@ export default {
         productName: "intel i9 13gen",
       },
     ]);
-    const send = () => {
-      searchrecent.value.push({
-        productName: searchQuery.value,
-      });
+    const send = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost/Ecommerce/vue-project/src/backend/search.php",
+          {
+            params: {
+              query: searchQuery.value,
+            },
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // Assuming response.data is an array of products
+        searchProduct.value = response.data;
+        console.log(searchProduct.value);
+        console.log(searchQuery.value);
+      } catch (error) {
+        console.log(error);
+      }
+
       searchQuery.value = "";
     };
 

@@ -19,9 +19,11 @@
   <div :class="showCategory ? 'flex relative' : ''">
     <div
       v-if="showCategory"
-      class="text-base h-screen w-72 absolute z-20 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
+      class="text-base h-full w-72 absolute z-20 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
     >
-      <p class="px-3 pt-5">Catergories</p>
+      <div class="h-screen">
+        <p class="px-3 pt-5">Catergories</p>
+      </div>
     </div>
     <div class="bg-white cursor-pointer">
       <div class="mx-auto max-w-2xl px-4 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
