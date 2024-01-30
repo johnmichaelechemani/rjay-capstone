@@ -3,45 +3,34 @@
 include('db.php');
 
 // Set headers for CORS
-header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Origin: http://localhost:5173"); // Update this to match your Vue.js development server URL
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
-$searchTerm = '';
+function fetchSearch()
+{
+    global $conn;
 
-if (isset($_GET['query'])) {
-    $searchTerm = $_GET['query'];
-}
+    // Fetch products from the database
+    $data = json_decode(file_get_contents("php://input"), true);
+    $pname = $data['query'];
+    $sql = "SELECT * FROM products WHERE name LIKE ?";
 
-// Ensure that you are escaping the search term to prevent SQL injection
-$searchTerm = mysqli_real_escape_string($conn, $searchTerm);
-$likeTerm = '%' . $searchTerm . '%';
+    $p = "%" . $pname . "%";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $p);
+    $stmt->execute();
 
-// Use prepared statements to prevent SQL injection
-$query = "SELECT * FROM products WHERE name LIKE ? OR description LIKE ?";
-$stmt = mysqli_prepare($conn, $query);
-mysqli_stmt_bind_param($stmt, "ss", $likeTerm, $likeTerm);
-
-if (mysqli_stmt_execute($stmt)) {
-    $result = mysqli_stmt_get_result($stmt);
-
+    $result = $stmt->get_result();
     $products = [];
-    while ($row = mysqli_fetch_assoc($result)) {
+    while ($row = $result->fetch_assoc()) {
+        $row['image'] = base64_encode($row['image']);
         $products[] = $row;
     }
 
-    // Free result set
-    mysqli_free_result($result);
-
-    // Close statement
-    mysqli_stmt_close($stmt);
-
-    // Close connection
-    mysqli_close($conn);
-
-    // Return as JSON
-    echo json_encode($products);
-} else {
-    // Handle query execution error
-    echo json_encode(['error' => 'Query execution error']);
+    $stmt->close();
+    return $products;
 }
+
+header('Content-Type: application/json');
+echo json_encode(fetchSearch());

@@ -18,7 +18,6 @@
               placeholder="Search..."
               required
               autofocus
-              @keyup.enter="emitSearch"
             />
           </form>
         </div>
@@ -61,7 +60,7 @@ export default {
       this.$emit("update:isVisible", false);
     },
   },
-  setup() {
+  setup(props) {
     const searchQuery = ref("");
     const searchProduct = ref([]);
     const searchrecent = ref([
@@ -74,14 +73,9 @@ export default {
     ]);
     const send = async () => {
       try {
-        const url = `http://localhost/Ecommerce/vue-project/src/backend/search.php?query=${searchQuery.value}`;
-        console.log("Request URL:", url);
-
-        const response = await axios.get(url, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const url =
+          "http://localhost/Ecommerce/vue-project/src/backend/search.php";
+        const response = await axios.post(url, { query: searchQuery.value });
 
         // Assuming response.data is an array of products
         searchProduct.value = response.data;

@@ -37,11 +37,14 @@
             <span class="pl-10 hidden lg:flex"> Search any things... </span>
           </div>
         </button>
-        <search-modal
+        <!--  -->
+
+        <!--  -->
+        <SearchModal
           :is-visible="showSearch"
           @search="handleSearch"
           @update:isVisible="showSearch = $event"
-        ></search-modal>
+        ></SearchModal>
       </div>
     </div>
     <!-- right nav -->

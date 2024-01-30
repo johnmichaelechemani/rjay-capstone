@@ -31,7 +31,7 @@
           <div
             v-for="(cat, index) in item"
             :key="index"
-            class="mx-3"
+            class="mx-3 hover:bg-slate-700/10 rounded-md transition"
             @click="filterByCategory(cat.category_id)"
           >
             <button class="py-1 text-sm my-1 px-2 rounded-md">
@@ -169,9 +169,17 @@ export default {
 
     // filter by category
     const filterByCategory = (id) => {
-      const f = products.value.map((item) => item.category_id === id);
-      products.value = f;
-      console.log(id);
+      if (id) {
+        const filteredProducts = products.value.filter(
+          (p) => p.category_id === id
+        );
+        products.value = filteredProducts;
+        console.log(`Filtered by Category ID: ${id}`);
+      } else {
+        // Fetch all products if no category ID is provided
+        fetchProducts();
+        console.log("Fetched all products");
+      }
     };
 
     onMounted(fetchProducts(), getCategories());
