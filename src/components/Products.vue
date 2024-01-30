@@ -22,17 +22,25 @@
   <div :class="showCategory ? 'flex relative' : ''">
     <div
       v-if="showCategory"
-      class="text-base h-full w-72 shadow absolute z-10 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
+      class="text-base min-h-full w-72 shadow absolute z-10 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
     >
       <div class="h-screen">
         <p class="px-3 pt-5 text-sky-800">Catergories</p>
         <hr class="my-2" />
+        <div>
+          <button
+            @click="fetchProducts"
+            class="px-5 bg-slate-500/10 w-full py-2 hover:bg-slate-500/20 text-left mb-3"
+          >
+            All
+          </button>
+        </div>
         <div v-for="item in categories" :key="item.category_id">
           <div
             v-for="(cat, index) in item"
             :key="index"
             class="mx-3 hover:bg-slate-700/10 rounded-md transition"
-            @click="filterByCategory(cat.category_id)"
+            @click="filterByCategory(cat.category_id, cat.name)"
           >
             <button class="py-1 text-sm my-1 px-2 rounded-md">
               {{ cat.name }}
@@ -44,9 +52,11 @@
     </div>
     <div class="bg-white cursor-pointer">
       <div class="mx-auto max-w-2xl px-4 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 class="md:text-2xl text-lg font-bold tracking-tight text-sky-900">
-          Popular products
-        </h2>
+        <div>
+          <h2 class="md:text-2xl text-lg font-bold tracking-tight text-sky-900">
+            {{ selectedCategoryName || "Popular Products" }}
+          </h2>
+        </div>
 
         <div
           class="mt-6 grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8"
@@ -124,6 +134,7 @@ export default {
     const selectedProduct = ref(null);
     const showCategory = ref(false);
     const categories = ref([]);
+    const selectedCategoryName = ref("");
 
     // get categories
     const getCategories = async () => {
@@ -167,9 +178,14 @@ export default {
       });
     };
 
+    const catName = ref("");
     // filter by category
+    const getCatName = () => {
+      selectedCategoryName.value = catName.value;
+    };
     // Use axios.post instead of axios.get, and pass data in the request body
-    const filterByCategory = async (id) => {
+    const filterByCategory = async (id, name) => {
+      catName.value = name;
       try {
         const response = await axios.post(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=fetchCategory",
@@ -183,6 +199,7 @@ export default {
 
         console.log(response.data.cat); // Use response.data.cat to access the 'cat' property
         products.value = response.data.cat;
+        getCatName();
       } catch (error) {
         console.error(error);
       }
@@ -204,12 +221,14 @@ export default {
       isModalVisible,
       selectedProduct,
       showModal,
+      fetchProducts,
 
       handleSidebarCategory,
       showCategory,
       categories,
 
       filterByCategory,
+      selectedCategoryName,
     };
   },
 };
