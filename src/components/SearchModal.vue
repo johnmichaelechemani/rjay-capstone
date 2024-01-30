@@ -21,11 +21,22 @@
         </div>
         <div class="items-center px-4 py-3 flex justify-between"></div>
       </div>
+      <div>
+        <h1 class="font-semibold text-base">Recent searches</h1>
+        <div v-for="item in searchrecent">
+          <p
+            class="px-3 text-sm py-1 my-2 border border-slate-700/10 rounded-md"
+          >
+            {{ item.productName }}
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
   props: {
     isVisible: {
@@ -33,19 +44,30 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      searchQuery: "",
-    };
-  },
   methods: {
-    emitSearch() {
-      this.$emit("search", this.searchQuery);
-      this.searchQuery = ""; // Reset the search query after emitting
-    },
     close() {
       this.$emit("update:isVisible", false);
     },
+  },
+  setup() {
+    const searchQuery = ref("");
+    const searchrecent = ref([
+      {
+        productName: "intel i9 13gen",
+      },
+      {
+        productName: "intel i9 13gen",
+      },
+      {
+        productName: "intel i9 13gen",
+      },
+    ]);
+    console.log(searchrecent.value);
+
+    return {
+      searchQuery,
+      searchrecent,
+    };
   },
 };
 </script>
