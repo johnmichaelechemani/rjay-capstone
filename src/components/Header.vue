@@ -122,11 +122,6 @@
       </div>
     </div>
   </div>
-  <!-- after navigator -->
-  <div class="flex py-5 pl-2 sm:pl-10 bg-slate-200 gap-7 sm:text-sm text-xs">
-    <RouterLink to="/AboutView">Category</RouterLink>
-    <RouterLink to="/">Home</RouterLink>
-  </div>
 </template>
 <script>
 import SearchModal from "@/components/SearchModal.vue";

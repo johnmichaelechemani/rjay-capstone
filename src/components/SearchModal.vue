@@ -10,23 +10,34 @@
     >
       <div class="mt-3 text-center">
         <div class="mt-2">
-          <input
-            type="text"
-            class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            v-model="searchQuery"
-            placeholder="Search..."
-            autofocus
-            @keyup.enter="emitSearch"
-          />
+          <form @submit.prevent="send">
+            <input
+              type="text"
+              class="border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              v-model="searchQuery"
+              placeholder="Search..."
+              required
+              autofocus
+              @keyup.enter="emitSearch"
+            />
+          </form>
         </div>
         <div class="items-center px-4 py-3 flex justify-between"></div>
       </div>
       <div>
-        <h1 class="font-semibold text-base">Recent searches</h1>
+        <h1 class="font-semibold text-base text-sky-900">Recent searches</h1>
         <div v-for="item in searchrecent">
           <p
-            class="px-3 text-sm py-1 my-2 border border-slate-700/10 rounded-md"
+            class="px-3 text-sm py-1 my-1 border border-slate-700/10 rounded-md"
           >
+            {{ item.productName }}
+          </p>
+        </div>
+      </div>
+      <div class="my-3">
+        <h1 class="font-semibold text-base text-sky-900">Recommendations</h1>
+        <div v-for="item in searchrecent">
+          <p class="px-3 text-sm py-1 my-1 border border-sky-700/20 rounded-md">
             {{ item.productName }}
           </p>
         </div>
@@ -58,15 +69,18 @@ export default {
       {
         productName: "intel i9 13gen",
       },
-      {
-        productName: "intel i9 13gen",
-      },
     ]);
-    console.log(searchrecent.value);
+    const send = () => {
+      searchrecent.value.push({
+        productName: searchQuery.value,
+      });
+      searchQuery.value = "";
+    };
 
     return {
       searchQuery,
       searchrecent,
+      send,
     };
   },
 };

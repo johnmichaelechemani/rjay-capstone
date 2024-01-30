@@ -1,62 +1,87 @@
 <template>
-  <div class="bg-white cursor-pointer">
-    <div class="mx-auto max-w-2xl px-4 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-      <h2 class="md:text-2xl text-lg font-bold tracking-tight text-sky-900">
-        Popular products
-      </h2>
-
-      <div
-        class="mt-6 grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8"
+  <div>
+    <!-- after navigator -->
+    <div class="flex py-2 pl-2 sm:pl-10 bg-slate-200 gap-2 sm:text-sm text-xs">
+      <button
+        @click="handleSidebarCategory"
+        class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold"
       >
+        Category
+      </button>
+      <RouterLink
+        to="/"
+        class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold"
+        >Home</RouterLink
+      >
+    </div>
+  </div>
+
+  <div :class="showCategory ? 'flex relative' : ''">
+    <div
+      v-if="showCategory"
+      class="text-base h-screen w-72 absolute z-20 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
+    >
+      <p class="px-3 pt-5">Catergories</p>
+    </div>
+    <div class="bg-white cursor-pointer">
+      <div class="mx-auto max-w-2xl px-4 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <h2 class="md:text-2xl text-lg font-bold tracking-tight text-sky-900">
+          Popular products
+        </h2>
+
         <div
-          @click="showModal(product)"
-          v-for="product in products"
-          :key="product.product_id"
-          class="group relative border-2 border-zinc-300 rounded-2xl p-1 sm:p-2 overflow-hidden"
+          class="mt-6 grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8"
         >
           <div
-            class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-sky-900 lg:aspect-none group-hover:opacity-75 lg:h-44"
+            @click="showModal(product)"
+            v-for="product in products"
+            :key="product.product_id"
+            class="group relative border-2 border-zinc-300 rounded-2xl p-1 sm:p-2 overflow-hidden"
           >
-            <img
-              :src="'data:image/png;base64,' + product.image"
-              :alt="product.imageAlt"
-              class="h-32 w-full object-center lg:h-44 lg:w-full"
-            />
-            <Icon
-              icon="ph:heart-light"
-              class="heart-icon"
-              @click="onHeartClick(product)"
-            />
-          </div>
-          <div class="mt-24 text-xs sm:text-sm">
-            <div class="absolute bottom-0 w-full inset-x-0 rounded-b-md p-2">
-              <div class="flex flex-col space-y-2 pl-2">
-                <h3 class="text-sky-900 font-bold">
-                  <a :href="product.href">
-                    {{ product.name }}
-                  </a>
-                </h3>
-                <p class="font-medium">₱{{ product.price }}</p>
-                <div class="mt-1">
-                  <span
-                    v-for="star in getStars(product.ratings)"
-                    :key="star.id"
-                    :class="{
-                      'star-colored': star.colored,
-                      'star-grey': !star.colored,
-                    }"
-                    >&#9733;</span
-                  >
+            <div
+              class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-sky-900 lg:aspect-none group-hover:opacity-75 lg:h-44"
+            >
+              <img
+                :src="'data:image/png;base64,' + product.image"
+                :alt="product.imageAlt"
+                class="h-32 w-full object-center lg:h-44 lg:w-full"
+              />
+              <Icon
+                icon="ph:heart-light"
+                class="heart-icon"
+                @click="onHeartClick(product)"
+              />
+            </div>
+            <div class="mt-24 text-xs sm:text-sm">
+              <div class="absolute bottom-0 w-full inset-x-0 rounded-b-md p-2">
+                <div class="flex flex-col space-y-2 pl-2">
+                  <h3 class="text-sky-900 font-bold">
+                    <a :href="product.href">
+                      {{ product.name }}
+                    </a>
+                  </h3>
+                  <p class="font-medium">₱{{ product.price }}</p>
+                  <div class="mt-1">
+                    <span
+                      v-for="star in getStars(product.ratings)"
+                      :key="star.id"
+                      :class="{
+                        'star-colored': star.colored,
+                        'star-grey': !star.colored,
+                      }"
+                      >&#9733;</span
+                    >
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <product-modal
+            :is-visible="isModalVisible"
+            :product="selectedProduct"
+            @update:isVisible="isModalVisible = $event"
+          ></product-modal>
         </div>
-        <product-modal
-          :is-visible="isModalVisible"
-          :product="selectedProduct"
-          @update:isVisible="isModalVisible = $event"
-        ></product-modal>
       </div>
     </div>
   </div>
@@ -78,6 +103,10 @@ export default {
     const products = ref([]);
     const isModalVisible = ref(false);
     const selectedProduct = ref(null);
+    const showCategory = ref(false);
+    const handleSidebarCategory = () => {
+      showCategory.value = !showCategory.value;
+    };
 
     const showModal = (product) => {
       selectedProduct.value = product;
@@ -120,6 +149,9 @@ export default {
       isModalVisible,
       selectedProduct,
       showModal,
+
+      handleSidebarCategory,
+      showCategory,
     };
   },
 };
