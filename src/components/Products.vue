@@ -4,13 +4,13 @@
     <div class="flex py-2 pl-2 sm:pl-10 bg-slate-200 gap-2 sm:text-sm text-xs">
       <button
         @click="handleSidebarCategory"
-        class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold"
+        class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold shadow"
       >
         Category
       </button>
       <RouterLink
         to="/"
-        class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold"
+        class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold shadow"
         >Home</RouterLink
       >
     </div>
@@ -19,10 +19,24 @@
   <div :class="showCategory ? 'flex relative' : ''">
     <div
       v-if="showCategory"
-      class="text-base h-full w-72 absolute z-20 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
+      class="text-base h-full w-72 shadow absolute z-20 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
     >
       <div class="h-screen">
-        <p class="px-3 pt-5">Catergories</p>
+        <p class="px-3 pt-5 text-sky-800">Catergories</p>
+        <hr class="my-2" />
+        <div v-for="item in categories">
+          <div
+            v-for="(cat, index) in item"
+            :key="index"
+            class="mx-3"
+            @click="filterByCategory(index)"
+          >
+            <button class="py-1 text-sm my-1 px-2 rounded-md">
+              {{ cat.name }}
+            </button>
+          </div>
+        </div>
+        <hr class="my-2" />
       </div>
     </div>
     <div class="bg-white cursor-pointer">
@@ -106,6 +120,25 @@ export default {
     const isModalVisible = ref(false);
     const selectedProduct = ref(null);
     const showCategory = ref(false);
+    const categories = ref([]);
+    // filter by category
+    const filterByCategory = (index) => {
+      console.log(index);
+    };
+
+    // get categories
+    const getCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost/Ecommerce/vue-project/src/backend/categories.php"
+        );
+        categories.value = response.data;
+        console.log(categories.value);
+      } catch (error) {
+        console.error("Error fetching categories: ", error);
+      }
+    };
+
     const handleSidebarCategory = () => {
       showCategory.value = !showCategory.value;
     };
@@ -137,7 +170,7 @@ export default {
       });
     };
 
-    onMounted(fetchProducts);
+    onMounted(fetchProducts(), getCategories());
 
     const onHeartClick = (product) => {
       // Handle the heart icon click event
@@ -154,6 +187,9 @@ export default {
 
       handleSidebarCategory,
       showCategory,
+      categories,
+
+      filterByCategory,
     };
   },
 };
