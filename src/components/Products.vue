@@ -9,11 +9,8 @@
         Category
       </button>
       <RouterLink
-        to="/home"
-        :class="{
-          'bg-sky-700 text-white': $route.path === '/home',
-        }"
-        class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold shadow"
+        to="/"
+        class="bg-sky-700 py-2 text-slate-100 px-4 rounded-md font-semibold shadow"
         >Home</RouterLink
       >
     </div>
@@ -165,6 +162,7 @@ export default {
         );
         console.log("API Response Data:", response.data);
         products.value = response.data;
+        selectedCategoryName.value = "";
       } catch (error) {
         console.error("Error fetching products: ", error);
       }
