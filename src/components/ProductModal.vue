@@ -37,9 +37,10 @@
               ${{ product.price }}
             </div>
             <div
-              class="w-full flex-none text-sm font-medium text-black-700 py-2"
+              class="w-full flex gap-2 justify-start items-center text-sm font-medium text-black-700"
             >
-              <span>In stock</span> <span class="text-blue-500">2</span>
+              <span>In stock</span>
+              <span class="text-blue-500">{{ product.quantity || "0" }}</span>
             </div>
           </div>
 

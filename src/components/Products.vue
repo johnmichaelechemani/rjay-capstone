@@ -160,7 +160,7 @@ export default {
         const response = await axios.get(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProducts"
         );
-        //  console.log("API Response Data:", response.data);
+        console.log("API Response Data:", response.data);
         products.value = response.data;
         selectedCategoryName.value = "";
       } catch (error) {
@@ -195,7 +195,7 @@ export default {
           }
         );
 
-        //  console.log(response.data.cat); // Use response.data.cat to access the 'cat' property
+        console.log(response.data.cat); // Use response.data.cat to access the 'cat' property
         products.value = response.data.cat;
         getCatName();
       } catch (error) {

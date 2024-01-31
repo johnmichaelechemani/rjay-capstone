@@ -18,7 +18,6 @@ switch ($action) {
     case 'fetchCategory':
         fetchCategory();
         break;
-
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
@@ -33,7 +32,18 @@ function fetchCategory()
     $id = $data['id'];
 
     // Use prepared statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM products WHERE category_id = ?");
+    $stmt = $conn->prepare("SELECT 
+    p.*, 
+    c.*,
+    i.quantity
+FROM 
+    products AS p
+LEFT JOIN 
+    categories AS c ON p.category_id = c.category_id
+LEFT JOIN
+    inventory AS i ON p.product_id = i.product_id
+WHERE 
+    p.category_id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
 
@@ -56,7 +66,16 @@ function fetchProducts()
     global $conn;
 
     // Fetch products from the database
-    $sql = "SELECT * FROM products ORDER BY ratings DESC"; // Modify this query based on your database structure
+    $sql = "SELECT 
+    p.*, 
+    i.inventory_id, 
+    i.quantity
+FROM 
+    products AS p
+LEFT JOIN 
+    inventory AS i ON p.product_id = i.product_id
+ORDER BY 
+    p.ratings DESC";
     $result = $conn->query($sql);
 
     // Fetch data as an associative array
