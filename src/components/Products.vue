@@ -140,7 +140,7 @@ export default {
           "http://localhost/Ecommerce/vue-project/src/backend/categories.php"
         );
         categories.value = response.data;
-        console.log(categories.value);
+        // console.log(categories.value);
       } catch (error) {
         console.error("Error fetching categories: ", error);
       }
@@ -160,7 +160,7 @@ export default {
         const response = await axios.get(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProducts"
         );
-        console.log("API Response Data:", response.data);
+        //  console.log("API Response Data:", response.data);
         products.value = response.data;
         selectedCategoryName.value = "";
       } catch (error) {
@@ -195,14 +195,14 @@ export default {
           }
         );
 
-        console.log(response.data.cat); // Use response.data.cat to access the 'cat' property
+        //  console.log(response.data.cat); // Use response.data.cat to access the 'cat' property
         products.value = response.data.cat;
         getCatName();
       } catch (error) {
         console.error(error);
       }
 
-      console.log(`Filtered by Category ID: ${id}`);
+      // console.log(`Filtered by Category ID: ${id}`);
     };
 
     onMounted(fetchProducts(), getCategories());

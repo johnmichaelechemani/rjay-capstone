@@ -23,9 +23,16 @@
         </div>
         <form class="flex-auto p-6">
           <div class="flex flex-wrap">
-            <h1 class="flex-auto text-xl font-semibold text-gray-900">
-              {{ product.name }}
-            </h1>
+            <div>
+              <h1 class="flex-auto text-xl font-semibold text-gray-900">
+                {{ product.name }}
+              </h1>
+              <div>
+                <span class="text-base font-medium">{{
+                  product.description
+                }}</span>
+              </div>
+            </div>
             <div class="text-lg font-semibold text-black-500">
               ${{ product.price }}
             </div>
@@ -67,7 +74,7 @@
                 </div>
               </form>
             </div>
-            <div class="sm:flex text-sm font-medium">
+            <div class="sm:flex text-sm justify-start items-center font-medium">
               <div class="flex-auto my-1 flex space-x-4">
                 <button
                   class="h-10 px-6 hover:bg-slate-500/10 font-semibold rounded-md border border-black-800 text-gray-900"
@@ -77,7 +84,7 @@
                 </button>
               </div>
               <button
-                class="flex-none flex items-center justify-center w-9 h-9 rounded-md text-slate-300 border border-slate-200"
+                class="flex-none hover:text-red-400 transition flex items-center justify-center w-9 h-9 rounded-md text-slate-300 border border-slate-200"
                 type="button"
                 aria-label="Favorites"
               >
@@ -87,7 +94,6 @@
           </div>
         </form>
       </div>
-      <div><h1 class="font-semibold">Description</h1></div>
     </div>
   </div>
 </template>
