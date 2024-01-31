@@ -69,11 +69,14 @@ function fetchProducts()
     $sql = "SELECT 
     p.*, 
     i.inventory_id, 
-    i.quantity
+    i.quantity,
+    ps.*
 FROM 
     products AS p
 LEFT JOIN 
     inventory AS i ON p.product_id = i.product_id
+LEFT JOIN
+    product_specifications AS ps ON p.product_id = ps.product_id
 ORDER BY 
     p.ratings DESC";
     $result = $conn->query($sql);

@@ -34,7 +34,7 @@
               </div>
             </div>
             <div class="text-lg font-semibold text-black-500">
-              ${{ product.price }}
+              ${{ finalQuantity }}
             </div>
             <div
               class="w-full flex gap-2 justify-start items-center text-sm font-medium text-black-700"
@@ -95,6 +95,17 @@
           </div>
         </form>
       </div>
+      <div class="text-sm">
+        <div v-if="product.ram">
+          Ram:
+          <span>{{ product.ram }}</span>
+        </div>
+
+        <div v-if="product.storage">
+          Storage:
+          <span>{{ product.storage }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -115,16 +126,28 @@ export default {
       this.$emit("update:isVisible", false);
     },
   },
-  setup() {
+  setup(props) {
     const quantity = ref(0);
+    const finalQuantity = ref("");
 
     const increment = () => {
       // You can add validation here if needed
       quantity.value = Number(quantity.value) + 1;
+      finalQuantity.value = props.product.price;
       if (quantity.value > 3) {
+        console.log(props.product.price);
+
         quantity.value = 3;
       }
+      finalQuantity.value = quantity.value * props.product.price;
+      console.log(finalQuantity.value);
     };
+    watch(
+      () => (props.product ? props.product.price : null),
+      (newPrice) => {
+        finalQuantity.value = newPrice || 0;
+      }
+    );
 
     const decrement = () => {
       // You can add validation here if needed
@@ -134,7 +157,7 @@ export default {
       }
     };
 
-    return { quantity, increment, decrement };
+    return { quantity, increment, decrement, finalQuantity };
   },
 };
 </script>
