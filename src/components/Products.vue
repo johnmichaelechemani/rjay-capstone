@@ -118,7 +118,6 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import { Icon } from "@iconify/vue";
 import ProductModal from "@/components/ProductModal.vue";
-
 export default {
   components: {
     Icon,
@@ -140,6 +139,7 @@ export default {
           "http://localhost/Ecommerce/vue-project/src/backend/categories.php"
         );
         categories.value = response.data;
+
         // console.log(categories.value);
       } catch (error) {
         console.error("Error fetching categories: ", error);
@@ -162,6 +162,7 @@ export default {
         );
         console.log("API Response Data:", response.data);
         products.value = response.data;
+
         selectedCategoryName.value = "";
       } catch (error) {
         console.error("Error fetching products: ", error);

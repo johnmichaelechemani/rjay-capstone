@@ -152,9 +152,11 @@ export default {
     const decrement = () => {
       // You can add validation here if needed
       quantity.value = String(Number(quantity.value) - 1);
+      finalQuantity.value = props.product.price;
       if (quantity.value < 1) {
         quantity.value = 1;
       }
+      finalQuantity.value = quantity.value - props.product.price;
     };
 
     return { quantity, increment, decrement, finalQuantity };

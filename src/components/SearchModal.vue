@@ -49,7 +49,6 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-
 export default {
   props: {
     isVisible: {
@@ -57,15 +56,16 @@ export default {
       required: true,
     },
   },
-  methods: {
-    close() {
-      this.$emit("update:isVisible", false);
-    },
-  },
-  setup(props) {
+
+  setup(props, { emit }) {
     const searchQuery = ref("");
     const searchProduct = ref([]);
     const router = useRouter();
+
+    const close = () => {
+      emit("update:isVisible", false);
+    };
+
     const searchrecent = ref([
       {
         productName: "intel i9 13gen",
@@ -82,20 +82,21 @@ export default {
 
         // Assuming response.data is an array of products
         searchProduct.value = response.data;
-        console.log("Response:", searchProduct.value);
-        console.log("Search Query:", searchQuery.value);
+        // console.log("Response:", searchProduct.value);
+        // console.log("Search Query:", searchQuery.value);
       } catch (error) {
         console.log(error);
       }
 
       searchQuery.value = "";
-      router.push("/search_products");
+      close();
     };
 
     return {
       searchQuery,
       searchrecent,
       send,
+      close,
     };
   },
 };
