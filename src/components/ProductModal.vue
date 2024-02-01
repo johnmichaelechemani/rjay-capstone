@@ -92,6 +92,7 @@
                 type="button"
                 aria-label="Favorites"
                 @click="heart"
+                :class="{ 'text-red-400': isHeartRed }"
               >
                 <Icon icon="ph:heart-fill" class="text-lg" />
               </button>
@@ -133,6 +134,7 @@ export default {
   setup(props) {
     const quantity = ref(1);
     const finalQuantity = ref("");
+    const isHeartRed = ref(false);
 
     const increment = () => {
       quantity.value = Math.min(Number(quantity.value) + 1, 3); // Ensure the quantity does not exceed 3
@@ -154,8 +156,20 @@ export default {
       console.log(finalQuantity.value);
       console.log(name);
     };
+    const heart = () => {
+      isHeartRed.value = !isHeartRed.value;
+      console.log("heart");
+    };
 
-    return { quantity, increment, decrement, finalQuantity, addToCart };
+    return {
+      quantity,
+      increment,
+      decrement,
+      finalQuantity,
+      addToCart,
+      heart,
+      isHeartRed,
+    };
   },
 };
 </script>
