@@ -51,6 +51,7 @@
                   <button
                     type="button"
                     @click="decrement"
+                    :disabled="quantity === 1"
                     class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg px-2 h-8 focus:ring-gray-100 focus:ring-2 focus:outline-none"
                   >
                     <Icon icon="ic:baseline-minus" />
@@ -68,6 +69,7 @@
                   <button
                     type="button"
                     @click="increment"
+                    :disabled="quantity === 3"
                     class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg px-2 h-8 focus:ring-gray-100 focus:ring-2 focus:outline-none"
                   >
                     <Icon icon="tabler:plus" />
@@ -80,6 +82,7 @@
                 <button
                   class="h-10 px-6 hover:bg-slate-500/10 font-semibold rounded-md border border-black-800 text-gray-900"
                   type="button"
+                  @click="addToCart(product.name)"
                 >
                   Add to cart
                 </button>
@@ -88,6 +91,7 @@
                 class="flex-none hover:text-red-400 transition flex items-center justify-center w-9 h-9 rounded-md text-slate-300 border border-slate-200"
                 type="button"
                 aria-label="Favorites"
+                @click="heart"
               >
                 <Icon icon="ph:heart-fill" class="text-lg" />
               </button>
@@ -127,20 +131,12 @@ export default {
     },
   },
   setup(props) {
-    const quantity = ref(0);
+    const quantity = ref(1);
     const finalQuantity = ref("");
 
     const increment = () => {
-      // You can add validation here if needed
-      quantity.value = Number(quantity.value) + 1;
-      finalQuantity.value = props.product.price;
-      if (quantity.value > 3) {
-        console.log(props.product.price);
-
-        quantity.value = 3;
-      }
+      quantity.value = Math.min(Number(quantity.value) + 1, 3); // Ensure the quantity does not exceed 3
       finalQuantity.value = quantity.value * props.product.price;
-      console.log(finalQuantity.value);
     };
     watch(
       () => (props.product ? props.product.price : null),
@@ -150,16 +146,16 @@ export default {
     );
 
     const decrement = () => {
-      // You can add validation here if needed
-      quantity.value = String(Number(quantity.value) - 1);
-      finalQuantity.value = props.product.price;
-      if (quantity.value < 1) {
-        quantity.value = 1;
-      }
-      finalQuantity.value = quantity.value - props.product.price;
+      quantity.value = Math.max(Number(quantity.value) - 1, 1); // Ensure the quantity does not go below 1
+      finalQuantity.value = quantity.value * props.product.price;
     };
 
-    return { quantity, increment, decrement, finalQuantity };
+    const addToCart = (name) => {
+      console.log(finalQuantity.value);
+      console.log(name);
+    };
+
+    return { quantity, increment, decrement, finalQuantity, addToCart };
   },
 };
 </script>
