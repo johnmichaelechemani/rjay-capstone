@@ -14,11 +14,11 @@ function fetchSearch()
     // Fetch products from the database
     $data = json_decode(file_get_contents("php://input"), true);
     $pname = $data['query'];
-    $sql = "SELECT * FROM products WHERE name LIKE ?";
+    $sql = "SELECT * FROM products WHERE product_name LIKE ? OR product_description LIKE ?";
 
     $p = "%" . $pname . "%";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $p);
+    $stmt->bind_param("ss", $p, $p);
     $stmt->execute();
 
     $result = $stmt->get_result();

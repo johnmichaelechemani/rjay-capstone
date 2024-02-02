@@ -17,7 +17,7 @@
               v-model="searchQuery"
               placeholder="Search..."
               required
-              autofocus
+              v-focus="isVisible"
             />
           </form>
         </div>
@@ -47,8 +47,8 @@
 
 <script>
 import axios from "axios";
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from "vue";
+
 export default {
   props: {
     isVisible: {
@@ -56,11 +56,18 @@ export default {
       required: true,
     },
   },
-
+  emits: ["update:isVisible", "search-completed"], // Declare emitted events here
+  directives: {
+    focus: {
+      // Custom directive to autofocus input field
+      mounted(el) {
+        el.focus();
+      },
+    },
+  },
   setup(props, { emit }) {
     const searchQuery = ref("");
     const searchProduct = ref([]);
-    const router = useRouter();
 
     const close = () => {
       emit("update:isVisible", false);
@@ -80,14 +87,9 @@ export default {
           "http://localhost/Ecommerce/vue-project/src/backend/search.php";
         const response = await axios.post(url, { query: searchQuery.value });
 
-        // Assuming response.data is an array of products
         searchProduct.value = response.data;
+        emit("search-completed", searchProduct.value); // Emitting the event
         console.log("Response:", searchProduct.value);
-        router.push({
-          name: "home",
-          params: { products: searchProduct.value },
-        });
-        // console.log("Search Query:", searchQuery.value);
       } catch (error) {
         console.log(error);
       }

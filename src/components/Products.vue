@@ -1,5 +1,8 @@
 <template>
   <div>
+    <Header @search-completed="handleSearchCompleted"></Header>
+  </div>
+  <div>
     <!-- after navigator -->
     <div class="flex py-2 pl-2 sm:pl-8 bg-slate-200 gap-2 sm:text-sm text-xs">
       <button
@@ -37,10 +40,10 @@
             v-for="(cat, index) in item"
             :key="index"
             class="mx-3 hover:bg-slate-700/10 rounded-md transition"
-            @click="filterByCategory(cat.category_id, cat.name)"
+            @click="filterByCategory(cat.category_id, cat.category_name)"
           >
             <button class="py-1 text-sm my-1 px-2 rounded-md">
-              {{ cat.name }}
+              {{ cat.category_name }}
             </button>
           </div>
         </div>
@@ -83,7 +86,7 @@
                 <div class="flex flex-col space-y-2 pl-2">
                   <h3 class="text-sky-900 font-bold">
                     <a :href="product.href">
-                      {{ product.name }}
+                      {{ product.product_name }}
                     </a>
                   </h3>
                   <p class="font-medium">₱{{ product.price }}</p>
@@ -114,6 +117,7 @@
 </template>
 
 <script>
+import Header from "@/components/Header.vue";
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { Icon } from "@iconify/vue";
@@ -122,6 +126,7 @@ export default {
   components: {
     Icon,
     ProductModal,
+    Header,
   },
   name: "home",
   props: ["products"],
@@ -133,6 +138,10 @@ export default {
     const showCategory = ref(false);
     const categories = ref([]);
     const selectedCategoryName = ref("");
+
+    const handleSearchCompleted = (product) => {
+      products.value = product;
+    };
 
     const p = ref(props.products || []);
     console.log(p.value);
@@ -233,6 +242,8 @@ export default {
 
       filterByCategory,
       selectedCategoryName,
+
+      handleSearchCompleted,
     };
   },
 };

@@ -25,11 +25,11 @@
           <div class="flex flex-wrap">
             <div>
               <h1 class="flex-auto text-xl font-semibold text-gray-900">
-                {{ product.name }}
+                {{ product.product_name }}
               </h1>
               <div>
                 <span class="text-base font-medium">{{
-                  product.description
+                  product.product_description
                 }}</span>
               </div>
             </div>
