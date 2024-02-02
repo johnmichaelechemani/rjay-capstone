@@ -82,7 +82,7 @@
                 <button
                   class="h-10 px-6 hover:bg-slate-500/10 font-semibold rounded-md border border-black-800 text-gray-900"
                   type="button"
-                  @click="addToCart(product.name, product.product_id)"
+                  @click="addToCart(product.product_name, product.product_id)"
                 >
                   Add to cart
                 </button>
@@ -117,6 +117,7 @@
 
 <script>
 import { Icon } from "@iconify/vue";
+import axios from "axios";
 import { ref, watch } from "vue";
 export default {
   props: {
@@ -151,11 +152,27 @@ export default {
       quantity.value = Math.max(Number(quantity.value) - 1, 1); // Ensure the quantity does not go below 1
       finalQuantity.value = quantity.value * props.product.price;
     };
+    const cart_id = ref(1);
 
-    const addToCart = (name, id) => {
+    const addToCart = async (name, id) => {
       console.log(finalQuantity.value);
       console.log(name);
       console.log(id);
+      console.log(quantity.value);
+
+      try {
+        const response = await axios.post(
+          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=addCart",
+          {
+            product_id: id,
+            quantity: quantity.value,
+            cart_id: cart_id.value,
+          }
+        );
+        console.log(response.data);
+      } catch {
+        alert("Error adding to cart");
+      }
     };
     const heart = () => {
       isHeartRed.value = !isHeartRed.value;

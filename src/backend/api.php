@@ -18,6 +18,9 @@ switch ($action) {
     case 'fetchCategory':
         fetchCategory();
         break;
+    case 'addCart':
+        addCart();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
@@ -57,6 +60,29 @@ WHERE
     }
 
     $res = ['cat' => $cat];
+    echo json_encode($res);
+}
+
+function addCart()
+{
+    global $conn, $res;
+    $data = json_decode(file_get_contents("php://input"), true);
+    // Extract data from the array
+    $product_id = $data['product_id'];
+    $quantity = $data['quantity'];
+    $cart_id = $data['cart_id'];
+
+    $stmt = $conn->prepare("INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $cart_id, $product_id,  $quantity);
+    $stmt->execute();
+    if ($stmt->affected_rows > 0) {
+        $res['success'] = true;
+        $res['message'] = 'Porduct added successfully.';
+    } else {
+        $res['success'] = false;
+        $res['message'] = 'Failed to add product.';
+    }
+    $stmt->close();
     echo json_encode($res);
 }
 
