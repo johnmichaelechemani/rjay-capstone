@@ -40,10 +40,10 @@
             v-for="(cat, index) in item"
             :key="index"
             class="mx-3 hover:bg-slate-700/10 rounded-md transition"
-            @click="filterByCategory(cat.category_id, cat.name)"
+            @click="filterByCategory(cat.category_id, cat.categoryname)"
           >
             <button class="py-1 text-sm my-1 px-2 rounded-md">
-              {{ cat.name }}
+              {{ cat.category_name }}
             </button>
           </div>
         </div>
@@ -86,7 +86,7 @@
                 <div class="flex flex-col space-y-2 pl-2">
                   <h3 class="text-sky-900 font-bold">
                     <a :href="product.href">
-                      {{ product.name }}
+                      {{ product.product_name }}
                     </a>
                   </h3>
                   <p class="font-medium">₱{{ product.price }}</p>

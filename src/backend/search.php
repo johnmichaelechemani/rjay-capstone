@@ -14,7 +14,7 @@ function fetchSearch()
     // Fetch products from the database
     $data = json_decode(file_get_contents("php://input"), true);
     $pname = $data['query'];
-    $sql = "SELECT * FROM products WHERE name LIKE ? OR description LIKE ?";
+    $sql = "SELECT * FROM products WHERE product_name LIKE ? OR product_description LIKE ?";
 
     $p = "%" . $pname . "%";
     $stmt = $conn->prepare($sql);

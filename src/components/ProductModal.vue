@@ -25,11 +25,11 @@
           <div class="flex flex-wrap">
             <div>
               <h1 class="flex-auto text-xl font-semibold text-gray-900">
-                {{ product.name }}
+                {{ product.product_name }}
               </h1>
               <div>
                 <span class="text-base font-medium">{{
-                  product.description
+                  product.product_description
                 }}</span>
               </div>
             </div>
@@ -82,7 +82,7 @@
                 <button
                   class="h-10 px-6 hover:bg-slate-500/10 font-semibold rounded-md border border-black-800 text-gray-900"
                   type="button"
-                  @click="addToCart(product.name, product.product_id)"
+                  @click="addToCart(product.product_name, product.product_id)"
                 >
                   Add to cart
                 </button>
