@@ -128,8 +128,10 @@ export default {
     ProductModal,
     Header,
   },
+  name: "home",
+  props: ["products"],
 
-  setup() {
+  setup(props) {
     const products = ref([]);
     const isModalVisible = ref(false);
     const selectedProduct = ref(null);
@@ -141,6 +143,8 @@ export default {
       products.value = product;
     };
 
+    const p = ref(props.products || []);
+    console.log(p.value);
     // get categories
     const getCategories = async () => {
       try {
@@ -162,6 +166,7 @@ export default {
     const showModal = (product) => {
       selectedProduct.value = product;
       isModalVisible.value = true;
+      //console.log(selectedProduct.value);
     };
 
     const fetchProducts = async () => {
