@@ -47,8 +47,8 @@
 
 <script>
 import axios from "axios";
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from "vue";
+
 export default {
   props: {
     isVisible: {
@@ -56,11 +56,10 @@ export default {
       required: true,
     },
   },
-
+  emits: ['update:isVisible', 'search-completed'], // Declare emitted events here
   setup(props, { emit }) {
     const searchQuery = ref("");
     const searchProduct = ref([]);
-    const router = useRouter();
 
     const close = () => {
       emit("update:isVisible", false);
@@ -76,14 +75,12 @@ export default {
     ]);
     const send = async () => {
       try {
-        const url =
-          "http://localhost/Ecommerce/vue-project/src/backend/search.php";
+        const url = "http://localhost/Ecommerce/vue-project/src/backend/search.php";
         const response = await axios.post(url, { query: searchQuery.value });
 
-        // Assuming response.data is an array of products
         searchProduct.value = response.data;
-        // console.log("Response:", searchProduct.value);
-        // console.log("Search Query:", searchQuery.value);
+        emit('search-completed', searchProduct.value); // Emitting the event
+        console.log("Response:", searchProduct.value);
       } catch (error) {
         console.log(error);
       }
@@ -101,6 +98,7 @@ export default {
   },
 };
 </script>
+
 
 <style>
 /* Define the blur effect */

@@ -1,5 +1,4 @@
 <template>
-  <SearchModal />
   <!-- Top -->
   <div
     class="sm:flex justify-between py-4 px-2 sm:px-12 text-xs sm:text-sm cursor-pointer hidden"
@@ -40,8 +39,8 @@
 
         <SearchModal
           :is-visible="showSearch"
-          @search="handleSearch"
           @update:isVisible="showSearch = $event"
+          @search-completed="handleSearchCompleted"
         ></SearchModal>
       </div>
     </div>
@@ -133,17 +132,7 @@ export default {
     Icon,
     SearchModal,
   },
-  setup() {
-    const showmodal = ref(false);
-    const Handlesignin = () => {
-      console.log("bahala ka");
-      showmodal.value = !showmodal.value;
-    };
-    return {
-      Handlesignin,
-      showmodal,
-    };
-  },
+  emits: ['search-completed'],
 
   data() {
     return {
@@ -155,14 +144,9 @@ export default {
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
-    Handlesignin() {
-      // Implement your sign-in logic
-      console.log("Sign In Clicked");
-    },
-    handleSearch(query) {
-      console.log("Search for:", query);
-      // Implement your search logic here
-    },
+    handleSearchCompleted(data) {
+      this.$emit('search-completed', data);
+    }
     // ... other methods ...
   },
 };

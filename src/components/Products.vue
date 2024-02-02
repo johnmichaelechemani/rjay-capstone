@@ -1,5 +1,8 @@
 <template>
   <div>
+    <Header @search-completed="handleSearchCompleted"></Header>
+  </div>
+  <div>
     <!-- after navigator -->
     <div class="flex py-2 pl-2 sm:pl-8 bg-slate-200 gap-2 sm:text-sm text-xs">
       <button
@@ -114,6 +117,7 @@
 </template>
 
 <script>
+import Header from "@/components/Header.vue";
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { Icon } from "@iconify/vue";
@@ -122,6 +126,7 @@ export default {
   components: {
     Icon,
     ProductModal,
+    Header,
   },
 
   setup() {
@@ -131,6 +136,10 @@ export default {
     const showCategory = ref(false);
     const categories = ref([]);
     const selectedCategoryName = ref("");
+
+    const handleSearchCompleted = (product) => {
+      products.value = product;
+    };
 
     // get categories
     const getCategories = async () => {
@@ -228,6 +237,8 @@ export default {
 
       filterByCategory,
       selectedCategoryName,
+
+      handleSearchCompleted,
     };
   },
 };
