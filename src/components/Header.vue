@@ -57,16 +57,71 @@
         <span>Sign in</span>
       </div>
       <!-- wishlist -->
-      <div class="flex items-center gap-2 text-white hover:text-zinc-400">
+      <div
+        @click="showWishListFunction"
+        class="flex items-center gap-2 text-white hover:text-zinc-400 relative"
+      >
+        <div>
+          <Icon
+            icon="radix-icons:dot-filled"
+            class="text-xl text-red-500 absolute -top-2 left-0"
+          />
+        </div>
         <Icon icon="ph:heart-light" />
         <span>Wishlist</span>
       </div>
       <!-- Cart -->
-      <div class="flex items-center gap-2 text-white hover:text-zinc-400">
+      <div
+        @click="showCartFunction"
+        class="flex items-center gap-2 text-white hover:text-zinc-400 relative"
+      >
+        <div>
+          <Icon
+            icon="radix-icons:dot-filled"
+            class="text-xl text-red-500 absolute -top-2 left-0"
+          />
+        </div>
         <Icon icon="ion:cart-outline" />
         <span>Cart</span>
       </div>
     </div>
+    <!-- cart modal -->
+    <div v-if="showCart" class="flex justify-center items-center">
+      <div class="absolute top-32 right-3 z-50">
+        <div
+          class="bg-slate-300 border border-slate-900/20 shadow-lg px-3 py-2 w-96 rounded-lg"
+        >
+          <div>
+            <h1 class="font-semibold text-lg">Cart</h1>
+          </div>
+          <div class="p-2 bg-slate-500/10 rounded-md shadow-sm">
+            <p>Intel Core i9 13th gen</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- cart modal -->
+    <!-- cart modal -->
+    <div v-if="showWishList" class="flex justify-center items-center">
+      <div class="absolute top-32 right-3 z-50">
+        <div
+          class="bg-slate-300 border border-slate-900/20 shadow-lg px-3 py-2 w-96 rounded-lg"
+        >
+          <div class="flex justify-end">
+            <div class="bg-slate-600/20 rounded-full text-red-500 shadow p-2">
+              <Icon icon="iconamoon:close-bold" />
+            </div>
+          </div>
+          <div>
+            <h1 class="font-semibold text-lg">Wish List</h1>
+          </div>
+          <div class="p-2 bg-slate-500/10 rounded-md shadow-sm">
+            <p>Intel Core i9 13th gen</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- cart modal -->
 
     <!-- Hamburger Button for Small Screens -->
     <div
@@ -148,6 +203,19 @@ export default {
       this.$emit("search-completed", data);
     },
     // ... other methods ...
+  },
+  setup() {
+    const showCart = ref(false);
+    const showWishList = ref(false);
+    const showCartFunction = () => {
+      showCart.value = !showCart.value;
+      showWishList.value = false;
+    };
+    const showWishListFunction = () => {
+      showWishList.value = !showWishList.value;
+      showCart.value = false;
+    };
+    return { showCartFunction, showCart, showWishList, showWishListFunction };
   },
 };
 </script>

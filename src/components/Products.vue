@@ -135,7 +135,7 @@ export default {
     const products = ref([]);
     const isModalVisible = ref(false);
     const selectedProduct = ref(null);
-    const showCategory = ref(false);
+    const showCategory = ref(true);
     const categories = ref([]);
     const selectedCategoryName = ref("");
 
