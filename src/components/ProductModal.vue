@@ -82,7 +82,7 @@
                 <button
                   class="h-10 px-6 hover:bg-slate-500/10 font-semibold rounded-md border border-black-800 text-gray-900"
                   type="button"
-                  @click="addToCart(product.name)"
+                  @click="addToCart(product.name, product.product_id)"
                 >
                   Add to cart
                 </button>
@@ -152,9 +152,10 @@ export default {
       finalQuantity.value = quantity.value * props.product.price;
     };
 
-    const addToCart = (name) => {
+    const addToCart = (name, id) => {
       console.log(finalQuantity.value);
       console.log(name);
+      console.log(id);
     };
     const heart = () => {
       isHeartRed.value = !isHeartRed.value;

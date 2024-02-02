@@ -76,7 +76,7 @@ FROM
 LEFT JOIN 
     inventory AS i ON p.product_id = i.product_id
 LEFT JOIN
-    product_specifications AS ps ON p.product_id = ps.product_id
+    product_specifications AS ps ON i.product_id = ps.product_id
 ORDER BY 
     p.ratings DESC";
     $result = $conn->query($sql);

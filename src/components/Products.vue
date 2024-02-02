@@ -153,6 +153,7 @@ export default {
     const showModal = (product) => {
       selectedProduct.value = product;
       isModalVisible.value = true;
+      //console.log(selectedProduct.value);
     };
 
     const fetchProducts = async () => {
