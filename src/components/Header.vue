@@ -53,7 +53,7 @@
         class="flex items-center gap-2 text-white hover:text-zinc-400"
         @click="Handlesignin"
       >
-        <Icon icon="bi:person" />
+        <Icon icon="bi:person" class="text-lg" />
         <span>Sign in</span>
       </div>
       <!-- wishlist -->
@@ -67,7 +67,7 @@
             class="text-xl text-red-500 absolute -top-2 left-0"
           />
         </div>
-        <Icon icon="ph:heart-light" />
+        <Icon icon="ph:heart-light" class="text-lg" />
         <span>Wishlist</span>
       </div>
       <!-- Cart -->
@@ -81,7 +81,7 @@
             class="text-xl text-red-500 absolute -top-2 left-0"
           />
         </div>
-        <Icon icon="ion:cart-outline" />
+        <Icon icon="ion:cart-outline" class="text-lg" />
         <span>Cart</span>
       </div>
     </div>
@@ -91,6 +91,14 @@
         <div
           class="bg-slate-300 border border-slate-900/20 shadow-lg px-3 py-2 w-96 rounded-lg"
         >
+          <div class="flex justify-end">
+            <div
+              @click="closeCart"
+              class="bg-slate-600/20 rounded-full text-red-500 shadow p-2"
+            >
+              <Icon icon="iconamoon:close-bold" />
+            </div>
+          </div>
           <div>
             <h1 class="font-semibold text-lg">Cart</h1>
           </div>
@@ -101,14 +109,17 @@
       </div>
     </div>
     <!-- cart modal -->
-    <!-- cart modal -->
+    <!-- =wish modal -->
     <div v-if="showWishList" class="flex justify-center items-center">
       <div class="absolute top-32 right-3 z-50">
         <div
           class="bg-slate-300 border border-slate-900/20 shadow-lg px-3 py-2 w-96 rounded-lg"
         >
           <div class="flex justify-end">
-            <div class="bg-slate-600/20 rounded-full text-red-500 shadow p-2">
+            <div
+              @click="closeWishList"
+              class="bg-slate-600/20 rounded-full text-red-500 shadow p-2"
+            >
               <Icon icon="iconamoon:close-bold" />
             </div>
           </div>
@@ -116,12 +127,12 @@
             <h1 class="font-semibold text-lg">Wish List</h1>
           </div>
           <div class="p-2 bg-slate-500/10 rounded-md shadow-sm">
-            <p>Intel Core i9 13th gen</p>
+            <p>Intel Core i10 16th gen</p>
           </div>
         </div>
       </div>
     </div>
-    <!-- cart modal -->
+    <!-- wish modal -->
 
     <!-- Hamburger Button for Small Screens -->
     <div
@@ -154,13 +165,19 @@
           </div>
 
           <!-- Wishlist -->
-          <div class="flex items-center gap-2 text-white hover:text-zinc-400">
+          <div
+            @click="showWishListFunction"
+            class="flex items-center gap-2 text-white hover:text-zinc-400"
+          >
             <Icon icon="ph:heart-light" />
             <span>Wishlist</span>
           </div>
 
           <!-- Cart -->
-          <div class="flex items-center gap-2 text-white hover:text-zinc-400">
+          <div
+            @click="showCartFunction"
+            class="flex items-center gap-2 text-white hover:text-zinc-400"
+          >
             <Icon icon="ion:cart-outline" />
             <span>Cart</span>
           </div>
@@ -191,7 +208,6 @@ export default {
 
   data() {
     return {
-      isSidebarOpen: false,
       showSearch: false,
     };
   },
@@ -207,15 +223,38 @@ export default {
   setup() {
     const showCart = ref(false);
     const showWishList = ref(false);
+    const isSidebarOpen = ref(false);
+
+    const toggleSidebar = () => {
+      isSidebarOpen.value = !isSidebarOpen.value;
+    };
+
     const showCartFunction = () => {
       showCart.value = !showCart.value;
+      isSidebarOpen.value = false;
       showWishList.value = false;
     };
     const showWishListFunction = () => {
       showWishList.value = !showWishList.value;
+      isSidebarOpen.value = false;
       showCart.value = false;
     };
-    return { showCartFunction, showCart, showWishList, showWishListFunction };
+    const closeCart = () => {
+      showCart.value = false;
+    };
+    const closeWishList = () => {
+      showWishList.value = false;
+    };
+    return {
+      showCartFunction,
+      showCart,
+      closeCart,
+      showWishList,
+      showWishListFunction,
+      closeWishList,
+      toggleSidebar,
+      isSidebarOpen,
+    };
   },
 };
 </script>
