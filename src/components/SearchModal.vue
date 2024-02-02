@@ -17,7 +17,7 @@
               v-model="searchQuery"
               placeholder="Search..."
               required
-              autofocus
+              v-focus="isVisible"
             />
           </form>
         </div>
@@ -57,6 +57,14 @@ export default {
     },
   },
   emits: ['update:isVisible', 'search-completed'], // Declare emitted events here
+  directives: {
+    focus: {
+      // Custom directive to autofocus input field
+      mounted(el) {
+        el.focus();
+      },
+    },
+  },
   setup(props, { emit }) {
     const searchQuery = ref("");
     const searchProduct = ref([]);
