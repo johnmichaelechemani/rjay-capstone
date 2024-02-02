@@ -102,7 +102,9 @@
           <div>
             <h1 class="font-semibold text-lg">Cart</h1>
           </div>
-          <div class="p-2 bg-slate-500/10 rounded-md shadow-sm">
+          <div
+            class="p-2 bg-slate-500/10 h-96 overflow-scroll overflow-x-hidden rounded-md shadow-sm"
+          >
             <div v-for="items in cartItemsValue" :key="items">
               <div class="flex gap-2 justify-between my-2">
                 <div class="flex gap-2">
@@ -240,3 +242,19 @@ export default {
   ...Header,
 };
 </script>
+<style>
+/* WebKit (Chrome, Safari, Edge) */
+*::-webkit-scrollbar {
+  width: 0;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 14px;
+  border: 3px solid var(--primary);
+}
+</style>
