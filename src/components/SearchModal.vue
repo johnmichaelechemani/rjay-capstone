@@ -83,6 +83,10 @@ export default {
         // Assuming response.data is an array of products
         searchProduct.value = response.data;
         console.log("Response:", searchProduct.value);
+        router.push({
+          name: "home",
+          params: { products: searchProduct.value },
+        });
         // console.log("Search Query:", searchQuery.value);
       } catch (error) {
         console.log(error);

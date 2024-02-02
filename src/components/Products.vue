@@ -123,8 +123,10 @@ export default {
     Icon,
     ProductModal,
   },
+  name: "home",
+  props: ["products"],
 
-  setup() {
+  setup(props) {
     const products = ref([]);
     const isModalVisible = ref(false);
     const selectedProduct = ref(null);
@@ -132,6 +134,8 @@ export default {
     const categories = ref([]);
     const selectedCategoryName = ref("");
 
+    const p = ref(props.products || []);
+    console.log(p.value);
     // get categories
     const getCategories = async () => {
       try {
