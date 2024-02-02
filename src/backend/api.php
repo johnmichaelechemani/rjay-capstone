@@ -21,6 +21,9 @@ switch ($action) {
     case 'addCart':
         addCart();
         break;
+    case 'fetchCartItems':
+        fetchCartItems();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
@@ -88,6 +91,40 @@ function addCart()
 
 
 function fetchProducts()
+{
+    global $conn;
+
+    // Fetch products from the database
+    $sql = "SELECT 
+    p.*, 
+    i.inventory_id, 
+    i.quantity,
+    ps.*
+FROM 
+    products AS p
+LEFT JOIN 
+    inventory AS i ON p.product_id = i.product_id
+LEFT JOIN
+    product_specifications AS ps ON i.product_id = ps.product_id
+ORDER BY 
+    p.ratings DESC";
+    $result = $conn->query($sql);
+
+    // Fetch data as an associative array
+    $products = [];
+    while ($row = $result->fetch_assoc()) {
+        // Assuming $row['image'] contains the BLOB image data
+        $row['image'] = base64_encode($row['image']);
+        $products[] = $row;
+    }
+
+    // Close the connection
+    $conn->close();
+
+    echo json_encode($products);
+}
+
+function fetchCartItems()
 {
     global $conn;
 

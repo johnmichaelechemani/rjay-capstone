@@ -155,10 +155,10 @@ export default {
     const cart_id = ref(1);
 
     const addToCart = async (name, id) => {
-      console.log(finalQuantity.value);
-      console.log(name);
-      console.log(id);
-      console.log(quantity.value);
+      // console.log(finalQuantity.value);
+      // console.log(name);
+      // console.log(id);
+      // console.log(quantity.value);
 
       try {
         const response = await axios.post(
@@ -169,7 +169,7 @@ export default {
             cart_id: cart_id.value,
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
       } catch {
         alert("Error adding to cart");
       }

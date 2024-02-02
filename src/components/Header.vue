@@ -103,13 +103,52 @@
             <h1 class="font-semibold text-lg">Cart</h1>
           </div>
           <div class="p-2 bg-slate-500/10 rounded-md shadow-sm">
-            <p>Intel Core i9 13th gen</p>
+            <div v-for="items in cartItemsValue" :key="items">
+              <div class="flex gap-2 justify-between my-2">
+                <div class="flex gap-2">
+                  <img
+                    :src="'data:image/png;base64,' + items.image"
+                    alt=""
+                    class="w-16 h-16 rounded-md"
+                  />
+                  <div>
+                    <h1 class="font-semibold text-xs">
+                      {{ items.product_name }}
+                    </h1>
+                    <p>{{ items.price }}</p>
+                    <p class="text-xs">Qtty: <span>2</span></p>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="gap-2 justify-start items-center">
+                    <button
+                      class="flex my-1 justify-center items-center gap-2 border text-red-500 p-2 rounded-md"
+                    >
+                      <Icon
+                        icon="ic:round-delete"
+                        class="text-lg text-red-500"
+                      />Delete
+                    </button>
+                    <button
+                      class="flex justify-center items-center gap-2 bg-blue-500 text-gray-100 p-2 rounded-md"
+                    >
+                      <Icon
+                        icon="ic:outline-shopping-cart-checkout"
+                        class="text-lg"
+                      />Buy Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <hr />
+            </div>
           </div>
         </div>
       </div>
     </div>
     <!-- cart modal -->
-    <!-- =wish modal -->
+    <!-- wish modal -->
     <div v-if="showWishList" class="flex justify-center items-center">
       <div class="absolute top-32 right-3 z-50">
         <div
@@ -196,65 +235,8 @@
   </div>
 </template>
 <script>
-import SearchModal from "@/components/SearchModal.vue";
-import { Icon } from "@iconify/vue";
-import { ref } from "vue";
+import Header from "../scripts/Header";
 export default {
-  components: {
-    Icon,
-    SearchModal,
-  },
-  emits: ["search-completed"],
-
-  data() {
-    return {
-      showSearch: false,
-    };
-  },
-  methods: {
-    toggleSidebar() {
-      this.isSidebarOpen = !this.isSidebarOpen;
-    },
-    handleSearchCompleted(data) {
-      this.$emit("search-completed", data);
-    },
-    // ... other methods ...
-  },
-  setup() {
-    const showCart = ref(false);
-    const showWishList = ref(false);
-    const isSidebarOpen = ref(false);
-
-    const toggleSidebar = () => {
-      isSidebarOpen.value = !isSidebarOpen.value;
-    };
-
-    const showCartFunction = () => {
-      showCart.value = !showCart.value;
-      isSidebarOpen.value = false;
-      showWishList.value = false;
-    };
-    const showWishListFunction = () => {
-      showWishList.value = !showWishList.value;
-      isSidebarOpen.value = false;
-      showCart.value = false;
-    };
-    const closeCart = () => {
-      showCart.value = false;
-    };
-    const closeWishList = () => {
-      showWishList.value = false;
-    };
-    return {
-      showCartFunction,
-      showCart,
-      closeCart,
-      showWishList,
-      showWishListFunction,
-      closeWishList,
-      toggleSidebar,
-      isSidebarOpen,
-    };
-  },
+  ...Header,
 };
 </script>
