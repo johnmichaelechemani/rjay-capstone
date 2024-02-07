@@ -19,29 +19,31 @@
       class="text-base min-h-full w-72 shadow absolute z-10 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
     >
       <div class="h-screen">
-        <p class="px-3 pt-5 text-sky-800">Manage Account</p>
+        <p class="px-3 pt-5 text-sky-800">Dashboard</p>
         <hr class="my-2" />
         <div>
-          <h1 class="font-semibold text-base text-sky-900 bg-slate-800/10 p-2">
-            Seller
-          </h1>
-          <div class="px-2 text-sm font-medium py-2">
-            <hr class="my-1" />
-            <RouterLink to="/users">Sellers</RouterLink>
-
-            <hr class="my-1" />
+          <div class="px-2 text-sm font-medium w-full bg-slate-500/10 py-2">
+            <RouterLink
+              to="/admin_dashboard_customers"
+              class="font-semibold text-base text-sky-900 p-2"
+              >User Management</RouterLink
+            >
           </div>
         </div>
-        <hr class="my-2" />
-        <h1 class="font-semibold text-base text-sky-900 bg-slate-800/10 p-2">
-          Customers
-        </h1>
-        <hr class="my-2" />
+        <div class="my-1">
+          <div class="px-2 text-sm font-medium w-full bg-slate-500/10 py-2">
+            <RouterLink
+              to="/users"
+              class="font-semibold text-base text-sky-900 p-2"
+              >Store Request</RouterLink
+            >
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="bg-white cursor-pointer">
-      <div class="mx-auto max-w-2xl px-4 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+      <div class="w-full px-4 sm:pt-10">
         <div>
           <h2 class="md:text-2xl text-lg font-bold tracking-tight text-sky-900">
             Dashboard
