@@ -44,11 +44,11 @@
             <button
               class="bg-sky-900 w-full font-semibold text-lg text-white px-5 py-2 rounded-md"
             >
-              Sign In
+              Sign Up
             </button>
             <div class="flex justify-center gap-2 py-2">
-              <p>Don't have account?</p>
-              <span class="text-blue-500 hover:text-blue-700">Sign up</span>
+              <p>Already have account?</p>
+              <span class="text-blue-500 hover:text-blue-700">Sign In</span>
             </div>
           </div>
         </div>
