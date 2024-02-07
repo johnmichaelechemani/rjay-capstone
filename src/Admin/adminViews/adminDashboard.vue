@@ -9,7 +9,7 @@
       @click="handleSidebarCategory"
       class="bg-slate-700/10 py-2 px-2 rounded-full font-semibold shadow"
     >
-      <Icon icon="gg:menu-round" class="text-xl" />
+      <Icon icon="gg:menu-round" class="text-xl text-sky-800" />
     </button>
   </div>
 
@@ -21,24 +21,32 @@
       <div class="h-screen">
         <p class="px-3 pt-5 text-sky-800">Dashboard</p>
         <hr class="my-2" />
-        <div>
-          <div class="px-2 text-sm font-medium w-full bg-slate-500/10 py-2">
-            <RouterLink
-              to="/admin_dashboard_customers"
-              class="font-semibold text-base text-sky-900 p-2"
-              >User Management</RouterLink
-            >
+
+        <RouterLink to="/admin_dashboard_customers">
+          <div
+            class="w-full bg-slate-500/10 py-3 p-2 mt-5"
+            :class="{
+              ' text-sky-700': $route.name === 'dashboard_customers',
+              'text-sky-900': $route.name !== 'dashboard_customers',
+              ' font-semibold text-base': true,
+            }"
+          >
+            User Management
           </div>
-        </div>
-        <div class="my-1">
-          <div class="px-2 text-sm font-medium w-full bg-slate-500/10 py-2">
-            <RouterLink
-              to="/admin_stores"
-              class="font-semibold text-base text-sky-900 p-2"
-              >Store Request</RouterLink
-            >
-          </div>
-        </div>
+        </RouterLink>
+
+        <RouterLink to="/admin_stores">
+          <div
+            class="w-full bg-slate-500/10 py-3 p-2 my-2"
+            :class="{
+              ' text-sky-700': $route.name === 'admin_stores',
+              'text-sky-900': $route.name !== 'admin_stores',
+              'p-2 font-semibold text-base': true,
+            }"
+          >
+            Store Request
+          </div></RouterLink
+        >
       </div>
     </div>
 
