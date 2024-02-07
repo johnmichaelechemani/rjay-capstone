@@ -169,7 +169,7 @@ export default {
             cart_id: cart_id.value,
           }
         );
-        // console.log(response.data);
+        console.log(response.data);
       } catch {
         alert("Error adding to cart");
       }

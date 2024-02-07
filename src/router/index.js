@@ -27,6 +27,14 @@ const router = createRouter({
       path: "/admin_dashboard",
       name: "admin_dashboard",
       component: () => import("../Admin/adminViews/adminDashboard.vue"),
+      children: [
+        {
+          path: "/users", // Example nested route
+          name: "users",
+          component: () => import("../Admin/adminViews/AdminUsers.vue"),
+        },
+        // Add more nested routes as needed
+      ],
     },
     {
       path: "/:catchAll(.*)",
