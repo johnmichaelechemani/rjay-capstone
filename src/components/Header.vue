@@ -51,11 +51,18 @@
       <!-- sign in -->
       <div
         class="flex items-center gap-2 text-white hover:text-zinc-400"
-        @click="Handlesignin"
+        @click="showLogin = true"
       >
         <Icon icon="bi:person" class="text-lg" />
         <span>Sign in</span>
       </div>
+      <!-- login modal -->
+      <LoginModal
+        :is-visible="showLogin"
+        @update:isVisible="showLogin = $event"
+        @login-completed="HandleSignIn"
+      ></LoginModal>
+      <!-- login modal -->
       <!-- wishlist -->
       <div
         @click="showWishListFunction"
@@ -174,9 +181,6 @@
       </div>
     </div>
     <!-- wish modal -->
-    <!-- login modal -->
-    <LoginModal :showLogin="showLogin" :closeLogin="closeLogin" />
-    <!-- login modal -->
 
     <!-- Hamburger Button for Small Screens -->
     <div

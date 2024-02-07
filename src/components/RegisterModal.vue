@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="text-white px-3 py-2 rounded-md mt-3">
-          <h1 class="font-bold text-sky-900 text-2xl text-center">Login</h1>
+          <h1 class="font-bold text-sky-900 text-2xl text-center">Register</h1>
         </div>
         <div class="p-2 rounded-md shadow-sm mb-2">
           <div class="gap-2 mt-2">
@@ -48,17 +48,8 @@
             </button>
             <div class="flex justify-center gap-2 py-2">
               <p>Don't have account?</p>
-              <span
-                class="text-blue-500 hover:text-blue-700"
-                @click="showRegister = true"
-                >Sign up
-              </span>
+              <span class="text-blue-500 hover:text-blue-700">Sign up</span>
             </div>
-            <RegisterModal
-              :is-visible="showRegister"
-              @update:isVisible="showRegister = $event"
-              @register-completed="HandleSignUp"
-            ></RegisterModal>
           </div>
         </div>
       </div>
@@ -68,12 +59,10 @@
 <script>
 import { Icon } from "@iconify/vue";
 import { onMounted, ref } from "vue";
-import RegisterModal from "./RegisterModal.vue";
 import axios from "axios";
 export default {
   components: {
     Icon,
-    RegisterModal,
   },
   props: {
     isVisible: {
@@ -81,22 +70,9 @@ export default {
       required: true,
     },
   },
-  emits: ["update:isVisible", "login-completed"],
   emits: ["update:isVisible", "register-completed"],
 
-  data() {
-    return {
-      showRegister: false,
-    };
-  },
-  methods: {
-    HandleSignUp() {
-      this.$emit("register-completed");
-      this.$emit("login-completed");
-    },
-  },
-
-  setup(props, { emit }) {
+  setup(prps, { emit }) {
     const close = () => {
       emit("update:isVisible", false);
     };

@@ -14,6 +14,7 @@ export default {
   data() {
     return {
       showSearch: false,
+      showLogin: false,
     };
   },
   methods: {
@@ -22,6 +23,9 @@ export default {
     },
     handleSearchCompleted(data) {
       this.$emit("search-completed", data);
+    },
+    HandleSignIn() {
+      this.$emit("login-completed");
     },
     // ... other methods ...
   },
