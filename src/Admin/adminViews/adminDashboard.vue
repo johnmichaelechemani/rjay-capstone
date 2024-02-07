@@ -33,7 +33,7 @@
         <div class="my-1">
           <div class="px-2 text-sm font-medium w-full bg-slate-500/10 py-2">
             <RouterLink
-              to="/users"
+              to="/admin_stores"
               class="font-semibold text-base text-sky-900 p-2"
               >Store Request</RouterLink
             >
@@ -45,9 +45,6 @@
     <div class="bg-white cursor-pointer">
       <div class="w-full px-4 sm:pt-10">
         <div>
-          <h2 class="md:text-2xl text-lg font-bold tracking-tight text-sky-900">
-            Dashboard
-          </h2>
           <!--  -->
           <router-view> </router-view>
           <!--  -->

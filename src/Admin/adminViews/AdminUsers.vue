@@ -1,4 +1,7 @@
 <template>
+  <h2 class="md:text-2xl text-lg font-bold tracking-tight text-sky-900">
+    Dashboard
+  </h2>
   <div class="py-3">
     <div class="flex gap-5 p-2">
       <RouterLink

@@ -29,7 +29,7 @@ const router = createRouter({
       component: () => import("../Admin/adminViews/adminDashboard.vue"),
       children: [
         {
-          path: "", // Empty path for the default view (dashboard)
+          path: "",
           name: "users",
           component: () =>
             import("../Admin/adminViews/adminManageCustomers.vue"),
@@ -40,24 +40,29 @@ const router = createRouter({
           component: () => import("../Admin/adminViews/AdminUsers.vue"),
           children: [
             {
-              path: "", // Empty path for the default view (dashboard)
+              path: "",
               name: "dashboard_customers",
               component: () =>
                 import("../Admin/adminViews/adminManageCustomers.vue"),
             },
             {
-              path: "/admin_dashboard_customers", // Empty path for the default view (dashboard)
+              path: "/admin_dashboard_customers",
               name: "dashboard_customers",
               component: () =>
                 import("../Admin/adminViews/adminManageCustomers.vue"),
             },
             {
-              path: "/admin_dashboard_sellers", // Empty path for the default view (dashboard)
+              path: "/admin_dashboard_sellers",
               name: "dashboard_sellers",
               component: () =>
                 import("../Admin/adminViews/adminManageSellers.vue"),
             },
           ],
+        },
+        {
+          path: "/admin_stores",
+          name: "admin_stores",
+          component: () => import("../Admin/adminViews/adminStoreRequest.vue"),
         },
         // Add more nested routes as needed
       ],
