@@ -243,7 +243,7 @@ export default {
       filterByCategory,
       selectedCategoryName,
 
-      handleSearchCompleted,
+      handleSearchCompleted
     };
   },
 };
