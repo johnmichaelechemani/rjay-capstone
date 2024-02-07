@@ -9,7 +9,7 @@
             <th scope="col" class="px-6 py-3">Customers Name</th>
             <th scope="col" class="px-6 py-3">Email</th>
             <th scope="col" class="px-6 py-3">Category</th>
-            <th scope="col" class="px-6 py-3">Price</th>
+            <th scope="col" class="px-6 py-3">Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -22,7 +22,12 @@
             </th>
             <td class="px-6 py-4">Silver</td>
             <td class="px-6 py-4">Laptop</td>
-            <td class="px-6 py-4">$2999</td>
+            <td class="px-6 py-4 flex justify-center">
+              <Icon
+                icon="material-symbols-light:delete-sharp"
+                class="text-2xl text-red-500"
+              />
+            </td>
           </tr>
           <tr class="bg-gray-200 border-b border-gray-700">
             <th
@@ -33,7 +38,12 @@
             </th>
             <td class="px-6 py-4">White</td>
             <td class="px-6 py-4">Laptop PC</td>
-            <td class="px-6 py-4">$1999</td>
+            <td class="px-6 py-4 flex justify-center">
+              <Icon
+                icon="material-symbols-light:delete-sharp"
+                class="text-2xl text-red-500"
+              />
+            </td>
           </tr>
           <tr class="bg-gray-200">
             <th
@@ -44,10 +54,23 @@
             </th>
             <td class="px-6 py-4">Black</td>
             <td class="px-6 py-4">Accessories</td>
-            <td class="px-6 py-4">$99</td>
+            <td class="px-6 py-4 flex justify-center">
+              <Icon
+                icon="material-symbols-light:delete-sharp"
+                class="text-2xl text-red-500"
+              />
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </template>
+<script>
+import { Icon } from "@iconify/vue";
+export default {
+  components: {
+    Icon,
+  },
+};
+</script>
