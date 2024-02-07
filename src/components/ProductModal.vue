@@ -21,7 +21,7 @@
             loading="lazy"
           />
         </div>
-        <form class="flex-auto p-6">
+        <div class="flex-auto p-6">
           <div class="flex flex-wrap">
             <div>
               <h1 class="flex-auto text-xl font-semibold text-gray-900">
@@ -98,17 +98,12 @@
               </button>
             </div>
           </div>
-        </form>
-      </div>
-      <div class="text-sm">
-        <div v-if="product.ram">
-          Ram:
-          <span>{{ product.ram }}</span>
         </div>
-
-        <div v-if="product.storage">
-          Storage:
-          <span>{{ product.storage }}</span>
+      </div>
+      <div v-if="specifications" class="specifications">
+        <!-- Display specifications here. This is just an example -->
+        <div v-for="(spec_value, spec_key) in specifications" :key="`spec-${spec_key}`">
+          <p>{{ spec_key }}:</p> <p>{{ spec_value }}</p>
         </div>
       </div>
     </div>
@@ -117,11 +112,13 @@
 
 <script>
 import { Icon } from "@iconify/vue";
+import axios from "axios";
 import { ref, watch } from "vue";
 export default {
   props: {
     isVisible: Boolean,
     product: Object,
+    specifications: Object,
   },
   components: {
     Icon,
@@ -151,11 +148,27 @@ export default {
       quantity.value = Math.max(Number(quantity.value) - 1, 1); // Ensure the quantity does not go below 1
       finalQuantity.value = quantity.value * props.product.price;
     };
+    const cart_id = ref(1);
 
-    const addToCart = (name, id) => {
-      console.log(finalQuantity.value);
-      console.log(name);
-      console.log(id);
+    const addToCart = async (name, id) => {
+      // console.log(finalQuantity.value);
+      // console.log(name);
+      // console.log(id);
+      // console.log(quantity.value);
+
+      try {
+        const response = await axios.post(
+          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=addCart",
+          {
+            product_id: id,
+            quantity: quantity.value,
+            cart_id: cart_id.value,
+          }
+        );
+        // console.log(response.data);
+      } catch {
+        alert("Error adding to cart");
+      }
     };
     const heart = () => {
       isHeartRed.value = !isHeartRed.value;

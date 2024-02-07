@@ -52,9 +52,15 @@
         <div>
           <h1 class="text-sm px-3 text-sky-800">Stores</h1>
           <div class="mx-3 text-xs">
-            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">Store1</p>
-            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">Store2</p>
-            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">Store3</p>
+            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">
+              Store1
+            </p>
+            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">
+              Store2
+            </p>
+            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">
+              Store3
+            </p>
           </div>
         </div>
         <hr class="my-2" />
@@ -83,7 +89,6 @@
             Apply
           </button>
         </div>
-
       </div>
     </div>
     <div class="bg-white cursor-pointer">
@@ -144,6 +149,7 @@
           <product-modal
             :is-visible="isModalVisible"
             :product="selectedProduct"
+            :specifications="spec_data"
             @update:isVisible="isModalVisible = $event"
           ></product-modal>
         </div>
@@ -168,7 +174,6 @@ export default {
   props: ["products"],
 
   setup(props) {
-
     const minPrice = ref(0);
     const maxPrice = ref(0);
 
@@ -178,6 +183,20 @@ export default {
     const showCategory = ref(true);
     const categories = ref([]);
     const selectedCategoryName = ref("");
+    const spec_data = ref(null);
+
+    const fetchSpecifications = async (productId) => {
+      console.log("specs id", productId);
+      try {
+        const response = await axios.get(
+          `http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProductSpecifications&id=${productId}`
+        );
+        spec_data.value = response.data;
+      } catch (error) {
+        console.error("Error fetching specifications: ", error);
+        return null;
+      }
+    };
 
     const filterByPrice = async () => {
       try {
@@ -211,8 +230,11 @@ export default {
       showCategory.value = !showCategory.value;
     };
 
-    const showModal = (product) => {
-      selectedProduct.value = product;
+    const showModal = async (product) => {
+      const specifications = await fetchSpecifications(product.product_id);
+      console.log("specs result in query", specifications);
+      selectedProduct.value = { ...product, specifications };
+       console.log("s afeifabsb", selectedProduct);// Combine product and specifications
       isModalVisible.value = true;
       //console.log(selectedProduct.value);
     };
@@ -296,6 +318,9 @@ export default {
       minPrice,
       maxPrice,
       filterByPrice,
+
+      fetchSpecifications,
+      spec_data,
     };
   },
 };
