@@ -1,4 +1,5 @@
 import SearchModal from "@/components/SearchModal.vue";
+import LoginModal from "@/components/LoginModal.vue";
 import { Icon } from "@iconify/vue";
 import { onMounted, ref } from "vue";
 import axios from "axios";
@@ -6,6 +7,7 @@ export default {
   components: {
     Icon,
     SearchModal,
+    LoginModal,
   },
   emits: ["search-completed"],
 

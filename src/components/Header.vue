@@ -174,6 +174,9 @@
       </div>
     </div>
     <!-- wish modal -->
+    <!-- login modal -->
+    <LoginModal :showLogin="showLogin" :closeLogin="closeLogin" />
+    <!-- login modal -->
 
     <!-- Hamburger Button for Small Screens -->
     <div
