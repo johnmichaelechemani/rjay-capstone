@@ -117,6 +117,12 @@ const router = createRouter({
             },
           ],
         },
+        {
+          path: "/seller_customers",
+          name: "seller_customers",
+          component: () =>
+            import("../Sellers/sellersViews/sellerCustomers.vue"),
+        },
       ],
     },
     {
