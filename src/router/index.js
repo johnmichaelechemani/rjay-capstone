@@ -91,14 +91,20 @@ const router = createRouter({
           path: "/seller_order_management",
           name: "seller_order_management",
           component: () =>
-            import("../Sellers/sellersViews/sellerOrderManageMent.vue"),
+            import(
+              "../Sellers/sellersViews/order-management/sellerOrderManagement.vue"
+            ),
           children: [
+            {
+              path: "",
+              redirect: { name: "seller_order_management_pending" },
+            },
             {
               path: "/seller_order_management_pending",
               name: "seller_order_management_pending",
               component: () =>
                 import(
-                  "../Sellers/sellersViews/sellerOrderManagementPending.vue"
+                  "../Sellers/sellersViews/order-management/sellerOrderManagementPending.vue"
                 ),
             },
             {
@@ -106,7 +112,7 @@ const router = createRouter({
               name: "seller_order_management_confirmed",
               component: () =>
                 import(
-                  "../Sellers/sellersViews/sellerOrderManagementConfirmed.vue"
+                  "../Sellers/sellersViews/order-management/sellerOrderManagementConfirmed.vue"
                 ),
             },
           ],
