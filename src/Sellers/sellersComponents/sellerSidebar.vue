@@ -43,7 +43,7 @@
             }"
             class="px-2 py-1 my-2 flex gap-1 justify-start rounded-md items-center"
           >
-            <Icon icon="akar-icons:home" class="text-xl" />
+            <Icon icon="bi:people" class="text-xl" />
             Customers
           </div>
         </RouterLink>
@@ -57,7 +57,7 @@
             }"
             class="px-2 py-1 my-2 flex gap-1 justify-start rounded-md items-center"
           >
-            <Icon icon="akar-icons:home" class="text-xl" />
+            <Icon icon="bitcoin-icons:transactions-filled" class="text-xl" />
             Transactions
           </div>
         </RouterLink>
@@ -87,7 +87,7 @@
             }"
             class="px-2 py-1 my-2 flex gap-1 justify-start rounded-md items-center"
           >
-            <Icon icon="akar-icons:home" class="text-xl" />
+            <Icon icon="cil:list" class="text-xl" />
             Product List
           </div>
         </RouterLink>
