@@ -65,7 +65,6 @@ const router = createRouter({
           name: "admin_stores",
           component: () => import("../Admin/adminViews/adminStoreRequest.vue"),
         },
-        // Add more nested routes as needed
       ],
     },
     {
@@ -75,8 +74,7 @@ const router = createRouter({
       children: [
         {
           path: "",
-          name: "seller_products",
-          component: () => import("../Sellers/sellersViews/sellerProducts.vue"),
+          redirect: { name: "seller_products" },
         },
         {
           path: "/seller_products",

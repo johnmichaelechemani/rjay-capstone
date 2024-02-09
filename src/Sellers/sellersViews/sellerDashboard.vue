@@ -1,11 +1,7 @@
 <template>
   <div class="flex">
-    <div>
-      <sellerSidebar />
-    </div>
-    <div>
-      <router-view> </router-view>
-    </div>
+    <sellerSidebar />
+    <router-view> </router-view>
   </div>
 </template>
 <script>
