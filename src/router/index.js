@@ -72,6 +72,18 @@ const router = createRouter({
       path: "/seller_dashboard",
       name: "seller_dashboard",
       component: () => import("../Sellers/sellersViews/sellerDashboard.vue"),
+      children: [
+        {
+          path: "",
+          name: "seller_products",
+          component: () => import("../Sellers/sellersViews/sellerProducts.vue"),
+        },
+        {
+          path: "/seller_products",
+          name: "seller_products",
+          component: () => import("../Sellers/sellersViews/sellerProducts.vue"),
+        },
+      ],
     },
     {
       path: "/:catchAll(.*)",
