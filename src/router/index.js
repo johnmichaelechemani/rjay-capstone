@@ -81,6 +81,12 @@ const router = createRouter({
           name: "seller_products",
           component: () => import("../Sellers/sellersViews/sellerProducts.vue"),
         },
+        {
+          path: "/seller_Add_products",
+          name: "seller_Add_products",
+          component: () =>
+            import("../Sellers/sellersViews/sellerAddProducts.vue"),
+        },
       ],
     },
     {
