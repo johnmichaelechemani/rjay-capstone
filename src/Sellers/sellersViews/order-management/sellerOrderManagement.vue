@@ -9,7 +9,7 @@
           :class="{
             ' text-sky-500 font-medium':
               $route.name === 'seller_order_management_pending',
-            'text-slate-600 font-normal':
+            'text-slate-500 font-normal':
               $route.name !== 'seller_order_management_pending',
             '': true,
           }"
@@ -29,7 +29,7 @@
           :class="{
             ' text-sky-500 font-medium':
               $route.name === 'seller_order_management_confirmed',
-            'text-slate-600 font-normal':
+            'text-slate-500 font-normal':
               $route.name !== 'seller_order_management_confirmed',
             '': true,
           }"
@@ -47,7 +47,6 @@
     </div>
     <hr />
     <div class="my-5">
-      TEST
       <router-view />
     </div>
   </div>

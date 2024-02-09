@@ -26,7 +26,8 @@
             <div
               :class="{
                 ' text-slate-700 bg-sky-500/25 shadow font-medium':
-                  $route.name === 'seller_order_management',
+                  $route.name === 'seller_order_management' ||
+                  $route.name === 'seller_order_management_pending',
                 'text-slate-500 bg-sky-100/10 font-normal':
                   $route.name !== 'seller_order_management',
                 ' font-semibold text-base': true,
