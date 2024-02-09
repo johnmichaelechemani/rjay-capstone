@@ -13,7 +13,7 @@
           <h1 class="text-3xl font-extrabold">$ 5, 000, 000.00</h1>
         </div>
       </div>
-      <div class="bg-slate-400/10 rounded-md h-32 w-96 text-slate-700 shadow">
+      <div class="bg-slate-400/10 rounded-md h-32 w-full text-slate-700 shadow">
         <div class="p-2">
           <h1 class="text-base font-semibold">Sessions</h1>
           <p class="text-xs">Last 7 Days</p>
