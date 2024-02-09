@@ -123,6 +123,12 @@ const router = createRouter({
           component: () =>
             import("../Sellers/sellersViews/sellerCustomers.vue"),
         },
+        {
+          path: "/seller_transations",
+          name: "seller_transations",
+          component: () =>
+            import("../Sellers/sellersViews/sellerTransactions.vue"),
+        },
       ],
     },
     {
