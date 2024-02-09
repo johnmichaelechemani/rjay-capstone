@@ -129,6 +129,12 @@ const router = createRouter({
           component: () =>
             import("../Sellers/sellersViews/sellerTransactions.vue"),
         },
+        {
+          path: "/seller_product_list",
+          name: "seller_product_list",
+          component: () =>
+            import("../Sellers/sellersViews/sellerProductList.vue"),
+        },
       ],
     },
     {

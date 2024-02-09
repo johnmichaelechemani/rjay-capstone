@@ -89,12 +89,13 @@
               Add Products
             </div>
           </RouterLink>
-          <RouterLink to="/">
+          <RouterLink to="/seller_product_list">
             <div
               :class="{
                 ' text-slate-700 bg-sky-500/25 shadow font-medium':
-                  $route.name === '',
-                'text-slate-500 bg-sky-100/10 font-normal': $route.name !== '',
+                  $route.name === 'seller_product_list',
+                'text-slate-500 bg-sky-100/10 font-normal':
+                  $route.name !== 'seller_product_list',
                 ' font-semibold text-base': true,
               }"
               class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
@@ -113,6 +114,7 @@
         <hr />
         <div class="my-5 mx-2">
           <button
+            @click="logout"
             class="px-3 flex justify-center items-center shadow font-semibold text-slate-700 w-full py-2 bg-slate-700/10 hover:bg-slate-700/20 rounded-full"
           >
             <Icon icon="solar:logout-line-duotone" class="text-2xl" />
@@ -128,6 +130,14 @@ import { Icon } from "@iconify/vue";
 export default {
   components: {
     Icon,
+  },
+  setup() {
+    const logout = () => {
+      alert("logout?");
+    };
+    return {
+      logout,
+    };
   },
 };
 </script>
