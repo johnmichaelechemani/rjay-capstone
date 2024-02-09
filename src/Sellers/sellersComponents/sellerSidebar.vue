@@ -10,7 +10,7 @@
           <RouterLink to="/seller_products">
             <div
               :class="{
-                ' text-slate-700 bg-sky-100/25 shadow font-medium ':
+                ' text-slate-700 bg-sky-500/25 shadow font-medium ':
                   $route.name === 'seller_products',
                 'text-slate-500 bg-sky-100/10 font-normal':
                   $route.name !== 'seller_products',
@@ -22,12 +22,13 @@
               Dashboard
             </div>
           </RouterLink>
-          <RouterLink to="/">
+          <RouterLink to="/seller_order_management">
             <div
               :class="{
-                ' text-slate-700 bg-sky-100/25 shadow font-medium':
-                  $route.name === '',
-                'text-slate-500 bg-sky-100/10 font-normal': $route.name !== '',
+                ' text-slate-700 bg-sky-500/25 shadow font-medium':
+                  $route.name === 'seller_order_management',
+                'text-slate-500 bg-sky-100/10 font-normal':
+                  $route.name !== 'seller_order_management',
                 ' font-semibold text-base': true,
               }"
               class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
@@ -39,7 +40,7 @@
           <RouterLink to="/">
             <div
               :class="{
-                ' text-slate-700 bg-sky-100/25 shadow font-medium':
+                ' text-slate-700 bg-sky-500/25 shadow font-medium':
                   $route.name === '',
                 'text-slate-500 bg-sky-100/10 font-normal': $route.name !== '',
                 ' font-semibold text-base': true,
@@ -53,7 +54,7 @@
           <RouterLink to="/">
             <div
               :class="{
-                ' text-slate-700 bg-sky-100/25 shadow font-medium':
+                ' text-slate-700 bg-sky-500/25 shadow font-medium':
                   $route.name === '',
                 'text-slate-500 bg-sky-100/10 font-normal': $route.name !== '',
                 ' font-semibold text-base': true,
@@ -72,7 +73,7 @@
           <RouterLink to="/seller_Add_products">
             <div
               :class="{
-                ' text-slate-700 bg-sky-100/25 shadow font-medium':
+                ' text-slate-700 bg-sky-500/25 shadow font-medium':
                   $route.name === 'seller_Add_products',
                 'text-slate-500 bg-sky-100/10 font-normal':
                   $route.name !== 'seller_Add_products',
@@ -88,7 +89,7 @@
           <RouterLink to="/">
             <div
               :class="{
-                ' text-slate-700 bg-sky-100/25 shadow font-medium':
+                ' text-slate-700 bg-sky-500/25 shadow font-medium':
                   $route.name === '',
                 'text-slate-500 bg-sky-100/10 font-normal': $route.name !== '',
                 ' font-semibold text-base': true,

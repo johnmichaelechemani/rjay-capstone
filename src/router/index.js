@@ -87,6 +87,30 @@ const router = createRouter({
           component: () =>
             import("../Sellers/sellersViews/sellerAddProducts.vue"),
         },
+        {
+          path: "/seller_order_management",
+          name: "seller_order_management",
+          component: () =>
+            import("../Sellers/sellersViews/sellerOrderManageMent.vue"),
+          children: [
+            {
+              path: "/seller_order_management_pending",
+              name: "seller_order_management_pending",
+              component: () =>
+                import(
+                  "../Sellers/sellersViews/sellerOrderManagementPending.vue"
+                ),
+            },
+            {
+              path: "/seller_order_management_confirmed",
+              name: "seller_order_management_confirmed",
+              component: () =>
+                import(
+                  "../Sellers/sellersViews/sellerOrderManagementConfirmed.vue"
+                ),
+            },
+          ],
+        },
       ],
     },
     {
