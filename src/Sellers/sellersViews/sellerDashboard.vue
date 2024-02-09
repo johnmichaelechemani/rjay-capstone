@@ -22,7 +22,9 @@
         </div>
       </div>
     </div>
-    <router-view> </router-view>
+    <div class="w-full">
+      <router-view> </router-view>
+    </div>
   </div>
 </template>
 <script>

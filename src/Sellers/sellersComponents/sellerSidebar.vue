@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-100/10 shadow min-h-screen w-60">
+  <div class="bg-gray-100/10 shadow h-screen w-60">
     <div class="h-full">
       <div class="py-3 px-3 font-semibold text-gray-700"><h1>Logo</h1></div>
       <div class="px-2">
