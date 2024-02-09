@@ -59,6 +59,7 @@ const router = createRouter({
             },
           ],
         },
+
         {
           path: "/admin_stores",
           name: "admin_stores",
@@ -66,6 +67,11 @@ const router = createRouter({
         },
         // Add more nested routes as needed
       ],
+    },
+    {
+      path: "/seller_dashboard",
+      name: "seller_dashboard",
+      component: () => import("../Sellers/sellersViews/sellerDashboard.vue"),
     },
     {
       path: "/:catchAll(.*)",
