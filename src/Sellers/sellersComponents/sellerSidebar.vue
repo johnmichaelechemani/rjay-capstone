@@ -101,19 +101,21 @@
               Product List
             </div>
           </RouterLink>
-          <div>
-            <hr />
-            <h1 class="font-semibold text-gray-500 py-3">Settings</h1>
-            <hr />
-            <div class="my-5">
-              <button
-                class="px-3 flex justify-center items-center shadow font-semibold text-slate-700 w-full py-2 bg-slate-700/10 rounded-full"
-              >
-                <Icon icon="solar:logout-line-duotone" class="text-2xl" />
-                Logout
-              </button>
-            </div>
-          </div>
+        </div>
+      </div>
+    </div>
+    <div class="relative w-full my-2">
+      <div class="absolute bottom-0 bg-slate-50 w-full z-10 px-2">
+        <hr />
+        <h1 class="font-semibold text-gray-500 py-3">Settings</h1>
+        <hr />
+        <div class="my-5 mx-2">
+          <button
+            class="px-3 flex justify-center items-center shadow font-semibold text-slate-700 w-full py-2 bg-slate-700/10 hover:bg-slate-700/20 rounded-full"
+          >
+            <Icon icon="solar:logout-line-duotone" class="text-2xl" />
+            Logout
+          </button>
         </div>
       </div>
     </div>
