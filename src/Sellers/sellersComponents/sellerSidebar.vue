@@ -4,16 +4,18 @@
     <div class="px-2">
       <hr />
       <h1 class="font-semibold text-gray-500 py-3">Main Menu</h1>
+      <hr />
       <div>
         <RouterLink to="/seller_products">
           <div
             :class="{
               ' text-slate-700 bg-sky-100/25 shadow font-medium ':
                 $route.name === 'seller_products',
-              'text-slate-500 bg-sky-100/10': $route.name !== 'seller_products',
+              'text-slate-500 bg-sky-100/10 font-normal':
+                $route.name !== 'seller_products',
               ' font-semibold text-base': true,
             }"
-            class="px-2 py-1 my-2 flex gap-1 justify-start rounded-md items-center"
+            class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
           >
             <Icon icon="akar-icons:home" class="text-xl" />
             Dashboard
@@ -24,10 +26,10 @@
             :class="{
               ' text-slate-700 bg-sky-100/25 shadow font-medium':
                 $route.name === '',
-              'text-slate-500 bg-sky-100/10': $route.name !== '',
+              'text-slate-500 bg-sky-100/10 font-normal': $route.name !== '',
               ' font-semibold text-base': true,
             }"
-            class="px-2 py-1 my-2 flex gap-1 justify-start rounded-md items-center"
+            class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
           >
             <Icon icon="bi:cart" class="text-xl" />
             Order Management
@@ -38,10 +40,10 @@
             :class="{
               ' text-slate-700 bg-sky-100/25 shadow font-medium':
                 $route.name === '',
-              'text-slate-500 bg-sky-100/10': $route.name !== '',
+              'text-slate-500 bg-sky-100/10 font-normal': $route.name !== '',
               ' font-semibold text-base': true,
             }"
-            class="px-2 py-1 my-2 flex gap-1 justify-start rounded-md items-center"
+            class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
           >
             <Icon icon="bi:people" class="text-xl" />
             Customers
@@ -52,25 +54,30 @@
             :class="{
               ' text-slate-700 bg-sky-100/25 shadow font-medium':
                 $route.name === '',
-              'text-slate-500 bg-sky-100/10': $route.name !== '',
+              'text-slate-500 bg-sky-100/10 font-normal': $route.name !== '',
               ' font-semibold text-base': true,
             }"
-            class="px-2 py-1 my-2 flex gap-1 justify-start rounded-md items-center"
+            class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
           >
             <Icon icon="bitcoin-icons:transactions-filled" class="text-xl" />
             Transactions
           </div>
         </RouterLink>
+        <div>
+          <hr />
+          <h1 class="font-semibold text-gray-500 py-3">Products</h1>
+          <hr />
+        </div>
         <RouterLink to="/seller_Add_products">
           <div
             :class="{
               ' text-slate-700 bg-sky-100/25 shadow font-medium':
                 $route.name === 'seller_Add_products',
-              'text-slate-500 bg-sky-100/10':
+              'text-slate-500 bg-sky-100/10 font-normal':
                 $route.name !== 'seller_Add_products',
               ' font-semibold text-base': true,
             }"
-            class="px-2 py-1 my-2 flex gap-1 justify-start rounded-md items-center"
+            class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
           >
             <Icon icon="gala:add" class="text-xl" />
 
@@ -82,10 +89,10 @@
             :class="{
               ' text-slate-700 bg-sky-100/25 shadow font-medium':
                 $route.name === '',
-              'text-slate-500 bg-sky-100/10': $route.name !== '',
+              'text-slate-500 bg-sky-100/10 font-normal': $route.name !== '',
               ' font-semibold text-base': true,
             }"
-            class="px-2 py-1 my-2 flex gap-1 justify-start rounded-md items-center"
+            class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
           >
             <Icon icon="cil:list" class="text-xl" />
             Product List
