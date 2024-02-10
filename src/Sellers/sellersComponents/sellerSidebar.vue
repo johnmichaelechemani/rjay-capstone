@@ -112,10 +112,22 @@
         <hr />
         <h1 class="font-semibold text-gray-500 py-3">Settings</h1>
         <hr />
-        <div class="my-5 mx-2">
+        <div class="my-1">
           <button
             @click="logout"
-            class="px-3 flex justify-center items-center shadow font-semibold text-slate-700 w-full py-2 bg-slate-700/10 hover:bg-slate-700/20 rounded-full"
+            class="flex gap-3 justify-start items-center font-semibold hover:bg-slate-400/20 rounded-md text-slate-700 w-full py-2"
+          >
+            <div class="bg-blue-500/20 shadow-sm rounded-full">
+              <Icon icon="typcn:user" class="text-3xl text-blue-500" />
+            </div>
+            R-jay
+          </button>
+        </div>
+
+        <div class="mt-1 mb-3">
+          <button
+            @click="logout"
+            class="flex justify-start items-center font-semibold hover:bg-slate-400/20 rounded-md text-slate-700 w-full py-2"
           >
             <Icon icon="solar:logout-line-duotone" class="text-2xl" />
             Logout

@@ -5,11 +5,11 @@
     </div>
     <div>
       <div class="flex justify-end">
-        <h1
+        <button
           class="bg-blue-400/20 text-blue-600 px-3 font-medium text-sm py-1 rounded-full mb-2 shadow"
         >
           Save Product
-        </h1>
+        </button>
       </div>
     </div>
     <div class="sm:flex gap-5">
