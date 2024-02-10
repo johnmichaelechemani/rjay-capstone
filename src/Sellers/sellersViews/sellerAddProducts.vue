@@ -32,7 +32,43 @@
       >
         <div class="p-2">
           <h1 class="text-base font-semibold">General Information</h1>
-          <p class="text-xs">Last 7 Days</p>
+          <div class="my-4">
+            <h1 class="text-sm font-medium">Product Name:</h1>
+            <input
+              type="text"
+              class="w-full p-2 rounded-md my-1 border outline-none"
+            />
+          </div>
+          <div class="my-4 flex gap-2 justify-start items-center">
+            <div>
+              <h1 class="text-sm font-medium">Price:</h1>
+              <div
+                class="flex justify-start items-center bg-slate-50 border rounded-md"
+              >
+                <p class="px-2 font-medium">$</p>
+                <input
+                  type="number"
+                  class="w-full p-2 bg-slate-50 rounded-md outline-none"
+                />
+              </div>
+            </div>
+            <div>
+              <h1 class="text-sm font-medium">Price:</h1>
+              <input
+                type="text"
+                class="w-full p-2 rounded-md my-1 bg-slate-50 border outline-none"
+              />
+            </div>
+          </div>
+          <div class="my-4">
+            <h1 class="text-sm font-medium">Product Description:</h1>
+            <textarea
+              type="text"
+              cols="10"
+              rows="5"
+              class="w-full p-2 rounded-md my-1 border outline-none"
+            />
+          </div>
         </div>
       </div>
     </div>
