@@ -145,7 +145,7 @@ export default {
   },
   setup() {
     const logout = () => {
-      alert("logout?");
+      confirm("logout?");
     };
     return {
       logout,
