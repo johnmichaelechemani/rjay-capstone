@@ -48,6 +48,27 @@
           >
         </div>
         <hr />
+        <div class="flex justify-between gap-5 items-center mb-2 my-2">
+          <div class="flex gap-2 justify-start items-center">
+            <div class="h-11 w-11 bg-slate-600/20 rounded-md"></div>
+            <div>
+              <p class="text-lg text-slate-700 font-semibold">Monitor</p>
+              <span class="text-xs text-slate-600"
+                >1x <span>$ 128.00</span></span
+              >
+            </div>
+          </div>
+          <div>
+            <span class="text-lg font-semibold text-slate-700">$183.00</span>
+          </div>
+        </div>
+        <div class="w-full">
+          <div class="flex justify-between">
+            <p class="text-xs font-semibold text-slate-500">Order Date</p>
+            <p class="text-xs font-semibold text-slate-500">Customer</p>
+            <p class="text-xs font-semibold text-slate-500">Payment</p>
+          </div>
+        </div>
       </div>
       <div>dasdasdas</div>
     </div>
