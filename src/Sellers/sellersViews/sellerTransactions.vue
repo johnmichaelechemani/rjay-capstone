@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 px-4">
-      <div class="border p-3 rounded-lg my-2">
+      <div class="border p-3 rounded-lg my-2 shadow">
         <div class="flex justify-between items-center mb-2">
           <p class="text-xs font-medium text-blue-700">1234</p>
           <span class="p-2 rounded-lg bg-slate-600/10 text-xs font-medium"
@@ -87,7 +87,7 @@
           </div>
         </div>
       </div>
-      <div class="border p-3 rounded-lg my-2">
+      <div class="border p-3 rounded-lg my-2 shadow">
         <div class="flex justify-between items-center mb-2">
           <p class="text-xs font-medium text-blue-700">1544</p>
           <span
@@ -135,7 +135,7 @@
           </div>
         </div>
       </div>
-      <div class="border p-3 rounded-lg my-2">
+      <div class="border p-3 rounded-lg my-2 shadow">
         <div class="flex justify-between items-center mb-2">
           <p class="text-xs font-medium text-blue-700">1544</p>
           <span

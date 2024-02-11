@@ -42,7 +42,7 @@
               <td class="px-6 py-4">$152</td>
               <td class="px-6 py-4">
                 <p
-                  class="bg-green-600/10 shadow px-3 py-1 rounded-full text-green-600"
+                  class="bg-green-600/10 shadow px-3 text-center py-1 rounded-full text-green-600"
                 >
                   Confirmed
                 </p>
