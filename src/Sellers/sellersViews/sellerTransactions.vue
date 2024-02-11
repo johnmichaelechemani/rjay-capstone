@@ -63,10 +63,21 @@
           </div>
         </div>
         <div class="w-full">
-          <div class="flex justify-between">
-            <p class="text-xs font-semibold text-slate-500">Order Date</p>
-            <p class="text-xs font-semibold text-slate-500">Customer</p>
-            <p class="text-xs font-semibold text-slate-500">Payment</p>
+          <div class="flex justify-start gap-10 items-start">
+            <div>
+              <p class="text-xs font-semibold text-slate-500">Order Date</p>
+              <p class="text-sm font-semibold text-slate-700 py-2">
+                28 September 2024
+              </p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-500">Customer</p>
+              <p class="text-sm font-semibold text-slate-700 py-2">R-jay</p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-500">Payment</p>
+              <p class="text-sm font-semibold text-slate-700 py-2">Paypal</p>
+            </div>
           </div>
         </div>
       </div>
