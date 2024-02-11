@@ -4,7 +4,7 @@
       <h1>Transactions</h1>
     </div>
 
-    <div class="flex justify-between items-center mt-5">
+    <div class="sm:flex gap-5 justify-between items-center mt-5">
       <div class="p-1 border rounded-lg">
         <div class="flex gap-2">
           <h1
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-10">
-      <div class="border p-3 rounded-lg">
+      <div class="border p-3 rounded-lg my-2">
         <div class="flex justify-between items-center mb-2">
           <p class="text-xs font-medium text-blue-700">1234</p>
           <span class="p-2 rounded-lg bg-slate-600/10 text-xs font-medium"
@@ -81,7 +81,48 @@
           </div>
         </div>
       </div>
-      <div>dasdasdas</div>
+      <div class="border p-3 rounded-lg my-2">
+        <div class="flex justify-between items-center mb-2">
+          <p class="text-xs font-medium text-blue-700">1544</p>
+          <span
+            class="p-2 rounded-lg bg-orange-600/10 text-orange-600 text-xs font-medium"
+            >Pending</span
+          >
+        </div>
+        <hr />
+        <div class="flex justify-between gap-5 items-center mb-2 my-2">
+          <div class="flex gap-2 justify-start items-center">
+            <div class="h-11 w-11 bg-slate-600/20 rounded-md"></div>
+            <div>
+              <p class="text-lg text-slate-700 font-semibold">Laptop</p>
+              <span class="text-xs text-slate-600"
+                >1x <span>$ 128.00</span></span
+              >
+            </div>
+          </div>
+          <div>
+            <span class="text-lg font-semibold text-slate-700">$1843.00</span>
+          </div>
+        </div>
+        <div class="w-full">
+          <div class="flex justify-start gap-10 items-start">
+            <div>
+              <p class="text-xs font-semibold text-slate-500">Order Date</p>
+              <p class="text-sm font-semibold text-slate-700 py-2">
+                28 September 2024
+              </p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-500">Customer</p>
+              <p class="text-sm font-semibold text-slate-700 py-2">R-jay</p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-500">Payment</p>
+              <p class="text-sm font-semibold text-slate-700 py-2">Paypal</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
