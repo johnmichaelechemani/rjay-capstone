@@ -102,8 +102,12 @@
       </div>
       <div v-if="specifications" class="specifications">
         <!-- Display specifications here. This is just an example -->
-        <div v-for="(spec_value, spec_key) in specifications" :key="`spec-${spec_key}`">
-          <p>{{ spec_key }}:</p> <p>{{ spec_value }}</p>
+        <div
+          v-for="(spec_value, spec_key) in specifications"
+          :key="`spec-${spec_key}`"
+        >
+          <p>{{ spec_key }}:</p>
+          <p>{{ spec_value }}</p>
         </div>
       </div>
     </div>

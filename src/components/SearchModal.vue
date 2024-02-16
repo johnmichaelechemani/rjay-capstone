@@ -56,7 +56,7 @@ export default {
       required: true,
     },
   },
-  emits: ['update:isVisible', 'search-completed'], // Declare emitted events here
+  emits: ["update:isVisible", "search-completed"], // Declare emitted events here
   directives: {
     focus: {
       // Custom directive to autofocus input field
@@ -83,11 +83,12 @@ export default {
     ]);
     const send = async () => {
       try {
-        const url = "http://localhost/Ecommerce/vue-project/src/backend/search.php";
+        const url =
+          "http://localhost/Ecommerce/vue-project/src/backend/search.php";
         const response = await axios.post(url, { query: searchQuery.value });
 
         searchProduct.value = response.data;
-        emit('search-completed', searchProduct.value); // Emitting the event
+        emit("search-completed", searchProduct.value); // Emitting the event
         console.log("Response:", searchProduct.value);
       } catch (error) {
         console.log(error);
@@ -106,7 +107,6 @@ export default {
   },
 };
 </script>
-
 
 <style>
 /* Define the blur effect */

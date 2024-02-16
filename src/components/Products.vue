@@ -234,7 +234,7 @@ export default {
       const specifications = await fetchSpecifications(product.product_id);
       console.log("specs result in query", specifications);
       selectedProduct.value = { ...product, specifications };
-       console.log("s afeifabsb", selectedProduct);// Combine product and specifications
+      console.log("s afeifabsb", selectedProduct); // Combine product and specifications
       isModalVisible.value = true;
       //console.log(selectedProduct.value);
     };

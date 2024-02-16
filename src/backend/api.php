@@ -27,11 +27,46 @@ switch ($action) {
     case 'getProductSpecifications':
         fetchSpecs();
         break;
+    case 'CheckoutOrder':
+        CheckoutOrder();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+function CheckoutOrder()
+{
+    global $conn;
+
+    $stmt = $conn->prepare("INSERT INTO orders (user_id, total_price, status) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $user_id, $total_price, $status);
+
+    // Set parameters and execute
+    $user_id = 1;
+    $total_price = 799;
+    $status = "pending";
+    $stmt->execute();
+
+    // Capture the last inserted ID to use as a foreign key
+    $order_id = $conn->insert_id;
+
+    // Insert into the second table (profiles)
+    $stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("isss", $order_id, $product_id, $quantity, $price);
+
+    // Set parameters and execute
+    $product_id = 1;
+    $quantity = 2;
+    $price = 70;
+    $stmt->execute();
+
+    echo "New records created successfully";
+
+    $stmt->close();
+    $conn->close();
 }
 
 function fetchSpecs()
