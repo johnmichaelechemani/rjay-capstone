@@ -12,15 +12,18 @@ $res = ['error' => false];
 global $conn, $res;
 $data = json_decode(file_get_contents("php://input"), true);
 // Extract data from the array
-$name = $data['name'];
+$username = $data['name'];
 $email = $data['email'];
+$password = $data['password'];
+$contact_number = $data['contact_number'];
+$role = $data['role'];
 
-$stmt = $conn->prepare("INSERT INTO user (name, email) VALUES (?, ?)");
-$stmt->bind_param("ss", $name, $email);
+$stmt = $conn->prepare("INSERT INTO users (username, email, password, contact_number, role) VALUES (?, ?, ? , ?, ?)");
+$stmt->bind_param("sssss", $username, $email, $password, $contact_number, $role);
 $stmt->execute();
 if ($stmt->affected_rows > 0) {
     $res['success'] = true;
-    $res['message'] = 'User added successfully.';
+    $res['message'] = 'Registered successfully.';
 } else {
     $res['success'] = false;
     $res['message'] = 'Failed to add user.';

@@ -84,6 +84,12 @@
             <h1 class="font-bold text-sky-900 text-2xl text-center">
               Register
             </h1>
+            <p
+              v-if="registerResponseMessage"
+              class="text-green-600 px-4 shadow-sm mt-2 py-3 rounded-md bg-green-400/10"
+            >
+              {{ registerResponseMessage }}
+            </p>
           </div>
           <form @submit.prevent="signUp">
             <div class="p-2 rounded-md shadow-sm mb-2">
@@ -209,22 +215,25 @@ export default {
     const registerName = ref("");
     const registerPassword = ref("");
     const contactNumber = ref("");
+    const role = ref("customer");
+    const registerResponseMessage = ref("");
 
     const signUp = async () => {
       try {
         const url =
-          "http://localhost/Ecommerce/vue-project/src/backend/search.php";
+          "http://localhost/Ecommerce/vue-project/src/backend/auth.php";
         const res = await axios.post(
           url,
           {
             name: registerName.value,
             email: registerEmail.value,
             password: registerPassword.value,
-            contactNumber: contactNumber.value,
+            contact_number: contactNumber.value,
+            role: role.value,
           },
           { headers: { "Content-Type": "application/json" } }
         );
-        console.log(res);
+        registerResponseMessage.value = res.data.message;
       } catch {
         console.log("error");
       }
@@ -240,6 +249,8 @@ export default {
       registerPassword,
       contactNumber,
       signUp,
+
+      registerResponseMessage,
     };
   },
 };
