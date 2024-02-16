@@ -15,6 +15,7 @@ export default {
     return {
       showSearch: false,
       showLogin: false,
+      user: [],
     };
   },
   methods: {
@@ -24,12 +25,13 @@ export default {
     handleSearchCompleted(data) {
       this.$emit("search-completed", data);
     },
-    HandleSignIn() {
-      this.$emit("login-completed");
+    HandleSignIn(name) {
+      this.user = name;
+      this.$emit("login-completed", name);
     },
     // ... other methods ...
   },
-  setup() {
+  setup(props) {
     const showCart = ref(false);
     const showWishList = ref(false);
     const isSidebarOpen = ref(false);

@@ -27,6 +27,7 @@ switch ($action) {
         break;
 }
 
+global $globalUser;
 function register()
 {
     global $conn, $res;
@@ -57,7 +58,7 @@ function register()
 function login()
 {
     session_start();
-    global $conn, $res;
+    global $conn, $res, $globalUser;
     // Use json_decode with true to get an associative array
     $post_data = json_decode(file_get_contents("php://input"), true);
 
@@ -75,6 +76,7 @@ function login()
     if ($customer) {
         if (password_verify($password, $customer['password'])) {
             $_SESSION['customer'] = $customer;
+            $globalUser = $customer;
             $res['success'] = true;
             $res['message'] = 'Login Success!';
             $res['role'] = $customer['role'];
@@ -93,5 +95,13 @@ function login()
 }
 function getCustomer()
 {
-
+    global $globalUser;
+    if ($globalUser) {
+        $res['success'] = true;
+        $res['customer'] = $globalUser;
+    } else {
+        $res['error'] = true;
+        $res['message'] = 'error';
+    }
+    echo json_encode($res);
 }
