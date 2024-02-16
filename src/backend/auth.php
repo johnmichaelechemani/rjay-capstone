@@ -95,13 +95,16 @@ function login()
 }
 function getCustomer()
 {
+    session_start();
     global $globalUser;
-    if ($globalUser) {
+
+    if (isset($_SESSION['customer'])) {
         $res['success'] = true;
-        $res['customer'] = $globalUser;
+        $res['customer'] = $_SESSION['customer'];
     } else {
         $res['error'] = true;
-        $res['message'] = 'error';
+        $res['message'] = 'User not logged in';
     }
+
     echo json_encode($res);
 }
