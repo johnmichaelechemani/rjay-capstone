@@ -18,45 +18,50 @@
           <div class="text-white px-3 py-2 rounded-md mt-3">
             <h1 class="font-bold text-sky-900 text-2xl text-center">Login</h1>
           </div>
-          <div class="p-2 rounded-md shadow-sm mb-2">
-            <div class="gap-2 mt-2">
-              <p class="font-semibold">
-                Email <span class="text-red-500">*</span>
-              </p>
-              <input
-                type="email"
-                id="email"
-                required
-                class="w-full p-2 rounded-md my-1 bg-gray-100"
-              />
-            </div>
-            <div class="gap-2">
-              <p class="font-semibold">
-                Password <span class="text-red-500">*</span>
-              </p>
-              <input
-                type="password"
-                id="password"
-                required
-                class="w-full p-2 rounded-md my-1 bg-gray-100"
-              />
-            </div>
-            <div class="my-5">
-              <button
-                class="bg-sky-900 w-full font-semibold text-lg text-white px-5 py-2 rounded-md"
-              >
-                Sign In
-              </button>
-              <div class="flex justify-center gap-2 py-2">
-                <p>Don't have account?</p>
-                <span
-                  class="text-blue-500 hover:text-blue-700"
-                  @click="showRegisterModal"
-                  >Sign up
-                </span>
+          <form @submit.prevent="signIn">
+            <div class="p-2 rounded-md shadow-sm mb-2">
+              <div class="gap-2 mt-2">
+                <p class="font-semibold">
+                  Email <span class="text-red-500">*</span>
+                </p>
+                <input
+                  type="email"
+                  id="email"
+                  v-model="loginEmail"
+                  required
+                  class="w-full p-2 rounded-md my-1 bg-gray-100"
+                />
+              </div>
+              <div class="gap-2">
+                <p class="font-semibold">
+                  Password <span class="text-red-500">*</span>
+                </p>
+                <input
+                  type="password"
+                  id="password"
+                  v-model="loginPassword"
+                  required
+                  class="w-full p-2 rounded-md my-1 bg-gray-100"
+                />
+              </div>
+              <div class="my-5">
+                <button
+                  type="submit"
+                  class="bg-sky-900 w-full font-semibold text-lg text-white px-5 py-2 rounded-md"
+                >
+                  Sign In
+                </button>
+                <div class="flex justify-center gap-2 py-2">
+                  <p>Don't have account?</p>
+                  <span
+                    class="text-blue-500 hover:text-blue-700"
+                    @click="showRegisterModal"
+                    >Sign up
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -80,68 +85,76 @@
               Register
             </h1>
           </div>
-          <div class="p-2 rounded-md shadow-sm mb-2">
-            <div class="gap-2 mt-2">
-              <p class="font-semibold">
-                Name <span class="text-red-500">*</span>
-              </p>
-              <input
-                type="name"
-                id="name"
-                required
-                class="w-full p-2 rounded-md my-1 bg-gray-100"
-              />
-            </div>
-            <div class="gap-2 mt-2">
-              <p class="font-semibold">
-                Email <span class="text-red-500">*</span>
-              </p>
-              <input
-                type="email"
-                id="email"
-                required
-                class="w-full p-2 rounded-md my-1 bg-gray-100"
-              />
-            </div>
-            <div class="gap-2">
-              <p class="font-semibold">
-                Password <span class="text-red-500">*</span>
-              </p>
-              <input
-                type="password"
-                id="password"
-                required
-                class="w-full p-2 rounded-md my-1 bg-gray-100"
-              />
-            </div>
-            <div class="gap-2">
-              <p class="font-semibold">
-                Contact Number <span class="text-red-500">*</span>
-              </p>
-              <input
-                type="tel"
-                id="number"
-                pattern="[0-9]{11}"
-                required
-                class="w-full p-2 rounded-md my-1 bg-gray-100"
-              />
-            </div>
-            <div class="my-5">
-              <button
-                class="bg-sky-900 w-full font-semibold text-lg text-white px-5 py-2 rounded-md"
-              >
-                Sign In
-              </button>
-              <div class="flex justify-center gap-2 py-2">
-                <p>Already have account?</p>
-                <span
-                  class="text-blue-500 hover:text-blue-700"
-                  @click="showLoginModal"
-                  >Sign In
-                </span>
+          <form @submit.prevent="signUp">
+            <div class="p-2 rounded-md shadow-sm mb-2">
+              <div class="gap-2 mt-2">
+                <p class="font-semibold">
+                  Name <span class="text-red-500">*</span>
+                </p>
+                <input
+                  type="name"
+                  id="name"
+                  v-model="registerName"
+                  required
+                  class="w-full p-2 rounded-md my-1 bg-gray-100"
+                />
+              </div>
+              <div class="gap-2 mt-2">
+                <p class="font-semibold">
+                  Email <span class="text-red-500">*</span>
+                </p>
+                <input
+                  type="email"
+                  id="email"
+                  v-model="registerEmail"
+                  required
+                  class="w-full p-2 rounded-md my-1 bg-gray-100"
+                />
+              </div>
+              <div class="gap-2">
+                <p class="font-semibold">
+                  Password <span class="text-red-500">*</span>
+                </p>
+                <input
+                  type="password"
+                  v-model="registerPassword"
+                  id="password"
+                  required
+                  class="w-full p-2 rounded-md my-1 bg-gray-100"
+                />
+              </div>
+              <div class="gap-2">
+                <p class="font-semibold">
+                  Contact Number <span class="text-red-500">*</span>
+                </p>
+                <input
+                  type="tel"
+                  id="number"
+                  v-model="contactNumber"
+                  pattern="[0-9]{11}"
+                  placeholder="123-456-765-89"
+                  required
+                  class="w-full p-2 rounded-md my-1 bg-gray-100"
+                />
+              </div>
+              <div class="my-5">
+                <button
+                  type="submit"
+                  class="bg-sky-900 w-full font-semibold text-lg text-white px-5 py-2 rounded-md"
+                >
+                  Sign In
+                </button>
+                <div class="flex justify-center gap-2 py-2">
+                  <p>Already have account?</p>
+                  <span
+                    class="text-blue-500 hover:text-blue-700"
+                    @click="showLoginModal"
+                    >Sign In
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -184,6 +197,40 @@ export default {
     close() {
       this.$emit("update:isVisible", false);
     },
+  },
+  setup() {
+    const loginEmail = ref("");
+    const loginPassword = ref("");
+    const signIn = () => {
+      console.log(loginEmail.value);
+      console.log(loginPassword.value);
+    };
+    const registerEmail = ref("");
+    const registerName = ref("");
+    const registerPassword = ref("");
+    const contactNumber = ref("");
+
+    const signUp = async () => {
+      console.log(registerEmail.value);
+      console.log(registerPassword.value);
+      console.log(registerName.value);
+      console.log(contactNumber.value);
+      try {
+        const res = await axios.post("http://localhost:3001/api/users", {});
+      } catch {}
+    };
+
+    return {
+      loginEmail,
+      loginPassword,
+      signIn,
+
+      registerName,
+      registerEmail,
+      registerPassword,
+      contactNumber,
+      signUp,
+    };
   },
 };
 </script>
