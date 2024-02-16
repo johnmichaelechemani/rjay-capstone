@@ -211,23 +211,23 @@ export default {
     const contactNumber = ref("");
 
     const signUp = async () => {
-      console.log(registerEmail.value);
-      console.log(registerPassword.value);
-      console.log(registerName.value);
-      console.log(contactNumber.value);
       try {
         const url =
           "http://localhost/Ecommerce/vue-project/src/backend/search.php";
         const res = await axios.post(
           url,
           {
-            name: userName.value,
-            email: userEmail.value,
+            name: registerName.value,
+            email: registerEmail.value,
+            password: registerPassword.value,
+            contactNumber: contactNumber.value,
           },
           { headers: { "Content-Type": "application/json" } }
         );
         console.log(res);
-      } catch {}
+      } catch {
+        console.log("error");
+      }
     };
 
     return {
