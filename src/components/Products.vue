@@ -25,12 +25,11 @@
       class="text-base min-h-full w-72 shadow absolute z-10 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
     >
       <div class="h-screen">
-        <p class="px-3 pt-5 text-sky-800">Catergories</p>
-        <hr class="my-2" />
+        <p class="px-3 pt-5 pb-3 text-sm text-sky-800">Catergories</p>
         <div>
           <button
             @click="fetchProducts"
-            class="px-5 bg-slate-500/10 w-full py-2 hover:bg-slate-500/20 text-left mb-3"
+            class="px-5 bg-slate-500/10 w-full py-2 text-sm hover:bg-slate-500/20 text-left mb-3"
           >
             All
           </button>
@@ -42,12 +41,54 @@
             class="mx-3 hover:bg-slate-700/10 rounded-md transition"
             @click="filterByCategory(cat.category_id, cat.category_name)"
           >
-            <button class="py-1 text-sm my-1 px-2 rounded-md">
+            <button class="py-1 text-xs my-1 px-2 rounded-md">
               {{ cat.category_name }}
             </button>
           </div>
         </div>
         <hr class="my-2" />
+
+        <!-- Stores filter -->
+        <div>
+          <h1 class="text-sm px-3 text-sky-800">Stores</h1>
+          <div class="mx-3 text-xs">
+            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">
+              Store1
+            </p>
+            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">
+              Store2
+            </p>
+            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">
+              Store3
+            </p>
+          </div>
+        </div>
+        <hr class="my-2" />
+
+        <!-- Price Range -->
+        <div class="px-3 py-2">
+          <h1 class="text-sm text-sky-800 mb-2">Price Range</h1>
+          <div class="flex gap-2 mb-3">
+            <input
+              v-model="minPrice"
+              type="number"
+              placeholder="Min"
+              class="border p-1 rounded text-sm w-full"
+            />
+            <input
+              v-model="maxPrice"
+              type="number"
+              placeholder="Max"
+              class="border p-1 rounded text-sm w-full"
+            />
+          </div>
+          <button
+            @click="filterByPrice"
+            class="bg-sky-700 py-2 text-slate-100 px-4 rounded-md font-semibold shadow w-full"
+          >
+            Apply
+          </button>
+        </div>
       </div>
     </div>
     <div class="bg-white cursor-pointer">
@@ -108,6 +149,7 @@
           <product-modal
             :is-visible="isModalVisible"
             :product="selectedProduct"
+            :specifications="spec_data"
             @update:isVisible="isModalVisible = $event"
           ></product-modal>
         </div>
@@ -132,19 +174,44 @@ export default {
   props: ["products"],
 
   setup(props) {
-    const products = ref([]);
+    const minPrice = ref(0);
+    const maxPrice = ref(0);
+
+    const products = ref(props.products || []);
     const isModalVisible = ref(false);
     const selectedProduct = ref(null);
     const showCategory = ref(true);
     const categories = ref([]);
     const selectedCategoryName = ref("");
+    const spec_data = ref(null);
+
+    const fetchSpecifications = async (productId) => {
+      console.log("specs id", productId);
+      try {
+        const response = await axios.get(
+          `http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProductSpecifications&id=${productId}`
+        );
+        spec_data.value = response.data;
+      } catch (error) {
+        console.error("Error fetching specifications: ", error);
+        return null;
+      }
+    };
+
+    const filterByPrice = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProductsByPriceRange&minPrice=${minPrice.value}&maxPrice=${maxPrice.value}`
+        );
+        products.value = response.data;
+      } catch (error) {
+        console.error("Error fetching products by price range: ", error);
+      }
+    };
 
     const handleSearchCompleted = (product) => {
       products.value = product;
     };
-
-    const p = ref(props.products || []);
-    console.log(p.value);
     // get categories
     const getCategories = async () => {
       try {
@@ -163,8 +230,11 @@ export default {
       showCategory.value = !showCategory.value;
     };
 
-    const showModal = (product) => {
-      selectedProduct.value = product;
+    const showModal = async (product) => {
+      const specifications = await fetchSpecifications(product.product_id);
+      console.log("specs result in query", specifications);
+      selectedProduct.value = { ...product, specifications };
+      console.log("s afeifabsb", selectedProduct); // Combine product and specifications
       isModalVisible.value = true;
       //console.log(selectedProduct.value);
     };
@@ -244,6 +314,13 @@ export default {
       selectedCategoryName,
 
       handleSearchCompleted,
+
+      minPrice,
+      maxPrice,
+      filterByPrice,
+
+      fetchSpecifications,
+      spec_data,
     };
   },
 };

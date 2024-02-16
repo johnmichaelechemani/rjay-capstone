@@ -221,7 +221,7 @@ export default {
     const signUp = async () => {
       try {
         const url =
-          "http://localhost/Ecommerce/vue-project/src/backend/auth.php";
+          "http://localhost/Ecommerce/vue-project/src/backend/auth.php?action=register";
         const res = await axios.post(
           url,
           {
@@ -234,8 +234,8 @@ export default {
           { headers: { "Content-Type": "application/json" } }
         );
         registerResponseMessage.value = res.data.message;
-      } catch {
-        console.log("error");
+      } catch (res) {
+        console.log(res.data.success);
       }
     };
 
