@@ -216,7 +216,17 @@ export default {
       console.log(registerName.value);
       console.log(contactNumber.value);
       try {
-        const res = await axios.post("http://localhost:3001/api/users", {});
+        const url =
+          "http://localhost/Ecommerce/vue-project/src/backend/search.php";
+        const res = await axios.post(
+          url,
+          {
+            name: userName.value,
+            email: userEmail.value,
+          },
+          { headers: { "Content-Type": "application/json" } }
+        );
+        console.log(res);
       } catch {}
     };
 
