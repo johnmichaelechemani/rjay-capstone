@@ -24,12 +24,79 @@ switch ($action) {
     case 'fetchCartItems':
         fetchCartItems();
         break;
+    case 'getProductSpecifications':
+        fetchSpecs();
+        break;
+    case 'CheckoutOrder':
+        CheckoutOrder();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
 }
+
+function CheckoutOrder()
+{
+    global $conn;
+
+    $stmt = $conn->prepare("INSERT INTO orders (user_id, total_price, status) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $user_id, $total_price, $status);
+
+    // Set parameters and execute
+    $user_id = 1;
+    $total_price = 799;
+    $status = "pending";
+    $stmt->execute();
+
+    // Capture the last inserted ID to use as a foreign key
+    $order_id = $conn->insert_id;
+
+    // Insert into the second table (profiles)
+    $stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("isss", $order_id, $product_id, $quantity, $price);
+
+    // Set parameters and execute
+    $product_id = 1;
+    $quantity = 2;
+    $price = 70;
+    $stmt->execute();
+
+    echo "New records created successfully";
+
+    $stmt->close();
+    $conn->close();
+}
+
+function fetchSpecs()
+{
+    global $conn;
+    // Use the $_GET superglobal to read parameters from the query string
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : 0; // Basic validation and conversion to integer
+
+    if ($id <= 0) {
+        echo json_encode(['error' => true, 'message' => 'Invalid ID.']);
+        return;
+    }
+
+    $stmt = $conn->prepare("SELECT * FROM product_specifications WHERE product_id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    $specs = [];
+    while ($row = $result->fetch_assoc()) {
+        $specs[] = $row;
+    }
+
+    $res = ['specifications' => $specs];
+    echo json_encode($res);
+}
+
+
 function fetchCategory()
 {
     global $conn;
@@ -76,7 +143,7 @@ function addCart()
     $cart_id = $data['cart_id'];
 
     $stmt = $conn->prepare("INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $cart_id, $product_id,  $quantity);
+    $stmt->bind_param("sss", $cart_id, $product_id, $quantity);
     $stmt->execute();
     if ($stmt->affected_rows > 0) {
         $res['success'] = true;
@@ -98,14 +165,11 @@ function fetchProducts()
     $sql = "SELECT 
     p.*, 
     i.inventory_id, 
-    i.quantity,
-    ps.*
+    i.quantity
 FROM 
     products AS p
 LEFT JOIN 
     inventory AS i ON p.product_id = i.product_id
-LEFT JOIN
-    product_specifications AS ps ON i.product_id = ps.product_id
 ORDER BY 
     p.ratings DESC";
     $result = $conn->query($sql);
