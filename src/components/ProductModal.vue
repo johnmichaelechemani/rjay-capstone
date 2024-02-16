@@ -21,7 +21,7 @@
             loading="lazy"
           />
         </div>
-        <div class="flex-auto p-6">
+        <form class="flex-auto p-6">
           <div class="flex flex-wrap">
             <div>
               <h1 class="flex-auto text-xl font-semibold text-gray-900">
@@ -98,16 +98,17 @@
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
-      <div v-if="specifications" class="specifications">
-        <!-- Display specifications here. This is just an example -->
-        <div
-          v-for="(spec_value, spec_key) in specifications"
-          :key="`spec-${spec_key}`"
-        >
-          <p>{{ spec_key }}:</p>
-          <p>{{ spec_value }}</p>
+      <div class="text-sm">
+        <div v-if="product.ram">
+          Ram:
+          <span>{{ product.ram }}</span>
+        </div>
+
+        <div v-if="product.storage">
+          Storage:
+          <span>{{ product.storage }}</span>
         </div>
       </div>
     </div>
@@ -122,7 +123,6 @@ export default {
   props: {
     isVisible: Boolean,
     product: Object,
-    specifications: Object,
   },
   components: {
     Icon,
@@ -169,7 +169,7 @@ export default {
             cart_id: cart_id.value,
           }
         );
-        // console.log(response.data);
+        console.log(response.data);
       } catch {
         alert("Error adding to cart");
       }

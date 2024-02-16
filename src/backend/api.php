@@ -143,7 +143,7 @@ function addCart()
     $cart_id = $data['cart_id'];
 
     $stmt = $conn->prepare("INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $cart_id, $product_id,  $quantity);
+    $stmt->bind_param("sss", $cart_id, $product_id, $quantity);
     $stmt->execute();
     if ($stmt->affected_rows > 0) {
         $res['success'] = true;
