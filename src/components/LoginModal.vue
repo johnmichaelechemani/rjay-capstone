@@ -170,6 +170,7 @@
 import { Icon } from "@iconify/vue";
 import { onMounted, ref } from "vue";
 import RegisterModal from "./RegisterModal.vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 export default {
   components: {
@@ -204,12 +205,33 @@ export default {
       this.$emit("update:isVisible", false);
     },
   },
-  setup() {
+  setup(props, { emit }) {
     const loginEmail = ref("");
     const loginPassword = ref("");
-    const signIn = () => {
-      console.log(loginEmail.value);
-      console.log(loginPassword.value);
+    const router = useRouter();
+    const signIn = async () => {
+      try {
+        const url =
+          "http://localhost/Ecommerce/vue-project/src/backend/auth.php?action=login";
+        const res = await axios.post(
+          url,
+          {
+            email: loginEmail.value,
+            password: loginPassword.value,
+          },
+          { headers: { "Content-Type": "application/json" } }
+        );
+        const user = res.data.customer;
+        const role = res.data.role;
+        if (role === "admin") {
+          router.push("/admin_dashboard");
+        } else {
+          router.push("/home");
+          emit("update:isVisible", false);
+        }
+
+        console.log(user);
+      } catch {}
     };
     const registerEmail = ref("");
     const registerName = ref("");
