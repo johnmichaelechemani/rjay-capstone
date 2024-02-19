@@ -60,29 +60,26 @@ export default {
       showWishList.value = false;
     };
 
-    const userLogin = ref([]);
-
+    var userLogin = ref([]);
     const getUserFromLocalStorage = () => {
       const userData = localStorage.getItem("user");
       if (userData) {
         userLogin.value = JSON.parse(userData);
+        console.log("id na ayupan ka", userLogin.value.user_id);
       }
       return null;
     };
-
-    const cart_id = userLogin.value.user_id;
-    console.log("id", cart_id);
-
     const cartItems = async () => {
       try {
         const res = await axios.post(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=fetchCartItems",
           {
-            cart_id: cart_id,
+            cart_id: userLogin.value.user_id,
           }
         );
         cartItemsValue.value = res.data;
-        console.log(cartItemsValue);
+        console.log(userLogin.value.user_id);
+        // console.log("cart value: ", cartItemsValue.value);
       } catch (error) {
         console.error("Error fetching cart items:", error);
       }
@@ -98,10 +95,9 @@ export default {
       //  router.push("/admin_dashboard");
     };
 
-    onMounted(() => {
-      getUserFromLocalStorage();
-      cartItems();
-    });
+    getUserFromLocalStorage();
+    cartItems();
+
     return {
       showCartFunction,
       showCart,
