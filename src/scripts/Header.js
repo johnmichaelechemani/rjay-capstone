@@ -44,6 +44,7 @@ export default {
     };
 
     const showCartFunction = () => {
+      cartItems();
       showCart.value = !showCart.value;
       isSidebarOpen.value = false;
       showWishList.value = false;
@@ -65,7 +66,6 @@ export default {
       const userData = localStorage.getItem("user");
       if (userData) {
         userLogin.value = JSON.parse(userData);
-        console.log("id na ayupan ka", userLogin.value.user_id);
       }
       return null;
     };
@@ -78,7 +78,7 @@ export default {
           }
         );
         cartItemsValue.value = res.data;
-        console.log(userLogin.value.user_id);
+        // console.log(userLogin.value.user_id);
         // console.log("cart value: ", cartItemsValue.value);
       } catch (error) {
         console.error("Error fetching cart items:", error);

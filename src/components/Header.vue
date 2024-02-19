@@ -59,11 +59,6 @@
           <span>Sign in</span>
         </div>
       </div>
-      <span
-        v-if="userLogin"
-        class="flex items-center gap-2 text-white font-semibold"
-        >{{ userLogin.username }}</span
-      >
 
       <span @click="Logout()" class="p-2 text-white bg-blue-500 rounded-md"
         >Logout</span
@@ -94,7 +89,7 @@
         @click="showCartFunction"
         class="flex items-center gap-2 text-white hover:text-zinc-400 relative"
       >
-        <div>
+        <div v-if="cartItemsValue.length !== 0">
           <Icon
             icon="radix-icons:dot-filled"
             class="text-xl text-red-500 absolute -top-2 left-0"
@@ -102,6 +97,14 @@
         </div>
         <Icon icon="ion:cart-outline" class="text-lg" />
         <span>Cart</span>
+      </div>
+      <div class="flex gap-2 justify-start items-center" v-if="userLogin">
+        <button class="flex gap-2 justify-start items-center">
+          <div class="h-10 w-10 bg-slate-100 rounded-full"></div>
+          <div>
+            <h1 class="text-white font-bold">{{ userLogin.username }}</h1>
+          </div>
+        </button>
       </div>
     </div>
     <!-- cart modal -->
