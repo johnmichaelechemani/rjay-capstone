@@ -180,6 +180,7 @@ export default {
           }
         );
         console.log(response.data);
+        emit("update:isVisible", false);
       } catch (error) {
         console.error("Error adding to cart:", error);
       }

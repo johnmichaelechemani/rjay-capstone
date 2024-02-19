@@ -60,16 +60,6 @@ export default {
       showWishList.value = false;
     };
 
-    const cartItems = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=fetchCartItems"
-        );
-        cartItemsValue.value = res.data;
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
     const userLogin = ref([]);
 
     const getUserFromLocalStorage = () => {
@@ -79,6 +69,25 @@ export default {
       }
       return null;
     };
+
+    const cart_id = userLogin.value.user_id;
+    console.log("id", cart_id);
+
+    const cartItems = async () => {
+      try {
+        const res = await axios.post(
+          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=fetchCartItems",
+          {
+            cart_id: cart_id,
+          }
+        );
+        cartItemsValue.value = res.data;
+        console.log(cartItemsValue);
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+
     const refreshPage = () => {
       location.reload(true);
     };

@@ -54,10 +54,17 @@
         class="flex items-center gap-2 text-white hover:text-zinc-400"
         @click="showLogin = true"
       >
-        <Icon icon="bi:person" class="text-lg" />
-        <span v-if="userLogin.length === 0">Sign in</span>
-        <span>{{ userLogin.username }}</span>
+        <div v-if="userLogin.length === 0">
+          <Icon icon="bi:person" class="text-lg" />
+          <span>Sign in</span>
+        </div>
       </div>
+      <span
+        v-if="userLogin"
+        class="flex items-center gap-2 text-white font-semibold"
+        >{{ userLogin.username }}</span
+      >
+
       <span @click="Logout()" class="p-2 text-white bg-blue-500 rounded-md"
         >Logout</span
       >
