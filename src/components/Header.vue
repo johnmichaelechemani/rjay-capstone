@@ -50,11 +50,13 @@
     >
       <!-- sign in -->
       <div
+        v-if="user"
         class="flex items-center gap-2 text-white hover:text-zinc-400"
         @click="showLogin = true"
       >
         <Icon icon="bi:person" class="text-lg" />
         <span>Sign in</span>
+        <span>{{ user.username }}</span>
       </div>
       <!-- login modal -->
       <LoginModal

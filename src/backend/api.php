@@ -30,12 +30,58 @@ switch ($action) {
     case 'CheckoutOrder':
         CheckoutOrder();
         break;
+    case 'getProductsByPriceRange':
+        getProductsByPriceRange();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
 }
+
+function getProductsByPriceRange() {
+    global $conn;
+
+    // Read minPrice and maxPrice from query string
+    $minPrice = isset($_GET['minPrice']) ? (float) $_GET['minPrice'] : 0;
+    $maxPrice = isset($_GET['maxPrice']) ? (float) $_GET['maxPrice'] : PHP_INT_MAX;
+
+    // Prepare SQL statement to select products within the specified price range
+    $stmt = $conn->prepare("SELECT 
+        p.*, 
+        i.inventory_id, 
+        i.quantity
+    FROM 
+        products AS p
+    LEFT JOIN 
+        inventory AS i ON p.product_id = i.product_id
+    WHERE 
+        p.price BETWEEN ? AND ?
+    ORDER BY 
+        p.price ASC");
+
+    // Bind parameters and execute the statement
+    $stmt->bind_param("dd", $minPrice, $maxPrice);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    $products = [];
+    while ($row = $result->fetch_assoc()) {
+        // Assuming $row['image'] contains the BLOB image data
+        $row['image'] = base64_encode($row['image']);
+        $products[] = $row;
+    }
+
+    // Close the connection
+    $conn->close();
+
+    // Return the products as JSON
+    echo json_encode($products);
+}
+
 
 function CheckoutOrder()
 {

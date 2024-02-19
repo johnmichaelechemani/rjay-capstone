@@ -209,6 +209,7 @@ export default {
     const loginEmail = ref("");
     const loginPassword = ref("");
     const router = useRouter();
+    let name = ref("");
     const signIn = async () => {
       try {
         const url =
@@ -221,16 +222,17 @@ export default {
           },
           { headers: { "Content-Type": "application/json" } }
         );
-        const user = res.data.customer;
+
+        name.value = res.data.customer;
         const role = res.data.role;
         if (role === "admin") {
           router.push("/admin_dashboard");
         } else {
           router.push("/home");
           emit("update:isVisible", false);
+          emit("login-completed", name.value);
         }
-
-        console.log(user);
+        console.log(name.value);
       } catch {}
     };
     const registerEmail = ref("");
@@ -273,6 +275,7 @@ export default {
       signUp,
 
       registerResponseMessage,
+      name,
     };
   },
 };
