@@ -261,6 +261,11 @@ export default {
       } catch (res) {
         console.log(res.data.success);
       }
+      registerName.value = "";
+      registerEmail.value = "";
+      registerPassword.value = "";
+      contactNumber.value = "";
+      role.value = "";
     };
 
     return {
