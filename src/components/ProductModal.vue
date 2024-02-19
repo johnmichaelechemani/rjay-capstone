@@ -180,8 +180,8 @@ export default {
           }
         );
         console.log(response.data);
-      } catch {
-        alert("Error adding to cart");
+      } catch (error) {
+        console.error("Error adding to cart:", error);
       }
     };
     const heart = () => {

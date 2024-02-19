@@ -17,9 +17,6 @@ switch ($action) {
     case 'login':
         login();
         break;
-    case 'getCustomer':
-        getCustomer();
-        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
@@ -92,19 +89,4 @@ function login()
     // Encode the final response array and send as HTTP response
     echo json_encode($res);
 
-}
-function getCustomer()
-{
-    session_start();
-    global $globalUser;
-
-    if (isset($_SESSION['customer'])) {
-        $res['success'] = true;
-        $res['customer'] = $_SESSION['customer'];
-    } else {
-        $res['error'] = true;
-        $res['message'] = 'User not logged in';
-    }
-
-    echo json_encode($res);
 }
