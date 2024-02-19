@@ -131,7 +131,7 @@ export default {
       this.$emit("update:isVisible", false);
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const quantity = ref(1);
     const finalQuantity = ref("");
     const isHeartRed = ref(false);
