@@ -4,14 +4,13 @@
     class="fixed inset-0 flex items-center justify-center bg-gray-500 border-2 border-zinc-300 bg-opacity-75 z-20"
   >
     <div class="bg-white rounded-lg shadow-xl max-w-lg mx-auto p-6">
-      <div>
-        <button
-          @click="closeModal"
-          class="float-end p-2 bg-slate-700/20 rounded-full"
-        >
-          <Icon icon="gravity-ui:xmark" class="text-lg hover:text-red-500" />
-        </button>
-      </div>
+      <button
+        @click="closeModal"
+        class="float-end p-2 bg-slate-700/20 rounded-full"
+      >
+        <Icon icon="gravity-ui:xmark" class="text-lg hover:text-red-500" />
+      </button>
+
       <div class="flex">
         <div class="flex-none w-48 relative">
           <img
@@ -177,7 +176,7 @@ export default {
           {
             product_id: id,
             quantity: quantity.value,
-            cart_id: cart_id.value,
+            cart_id: cart_id,
           }
         );
         console.log(response.data);

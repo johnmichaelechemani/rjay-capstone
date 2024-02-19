@@ -194,7 +194,7 @@ function addCart()
     $stmt->execute();
     if ($stmt->affected_rows > 0) {
         $res['success'] = true;
-        $res['message'] = 'Porduct added successfully.';
+        $res['message'] = 'Product added successfully.';
     } else {
         $res['success'] = false;
         $res['message'] = 'Failed to add product.';
