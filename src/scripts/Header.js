@@ -2,6 +2,7 @@ import SearchModal from "@/components/SearchModal.vue";
 import LoginModal from "@/components/LoginModal.vue";
 import { Icon } from "@iconify/vue";
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 export default {
   components: {
@@ -36,6 +37,7 @@ export default {
     const showWishList = ref(false);
     const isSidebarOpen = ref(false);
     const cartItemsValue = ref([]);
+    const router = useRouter();
 
     const toggleSidebar = () => {
       isSidebarOpen.value = !isSidebarOpen.value;
@@ -68,8 +70,27 @@ export default {
         console.error("Error fetching cart items:", error);
       }
     };
+    const userLogin = ref([]);
+
+    const getUserFromLocalStorage = () => {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        userLogin.value = JSON.parse(userData);
+      }
+      return null;
+    };
+    const refreshPage = () => {
+      location.reload(true);
+    };
+    const Logout = () => {
+      localStorage.removeItem("user");
+      console.log("click");
+      refreshPage();
+      //  router.push("/admin_dashboard");
+    };
 
     onMounted(() => {
+      getUserFromLocalStorage();
       cartItems();
     });
     return {
@@ -82,6 +103,8 @@ export default {
       toggleSidebar,
       isSidebarOpen,
       cartItemsValue,
+      userLogin,
+      Logout,
     };
   },
 };

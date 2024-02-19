@@ -55,9 +55,12 @@
         @click="showLogin = true"
       >
         <Icon icon="bi:person" class="text-lg" />
-        <span>Sign in</span>
-        <span>{{ user.username }}</span>
+        <span v-if="userLogin.length === 0">Sign in</span>
+        <span>{{ userLogin.username }}</span>
       </div>
+      <span @click="Logout()" class="p-2 text-white bg-blue-500 rounded-md"
+        >Logout</span
+      >
       <!-- login modal -->
       <LoginModal
         :is-visible="showLogin"
