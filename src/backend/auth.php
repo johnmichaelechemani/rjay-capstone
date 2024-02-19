@@ -49,6 +49,28 @@ function register()
         $res['success'] = false;
         $res['message'] = 'Failed to add customer.';
     }
+
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username=?");
+    $stmt->bind_param("s", $customername);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $customer = $result->fetch_array();
+    if ($customer) {
+        $id = $customer['user_id'];
+        $stmt = $conn->prepare("INSERT INTO cart (cart_id, user_id) VALUES (?, ?)");
+        $stmt->bind_param("ii", $id, $id);
+        $stmt->execute();
+        if ($stmt->affected_rows > 0) {
+            $res['success'] = true;
+            $res['message'] = 'Added successfully.';
+        } else {
+            $res['success'] = false;
+            $res['message'] = 'Failed to add cart id.';
+        }
+
+    }
+
+
     $stmt->close();
     echo json_encode($res);
 }
