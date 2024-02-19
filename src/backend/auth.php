@@ -42,7 +42,7 @@ function register()
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $conn->prepare("INSERT INTO customers (customername, email, password, contact_number, role) VALUES (?, ?, ? , ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO users (username, email, password, contact_number, role) VALUES (?, ?, ? , ?, ?)");
     $stmt->bind_param("sssss", $customername, $email, $hashed_password, $contact_number, $role);
     $stmt->execute();
     if ($stmt->affected_rows > 0) {
