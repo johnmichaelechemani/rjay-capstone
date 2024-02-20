@@ -30,8 +30,8 @@ switch ($action) {
     case 'CheckoutOrder':
         CheckoutOrder();
         break;
-    case 'getProductsByPriceRange':
-        getProductsByPriceRange();
+    case 'fetchOrder':
+        fetchOrder();
         break;
     default:
         $res['error'] = true;
@@ -40,35 +40,35 @@ switch ($action) {
         break;
 }
 
-function getProductsByPriceRange()
+function fetchOrder()
 {
     global $conn;
 
-    // Read minPrice and maxPrice from query string
-    $minPrice = isset($_GET['minPrice']) ? (float) $_GET['minPrice'] : 0;
-    $maxPrice = isset($_GET['maxPrice']) ? (float) $_GET['maxPrice'] : PHP_INT_MAX;
-
-    // Prepare SQL statement to select products within the specified price range
-    $stmt = $conn->prepare("SELECT 
-        p.*, 
-        i.inventory_id, 
-        i.quantity
-    FROM 
-        products AS p
-    LEFT JOIN 
-        inventory AS i ON p.product_id = i.product_id
-    WHERE 
-        p.price BETWEEN ? AND ?
-    ORDER BY 
-        p.price ASC");
-
-    // Bind parameters and execute the statement
-    $stmt->bind_param("dd", $minPrice, $maxPrice);
+    $data = json_decode(file_get_contents("php://input"), true);
+    // $id = $data['user_id'];
+    $id = 8;
+    // Use prepared statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT
+    -- palitan to ng "*" para makuha lahat ng data 
+    p.product_id,
+    od.order_detail_id,
+    o.order_id
+   
+FROM 
+    products AS p
+LEFT JOIN 
+    order_details AS od ON  od.product_id = p.product_id
+LEFT JOIN 
+    orders AS o ON  o.order_id = od.order_id
+WHERE 
+    o.user_id = ?");
+    $stmt->bind_param("i", $id);
     $stmt->execute();
 
     $result = $stmt->get_result();
     $stmt->close();
 
+    // Fetch data as an associative array
     $products = [];
     while ($row = $result->fetch_assoc()) {
         // Assuming $row['image'] contains the BLOB image data
@@ -79,7 +79,6 @@ function getProductsByPriceRange()
     // Close the connection
     $conn->close();
 
-    // Return the products as JSON
     echo json_encode($products);
 }
 
