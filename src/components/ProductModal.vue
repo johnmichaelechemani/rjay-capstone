@@ -4,14 +4,13 @@
     class="fixed inset-0 flex items-center justify-center bg-gray-500 border-2 border-zinc-300 bg-opacity-75 z-20"
   >
     <div class="bg-white rounded-lg shadow-xl max-w-lg mx-auto p-6">
-      <div>
-        <button
-          @click="closeModal"
-          class="float-end p-2 bg-slate-700/20 rounded-full"
-        >
-          <Icon icon="gravity-ui:xmark" class="text-lg hover:text-red-500" />
-        </button>
-      </div>
+      <button
+        @click="closeModal"
+        class="float-end p-2 bg-slate-700/20 rounded-full"
+      >
+        <Icon icon="gravity-ui:xmark" class="text-lg hover:text-red-500" />
+      </button>
+
       <div class="flex">
         <div class="flex-none w-48 relative">
           <img
@@ -78,13 +77,13 @@
               </form>
             </div>
             <div class="sm:flex text-sm justify-start items-center font-medium">
-              <div class="flex-auto my-1 flex space-x-4">
+              <div class="flex-auto my-1 mx-2 flex space-x-4">
                 <button
-                  class="h-10 px-6 hover:bg-slate-500/10 font-semibold rounded-md border border-black-800 text-gray-900"
+                  class="h-10 sm:w-40 px-6 hover:bg-slate-500/10 font-semibold rounded-md border border-black-800 text-gray-900"
                   type="button"
                   @click="addToCart(product.product_name, product.product_id)"
                 >
-                  Add to cart
+                  <span class="text-xs sm:text-sm"> Add to cart</span>
                 </button>
               </div>
               <button
@@ -132,7 +131,7 @@ export default {
       this.$emit("update:isVisible", false);
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const quantity = ref(1);
     const finalQuantity = ref("");
     const isHeartRed = ref(false);
@@ -152,13 +151,24 @@ export default {
       quantity.value = Math.max(Number(quantity.value) - 1, 1); // Ensure the quantity does not go below 1
       finalQuantity.value = quantity.value * props.product.price;
     };
-    const cart_id = ref(1);
+    const userLogin = ref([]);
+
+    const getUserFromLocalStorage = () => {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        userLogin.value = JSON.parse(userData);
+      }
+      return null;
+    };
+    getUserFromLocalStorage();
+    const cart_id = userLogin.value.user_id;
 
     const addToCart = async (name, id) => {
-      // console.log(finalQuantity.value);
-      // console.log(name);
-      // console.log(id);
-      // console.log(quantity.value);
+      console.log(finalQuantity.value);
+      console.log(name);
+      console.log(id);
+      console.log(quantity.value);
+      console.log(cart_id);
 
       try {
         const response = await axios.post(
@@ -166,12 +176,13 @@ export default {
           {
             product_id: id,
             quantity: quantity.value,
-            cart_id: cart_id.value,
+            cart_id: cart_id,
           }
         );
         console.log(response.data);
-      } catch {
-        alert("Error adding to cart");
+        emit("update:isVisible", false);
+      } catch (error) {
+        console.error("Error adding to cart:", error);
       }
     };
     const heart = () => {

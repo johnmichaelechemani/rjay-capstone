@@ -2,6 +2,7 @@ import SearchModal from "@/components/SearchModal.vue";
 import LoginModal from "@/components/LoginModal.vue";
 import { Icon } from "@iconify/vue";
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 export default {
   components: {
@@ -36,12 +37,14 @@ export default {
     const showWishList = ref(false);
     const isSidebarOpen = ref(false);
     const cartItemsValue = ref([]);
+    const router = useRouter();
 
     const toggleSidebar = () => {
       isSidebarOpen.value = !isSidebarOpen.value;
     };
 
     const showCartFunction = () => {
+      cartItems();
       showCart.value = !showCart.value;
       isSidebarOpen.value = false;
       showWishList.value = false;
@@ -58,20 +61,43 @@ export default {
       showWishList.value = false;
     };
 
+    var userLogin = ref([]);
+    const getUserFromLocalStorage = () => {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        userLogin.value = JSON.parse(userData);
+      }
+      return null;
+    };
     const cartItems = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=fetchCartItems"
+        const res = await axios.post(
+          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=fetchCartItems",
+          {
+            cart_id: userLogin.value.user_id,
+          }
         );
         cartItemsValue.value = res.data;
+        // console.log(userLogin.value.user_id);
+        // console.log("cart value: ", cartItemsValue.value);
       } catch (error) {
         console.error("Error fetching cart items:", error);
       }
     };
 
-    onMounted(() => {
-      cartItems();
-    });
+    const refreshPage = () => {
+      location.reload(true);
+    };
+    const Logout = () => {
+      localStorage.removeItem("user");
+      console.log("click");
+      refreshPage();
+      //  router.push("/admin_dashboard");
+    };
+
+    getUserFromLocalStorage();
+    cartItems();
+
     return {
       showCartFunction,
       showCart,
@@ -82,6 +108,8 @@ export default {
       toggleSidebar,
       isSidebarOpen,
       cartItemsValue,
+      userLogin,
+      Logout,
     };
   },
 };

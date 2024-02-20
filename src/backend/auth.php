@@ -17,9 +17,6 @@ switch ($action) {
     case 'login':
         login();
         break;
-    case 'getCustomer':
-        getCustomer();
-        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
@@ -52,6 +49,28 @@ function register()
         $res['success'] = false;
         $res['message'] = 'Failed to add customer.';
     }
+
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username=?");
+    $stmt->bind_param("s", $customername);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $customer = $result->fetch_array();
+    if ($customer) {
+        $id = $customer['user_id'];
+        $stmt = $conn->prepare("INSERT INTO cart (cart_id, user_id) VALUES (?, ?)");
+        $stmt->bind_param("ii", $id, $id);
+        $stmt->execute();
+        if ($stmt->affected_rows > 0) {
+            $res['success'] = true;
+            $res['message'] = 'Added successfully.';
+        } else {
+            $res['success'] = false;
+            $res['message'] = 'Failed to add cart id.';
+        }
+
+    }
+
+
     $stmt->close();
     echo json_encode($res);
 }
@@ -92,19 +111,4 @@ function login()
     // Encode the final response array and send as HTTP response
     echo json_encode($res);
 
-}
-function getCustomer()
-{
-    session_start();
-    global $globalUser;
-
-    if (isset($_SESSION['customer'])) {
-        $res['success'] = true;
-        $res['customer'] = $_SESSION['customer'];
-    } else {
-        $res['error'] = true;
-        $res['message'] = 'User not logged in';
-    }
-
-    echo json_encode($res);
 }

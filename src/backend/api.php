@@ -40,7 +40,8 @@ switch ($action) {
         break;
 }
 
-function getProductsByPriceRange() {
+function getProductsByPriceRange()
+{
     global $conn;
 
     // Read minPrice and maxPrice from query string
@@ -189,11 +190,11 @@ function addCart()
     $cart_id = $data['cart_id'];
 
     $stmt = $conn->prepare("INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $cart_id, $product_id, $quantity);
+    $stmt->bind_param("iii", $cart_id, $product_id, $quantity);
     $stmt->execute();
     if ($stmt->affected_rows > 0) {
         $res['success'] = true;
-        $res['message'] = 'Porduct added successfully.';
+        $res['message'] = 'Product added successfully.';
     } else {
         $res['success'] = false;
         $res['message'] = 'Failed to add product.';
@@ -238,21 +239,25 @@ function fetchCartItems()
 {
     global $conn;
 
-    // Fetch products from the database
-    $sql = "SELECT 
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['cart_id'];
+
+    // Use prepared statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT 
     p.*, 
-    i.inventory_id, 
-    i.quantity,
-    ps.*
+    ci.*
+   
 FROM 
     products AS p
 LEFT JOIN 
-    inventory AS i ON p.product_id = i.product_id
-LEFT JOIN
-    product_specifications AS ps ON i.product_id = ps.product_id
-ORDER BY 
-    p.ratings DESC";
-    $result = $conn->query($sql);
+    cart_items AS ci ON  ci.product_id = p.product_id
+WHERE 
+    ci.cart_id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $stmt->close();
 
     // Fetch data as an associative array
     $products = [];

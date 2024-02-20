@@ -210,6 +210,10 @@ export default {
     const loginPassword = ref("");
     const router = useRouter();
     let name = ref("");
+    const refreshPage = () => {
+      location.reload(true);
+    };
+
     const signIn = async () => {
       try {
         const url =
@@ -224,6 +228,8 @@ export default {
         );
 
         name.value = res.data.customer;
+        localStorage.setItem("user", JSON.stringify(name.value));
+        refreshPage();
         const role = res.data.role;
         if (role === "admin") {
           router.push("/admin_dashboard");
@@ -232,7 +238,6 @@ export default {
           emit("update:isVisible", false);
           emit("login-completed", name.value);
         }
-        console.log(name.value);
       } catch {}
     };
     const registerEmail = ref("");
@@ -261,6 +266,11 @@ export default {
       } catch (res) {
         console.log(res.data.success);
       }
+      registerName.value = "";
+      registerEmail.value = "";
+      registerPassword.value = "";
+      contactNumber.value = "";
+      role.value = "";
     };
 
     return {

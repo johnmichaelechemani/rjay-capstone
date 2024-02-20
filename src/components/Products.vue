@@ -198,15 +198,14 @@ export default {
       }
     };
 
-    const filterByPrice = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProductsByPriceRange&minPrice=${minPrice.value}&maxPrice=${maxPrice.value}`
-        );
-        products.value = response.data;
-      } catch (error) {
-        console.error("Error fetching products by price range: ", error);
-      }
+    const filterByPrice = () => {
+      // Assuming `props.products` contains all products you might want to filter
+      // And these are already available in the `products` ref
+      const filtered = products.value.filter((product) => {
+        const price = parseFloat(product.price); // Ensure the price is a number
+        return price >= minPrice.value && price <= maxPrice.value;
+      });
+      products.value = filtered;
     };
 
     const handleSearchCompleted = (product) => {
