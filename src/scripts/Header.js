@@ -94,6 +94,9 @@ export default {
       refreshPage();
       //  router.push("/admin_dashboard");
     };
+    const showCustomerSettings = () => {
+      console.log("click");
+    };
 
     getUserFromLocalStorage();
     cartItems();
@@ -110,6 +113,7 @@ export default {
       cartItemsValue,
       userLogin,
       Logout,
+      showCustomerSettings,
     };
   },
 };

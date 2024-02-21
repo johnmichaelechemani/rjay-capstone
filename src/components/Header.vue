@@ -99,7 +99,10 @@
         <span>Cart</span>
       </div>
       <div class="flex gap-2 justify-start items-center" v-if="userLogin">
-        <button class="flex gap-2 justify-start items-center">
+        <button
+          @click="showCustomerSettings"
+          class="flex gap-2 justify-start items-center"
+        >
           <div class="h-10 w-10 bg-slate-100 rounded-full"></div>
           <div>
             <h1 class="text-white font-bold">{{ userLogin.username }}</h1>
@@ -128,41 +131,60 @@
             class="p-2 bg-slate-500/10 h-96 overflow-scroll overflow-x-hidden rounded-md shadow-sm"
           >
             <div v-for="items in cartItemsValue" :key="items">
-              <div class="flex gap-2 justify-between my-2">
-                <div class="flex gap-2">
+              <div class="my-1 relative">
+                <div class="flex justify-start items-center gap-2">
+                  <button
+                    class="flex my-1 absolute top-0 right-0 text-red-500 p-1 rounded-full bg-slate-400/75 shadow-sm"
+                  >
+                    <Icon icon="ic:round-delete" class="text-lg text-red-500" />
+                  </button>
+
                   <img
                     :src="'data:image/png;base64,' + items.image"
                     alt=""
                     class="w-16 h-16 rounded-md"
                   />
                   <div>
-                    <h1 class="font-semibold text-xs">
+                    <h1 class="font-bold text-xs">
                       {{ items.product_name }}
                     </h1>
-                    <p>{{ items.price }}</p>
-                    <p class="text-xs">Qtty: <span>2</span></p>
+                    <p class="text-xs font-semibold">{{ items.price }}</p>
+
+                    <div class="flex gap-2">
+                      <div
+                        class="flex justify-center items-center gap-2 font-semibold text-slate-800"
+                      >
+                        <p>Qtty:</p>
+                        <p
+                          class="p-0.5 flex justify-center items-center w-7 rounded-md border-blue-500/50 border"
+                        >
+                          2
+                        </p>
+                      </div>
+                      <button
+                        class="p-0.5 flex justify-center items-center w-7 rounded-full border"
+                      >
+                        <Icon icon="tabler:minus" />
+                      </button>
+                      <button
+                        class="p-0.5 flex justify-center items-center w-7 rounded-full border"
+                      >
+                        <Icon icon="mingcute:add-line" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-
-                <div>
-                  <div class="gap-2 justify-start items-center">
-                    <button
-                      class="flex my-1 justify-center items-center gap-2 border text-red-500 p-2 rounded-md"
-                    >
-                      <Icon
-                        icon="ic:round-delete"
-                        class="text-lg text-red-500"
-                      />Delete
-                    </button>
-                    <button
-                      class="flex justify-center items-center gap-2 bg-blue-500 text-gray-100 p-2 rounded-md"
-                    >
-                      <Icon
-                        icon="ic:outline-shopping-cart-checkout"
-                        class="text-lg"
-                      />Buy Now
-                    </button>
-                  </div>
+                <div
+                  class="gap-2 my-2 shadow justify-center w-full items-center"
+                >
+                  <button
+                    class="flex justify-center w-full items-center gap-2 bg-blue-500 text-gray-100 p-2 rounded-md"
+                  >
+                    <Icon
+                      icon="ic:outline-shopping-cart-checkout"
+                      class="text-lg"
+                    />Checkout
+                  </button>
                 </div>
               </div>
               <hr />
