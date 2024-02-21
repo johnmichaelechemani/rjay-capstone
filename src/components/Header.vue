@@ -220,7 +220,7 @@
     <!-- payment popup -->
     <div
       v-if="showPayment"
-      class="justify-center items-center flex w-full h-full"
+      class="justify-center items-center flex w-full h-full overflow-scroll"
     >
       <div
         @click="closePayment()"
@@ -229,8 +229,8 @@
       <div
         class="fixed z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center items-center flex"
       >
-        <div class="justify-center items-center flex">
-          <div class="p-5 bg-slate-100 rounded-md h-full w-96">
+        <div class="justify-center items-center flex overflow-scroll">
+          <div class="p-5 bg-slate-100 rounded-md h-full w-96 overflow-scroll">
             <h1 class="font-semibold text-lg">Checkout</h1>
             <div class="bg-slate-200 rounded-md p-2 my-1">
               <span class="text-slate-900 text-sm">Delivery Address</span>
