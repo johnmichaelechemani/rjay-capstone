@@ -165,6 +165,7 @@
                   />
 
                   <button
+                    @click="deleteCartItems(items.product_id)"
                     class="flex my-1 absolute top-0 right-0 text-red-500 p-1 rounded-full bg-slate-400/75 shadow-sm"
                   >
                     <Icon icon="ic:round-delete" class="text-lg text-red-500" />
@@ -189,15 +190,19 @@
                         <p
                           class="p-0.5 flex justify-center items-center w-7 rounded-md border-blue-500/50 border"
                         >
-                          2
+                          {{ items.quantity }}
                         </p>
                       </div>
                       <button
+                        @click="decrement(items.product_id)"
+                        :disabled="items.quantity === 1"
                         class="p-0.5 flex justify-center items-center w-7 rounded-full border"
                       >
                         <Icon icon="tabler:minus" />
                       </button>
                       <button
+                        @click="increment(items.product_id)"
+                        :disabled="items.quantity === 3"
                         class="p-0.5 flex justify-center items-center w-7 rounded-full border"
                       >
                         <Icon icon="mingcute:add-line" />

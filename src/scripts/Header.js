@@ -79,7 +79,7 @@ export default {
         );
         cartItemsValue.value = res.data;
         // console.log(userLogin.value.user_id);
-        // console.log("cart value: ", cartItemsValue.value);
+        console.log("cart value: ", cartItemsValue.value);
       } catch (error) {
         console.error("Error fetching cart items:", error);
       }
@@ -135,6 +135,42 @@ export default {
       return allProductIds.every((productId) => isChecked(productId));
     });
 
+    // set  initial quantities from local storage or default values
+
+    //  Update the quantity in local storage when a user changes it
+    const increment = (productId) => {
+      const itemIndex = cartItemsValue.value.findIndex(
+        (item) => item.product_id === productId
+      );
+      if (itemIndex !== -1) {
+        const updatedQuantity = Math.min(
+          Number(cartItemsValue.value[itemIndex].quantity || 1) + 1,
+          3
+        );
+        // Update the quantity of the specific product
+        cartItemsValue.value[itemIndex].quantity = updatedQuantity;
+      }
+    };
+
+    //  update the quantity in local storage
+    const decrement = (productId) => {
+      const itemIndex = cartItemsValue.value.findIndex(
+        (item) => item.product_id === productId
+      );
+      if (itemIndex !== -1) {
+        const updatedQuantity = Math.min(
+          Number(cartItemsValue.value[itemIndex].quantity || 1) - 1,
+          3
+        );
+        // Update the quantity of the specific product
+        cartItemsValue.value[itemIndex].quantity = updatedQuantity;
+      }
+    };
+    const deleteCartItems = (productId) => {
+      console.log("Product id to delete: ", productId);
+    };
+
+    //  Add an item to the checkout
     const checkout = () => {
       // Collect all the checked item IDs
       const checkedItemIds = Object.keys(checkedItems.value).filter(
@@ -152,20 +188,33 @@ export default {
       closeCart,
       showWishList,
       showWishListFunction,
+
       closeWishList,
       toggleSidebar,
+
       isSidebarOpen,
       cartItemsValue,
+
       userLogin,
       Logout,
+
       showCustomerSettings,
       showSettings,
+
       isChecked,
       toggleCheckbox,
+
       checkAll,
       atLeastOneItemChecked,
       allItemsChecked,
       checkout,
+
+      // edit quantity
+      increment,
+      decrement,
+
+      //
+      deleteCartItems,
     };
   },
 };
