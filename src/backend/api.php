@@ -33,11 +33,32 @@ switch ($action) {
     case 'fetchOrder':
         fetchOrder();
         break;
+        //Eto yung pagdelete ng items sa cart
+    case 'deleteCartItem':
+        deleteCartItem();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+function deleteCartItem()
+{
+    global $conn;
+    $data = json_decode(file_get_contents("php://input"), true);
+    // $id = $data['user_id'];
+    $id = 1;
+
+    $stmt = $conn->prepare("DELETE FROM cart_items WHERE cart_item_id = ?");
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+
+    echo "Cart item deleted successfully";
+
+    $stmt->close();
+    $conn->close();
 }
 
 function fetchOrder()
