@@ -230,10 +230,48 @@
         class="fixed z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center items-center flex"
       >
         <div class="justify-center items-center flex">
-          <div class="p-5 bg-slate-100 rounded-md text-slate-800 h-96 w-96">
+          <div class="p-5 bg-slate-100 rounded-md h-96 w-96">
             <h1 class="font-semibold text-lg">Checkout</h1>
+            <div class="bg-slate-200 rounded-md p-2 my-1">
+              <span class="text-slate-900 text-sm">Delivery Address</span>
+              <div class="text-xs text-slate-800">
+                <p>R-jay | (+63) 091234567</p>
+                <p>Door 6, Diko makita street</p>
+                <p>South Philippines, 3000</p>
+              </div>
+            </div>
             <div class="bg-slate-200 rounded-md p-2">
-              <span>Delivery Address</span>
+              <span class="text-slate-900 text-sm font-medium"
+                >R-jay Store</span
+              >
+              <div class="my-1">
+                <div class="flex gap-2 justify-start items-center">
+                  <div class="w-11 h-11 bg-slate-800 rounded-sm"></div>
+                  <div>
+                    <span class="text-sm font-semibold"
+                      >Monitor 140hz Amoled Display</span
+                    >
+                    <p class="text-xs">$1000</p>
+                    <p class="text-xs">x1</p>
+                  </div>
+                </div>
+              </div>
+              <div class="my-2">
+                <div
+                  class="flex gap-2 justify-between items-center border-y p-2 border-cyan-500/50 bg-cyan-300/10"
+                >
+                  <span class="text-sm font-medium">Shipping Fee</span>
+                  <p class="text-xs">$10</p>
+                </div>
+              </div>
+            </div>
+            <div class="my-1">
+              <div
+                class="flex gap-2 justify-between items-center p-2 bg-blue-300/10"
+              >
+                <span class="text-xs">Order Total <span>(1)</span> Item</span>
+                <p class="text-sm font-medium text-red-500">$1000</p>
+              </div>
             </div>
           </div>
         </div>
