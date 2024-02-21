@@ -152,9 +152,18 @@
           <div
             class="p-2 bg-slate-500/10 h-96 overflow-scroll overflow-x-hidden rounded-md shadow-sm"
           >
+            <div class="flex gap-2 font-semibold mb-2">
+              <input type="checkbox" @change="checkAll" />Select All
+            </div>
             <div v-for="items in cartItemsValue" :key="items">
               <div class="my-1 relative">
                 <div class="flex justify-start items-center gap-2">
+                  <input
+                    type="checkbox"
+                    :checked="isChecked(items.product_id)"
+                    @change="toggleCheckbox(items.product_id)"
+                  />
+
                   <button
                     class="flex my-1 absolute top-0 right-0 text-red-500 p-1 rounded-full bg-slate-400/75 shadow-sm"
                   >
@@ -196,21 +205,25 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  class="gap-2 my-2 shadow justify-center w-full items-center"
-                >
-                  <button
-                    class="flex justify-center w-full items-center gap-2 bg-blue-500 text-gray-100 p-2 rounded-md"
-                  >
-                    <Icon
-                      icon="ic:outline-shopping-cart-checkout"
-                      class="text-lg"
-                    />Checkout
-                  </button>
-                </div>
               </div>
               <hr />
             </div>
+            <!--  -->
+            <div
+              v-if="atLeastOneItemChecked || allItemsChecked"
+              class="gap-2 my-2 shadow justify-center w-full items-center"
+            >
+              <button
+                @click="checkout"
+                class="flex justify-center w-full items-center gap-2 bg-blue-500 text-gray-100 p-2 rounded-md"
+              >
+                <Icon
+                  icon="ic:outline-shopping-cart-checkout"
+                  class="text-lg"
+                />Checkout
+              </button>
+            </div>
+            <!--  -->
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import SearchModal from "@/components/SearchModal.vue";
 import LoginModal from "@/components/LoginModal.vue";
 import { Icon } from "@iconify/vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 export default {
@@ -99,6 +99,49 @@ export default {
       showSettings.value = !showSettings.value;
       console.log("click");
     };
+    const checkedItems = ref({});
+    const isChecked = (productId) => !!checkedItems.value[productId];
+
+    const toggleCheckbox = (productId) => {
+      checkedItems.value = {
+        ...checkedItems.value,
+        [productId]: !isChecked(productId),
+      };
+      console.log(checkedItems.value);
+    };
+    const checkAll = () => {
+      const allProductIds = cartItemsValue.value.map((item) => item.product_id);
+      const isAllChecked = allProductIds.every((productId) =>
+        isChecked(productId)
+      );
+
+      const updatedCheckedItems = {};
+
+      allProductIds.forEach((productId) => {
+        updatedCheckedItems[productId] = !isAllChecked;
+      });
+
+      checkedItems.value = updatedCheckedItems;
+      console.log(checkedItems.value);
+    };
+
+    const atLeastOneItemChecked = computed(() => {
+      return Object.values(checkedItems.value).some((value) => value);
+    });
+
+    // Computed property to check if all items are checked
+    const allItemsChecked = computed(() => {
+      const allProductIds = cartItemsValue.value.map((item) => item.product_id);
+      return allProductIds.every((productId) => isChecked(productId));
+    });
+
+    const checkout = () => {
+      // Collect all the checked item IDs
+      const checkedItemIds = Object.keys(checkedItems.value).filter(
+        (productId) => checkedItems.value[productId]
+      );
+      console.log("Checked Item IDs:", checkedItemIds);
+    };
 
     getUserFromLocalStorage();
     cartItems();
@@ -117,6 +160,12 @@ export default {
       Logout,
       showCustomerSettings,
       showSettings,
+      isChecked,
+      toggleCheckbox,
+      checkAll,
+      atLeastOneItemChecked,
+      allItemsChecked,
+      checkout,
     };
   },
 };
