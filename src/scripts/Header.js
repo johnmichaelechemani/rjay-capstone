@@ -79,7 +79,7 @@ export default {
         );
         cartItemsValue.value = res.data;
         // console.log(userLogin.value.user_id);
-        console.log("cart value: ", cartItemsValue.value);
+        // console.log("cart value: ", cartItemsValue.value);
       } catch (error) {
         console.error("Error fetching cart items:", error);
       }
@@ -170,6 +170,12 @@ export default {
       console.log("Product id to delete: ", productId);
     };
 
+    // select payment method
+    const showPayment = ref(false);
+    const closePayment = () => {
+      showPayment.value = false;
+      console.log("click");
+    };
     //  Add an item to the checkout
     const checkout = () => {
       // Collect all the checked item IDs
@@ -177,6 +183,7 @@ export default {
         (productId) => checkedItems.value[productId]
       );
       console.log("Checked Item IDs:", checkedItemIds);
+      showPayment.value = true;
     };
 
     getUserFromLocalStorage();
@@ -215,6 +222,9 @@ export default {
 
       //
       deleteCartItems,
+      //
+      showPayment,
+      closePayment,
     };
   },
 };

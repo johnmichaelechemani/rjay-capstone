@@ -134,7 +134,7 @@
     </div>
     <!-- cart modal -->
     <div v-if="showCart" class="flex justify-center items-center">
-      <div class="absolute top-32 right-3 z-50">
+      <div class="absolute top-32 right-3 z-30">
         <div
           class="bg-slate-300 border border-slate-900/20 shadow-lg px-3 py-2 w-96 rounded-lg"
         >
@@ -233,6 +233,29 @@
         </div>
       </div>
     </div>
+    <!-- payment popup -->
+    <div
+      v-if="showPayment"
+      class="justify-center items-center flex w-full h-full"
+    >
+      <div
+        @click="closePayment()"
+        class="fixed z-40 w-full top-0 left-0 h-full bg-slate-900 opacity-50"
+      ></div>
+      <div
+        class="fixed z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center items-center flex"
+      >
+        <div class="justify-center items-center flex">
+          <div
+            class="p-5 bg-slate-800 rounded-md text-white h-96 w-96 text-2xl"
+          >
+            bayad ka muna
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--  -->
     <!-- cart modal -->
     <!-- wish modal -->
     <div v-if="showWishList" class="flex justify-center items-center">
