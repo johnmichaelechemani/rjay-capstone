@@ -54,15 +54,11 @@
         class="flex items-center gap-2 text-white hover:text-zinc-400"
         @click="showLogin = true"
       >
-        <div v-if="userLogin.length === 0">
+        <div v-if="userLogin.length === 0" class="flex gap-2">
           <Icon icon="bi:person" class="text-lg" />
           <span>Sign in</span>
         </div>
       </div>
-
-      <span @click="Logout()" class="p-2 text-white bg-blue-500 rounded-md"
-        >Logout</span
-      >
       <!-- login modal -->
       <LoginModal
         :is-visible="showLogin"
@@ -72,6 +68,9 @@
       <!-- login modal -->
       <!-- wishlist -->
       <div
+        :class="
+          userLogin.length === 0 ? 'text-slate-200 pointer-events-none' : ''
+        "
         @click="showWishListFunction"
         class="flex items-center gap-2 text-white hover:text-zinc-400 relative"
       >
@@ -86,6 +85,9 @@
       </div>
       <!-- Cart -->
       <div
+        :class="
+          userLogin.length === 0 ? 'text-slate-200 pointer-events-none' : ''
+        "
         @click="showCartFunction"
         class="flex items-center gap-2 text-white hover:text-zinc-400 relative"
       >
@@ -98,7 +100,10 @@
         <Icon icon="ion:cart-outline" class="text-lg" />
         <span>Cart</span>
       </div>
-      <div class="flex gap-2 justify-start items-center" v-if="userLogin">
+      <div
+        class="flex gap-2 justify-start items-center relative"
+        v-if="userLogin.length !== 0"
+      >
         <button
           @click="showCustomerSettings"
           class="flex gap-2 justify-start items-center"
@@ -108,6 +113,23 @@
             <h1 class="text-white font-bold">{{ userLogin.username }}</h1>
           </div>
         </button>
+
+        <div v-if="showSettings" class="absolute show top-11 z-50">
+          <div
+            class="bg-slate-700 text-slate-100 p-2 rounded-md shadow-xl shadow-slate-800/50 font-semibold"
+          >
+            <button
+              @click="Logout()"
+              class="py-2 px-4 w-full bg-slate-900/50 hover:bg-slate-900/75 rounded-md my-1"
+            >
+              Logout</button
+            ><button
+              class="py-2 px-4 w-full bg-slate-900/50 hover:bg-slate-900/75 rounded-md"
+            >
+              Settings
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <!-- cart modal -->

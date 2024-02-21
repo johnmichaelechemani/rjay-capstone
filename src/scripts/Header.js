@@ -94,7 +94,9 @@ export default {
       refreshPage();
       //  router.push("/admin_dashboard");
     };
+    const showSettings = ref(false);
     const showCustomerSettings = () => {
+      showSettings.value = !showSettings.value;
       console.log("click");
     };
 
@@ -114,6 +116,7 @@ export default {
       userLogin,
       Logout,
       showCustomerSettings,
+      showSettings,
     };
   },
 };
