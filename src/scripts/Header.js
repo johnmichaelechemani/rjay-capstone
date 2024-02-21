@@ -34,7 +34,6 @@ export default {
   },
   setup(props) {
     const showCart = ref(false);
-    const showWishList = ref(false);
     const isSidebarOpen = ref(false);
     const cartItemsValue = ref([]);
     const router = useRouter();
@@ -47,18 +46,9 @@ export default {
       cartItems();
       showCart.value = !showCart.value;
       isSidebarOpen.value = false;
-      showWishList.value = false;
-    };
-    const showWishListFunction = () => {
-      showWishList.value = !showWishList.value;
-      isSidebarOpen.value = false;
-      showCart.value = false;
     };
     const closeCart = () => {
       showCart.value = false;
-    };
-    const closeWishList = () => {
-      showWishList.value = false;
     };
 
     var userLogin = ref([]);
@@ -193,10 +183,7 @@ export default {
       showCartFunction,
       showCart,
       closeCart,
-      showWishList,
-      showWishListFunction,
 
-      closeWishList,
       toggleSidebar,
 
       isSidebarOpen,
