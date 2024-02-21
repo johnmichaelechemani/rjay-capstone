@@ -230,7 +230,7 @@
         class="fixed z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center items-center flex"
       >
         <div class="justify-center items-center flex">
-          <div class="p-5 bg-slate-100 rounded-md h-96 w-96">
+          <div class="p-5 bg-slate-100 rounded-md h-full w-96">
             <h1 class="font-semibold text-lg">Checkout</h1>
             <div class="bg-slate-200 rounded-md p-2 my-1">
               <span class="text-slate-900 text-sm">Delivery Address</span>
@@ -267,11 +267,50 @@
             </div>
             <div class="my-1">
               <div
-                class="flex gap-2 justify-between items-center p-2 bg-blue-300/10"
+                class="flex gap-2 justify-between items-center p-2 rounded-md bg-blue-300/10"
               >
                 <span class="text-xs">Order Total <span>(1)</span> Item</span>
                 <p class="text-sm font-medium text-red-500">$1000</p>
               </div>
+            </div>
+            <div class="my-1">
+              <div
+                class="flex gap-2 justify-between items-center p-2 rounded-md bg-blue-500/10"
+              >
+                <div class="w-full">
+                  <span class="text-sm font-semibold"> Payment Option</span>
+                  <div class="block w-full my-2">
+                    <button
+                      class="p-2 bg-green-500/10 flex justify-center items-center gap-1 rounded-full my-1 border border-green-600/50 w-full text-green-600 font-medium text-sm"
+                    >
+                      <Icon icon="iconoir:cash-solid" class="text-lg" /> Cash on
+                      Delivery
+                    </button>
+                    <button
+                      class="p-2 bg-green-blue/10 rounded-full flex justify-center items-center gap-1 my-1 border border-blue-600/50 w-full text-blue-600 font-medium text-sm"
+                    >
+                      <Icon icon="material-symbols:wallet" class="text-lg" />
+                      Payment Center/E-wallet
+                    </button>
+                    <button
+                      class="p-2 bg-green-orange/10 rounded-full flex justify-center items-center gap-1 my-1 border border-orange-600/50 w-full text-orange-600 font-medium text-sm"
+                    >
+                      <Icon
+                        icon="material-symbols:credit-card"
+                        class="text-lg"
+                      />
+                      Credit Card
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="my-3">
+              <button
+                class="w-full rounded-full bg-blue-500 p-2 text-slate-100 text-lg font-semibold shadow-md shadow-blue-500/50"
+              >
+                Place Order
+              </button>
             </div>
           </div>
         </div>
