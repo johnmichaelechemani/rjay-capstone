@@ -97,7 +97,7 @@ export default {
     const showSettings = ref(false);
     const showCustomerSettings = () => {
       showSettings.value = !showSettings.value;
-      console.log("click");
+      //console.log("click");
     };
     const checkedItems = ref({});
     const isChecked = (productId) => !!checkedItems.value[productId];
@@ -107,7 +107,7 @@ export default {
         ...checkedItems.value,
         [productId]: !isChecked(productId),
       };
-      console.log(checkedItems.value);
+      // console.log(checkedItems.value);
     };
     const checkAll = () => {
       const allProductIds = cartItemsValue.value.map((item) => item.product_id);
@@ -122,7 +122,7 @@ export default {
       });
 
       checkedItems.value = updatedCheckedItems;
-      console.log(checkedItems.value);
+      //console.log(checkedItems.value);
     };
 
     const atLeastOneItemChecked = computed(() => {

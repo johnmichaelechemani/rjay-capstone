@@ -244,7 +244,7 @@ export default {
         const response = await axios.get(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProducts"
         );
-        console.log("API Response Data:", response.data);
+        // console.log("API Response Data:", response.data);
         products.value = response.data;
 
         selectedCategoryName.value = "";
