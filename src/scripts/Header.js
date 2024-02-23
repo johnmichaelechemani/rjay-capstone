@@ -1,7 +1,7 @@
 import SearchModal from "@/components/SearchModal.vue";
 import LoginModal from "@/components/LoginModal.vue";
 import { Icon } from "@iconify/vue";
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 export default {
@@ -184,14 +184,24 @@ export default {
       showPayment.value = false;
       console.log("click");
     };
-    //  Add an item to the checkout
-    const checkout = () => {
-      // Collect all the checked item IDs
+
+    const checkoutItems = computed(() => {
       const checkedItemIds = Object.keys(checkedItems.value).filter(
         (productId) => checkedItems.value[productId]
       );
-      console.log("Checked Item IDs:", checkedItemIds);
+
+      return cartItemsValue.value.filter((item) =>
+        checkedItemIds.includes(item.product_id.toString())
+      );
+    });
+
+    const itemsToCheckout = ref({});
+    // Use toRefs to convert reactive object to plain JavaScript object
+    const checkout = () => {
       showPayment.value = true;
+      // Collect all the checked item IDs
+      itemsToCheckout.value = checkoutItems.value.map((item) => ({ item }));
+      console.log(itemsToCheckout.value);
     };
 
     getUserFromLocalStorage();
@@ -230,6 +240,8 @@ export default {
       //
       showPayment,
       closePayment,
+
+      itemsToCheckout,
     };
   },
 };

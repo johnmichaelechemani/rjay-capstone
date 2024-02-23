@@ -241,18 +241,27 @@
               </div>
             </div>
             <div class="bg-slate-200 rounded-md p-2">
-              <span class="text-slate-900 text-sm font-medium"
-                >R-jay Store</span
+              <div
+                class="my-1"
+                v-for="(items, index) in itemsToCheckout"
+                :key="index"
               >
-              <div class="my-1">
-                <div class="flex gap-2 justify-start items-center">
-                  <div class="w-11 h-11 bg-slate-800 rounded-sm"></div>
-                  <div>
-                    <span class="text-sm font-semibold"
-                      >Monitor 140hz Amoled Display</span
-                    >
-                    <p class="text-xs">$1000</p>
-                    <p class="text-xs">x1</p>
+                <div v-for="product in items" :key="product">
+                  <div class="flex gap-2 justify-start items-center">
+                    <div>
+                      <img
+                        :src="'data:image/png;base64,' + product.image"
+                        alt=""
+                        class="w-10 h-10 rounded-md"
+                      />
+                    </div>
+                    <div>
+                      <span class="text-sm font-semibold">{{
+                        product.product_name
+                      }}</span>
+                      <p class="text-xs">{{ product.price }}</p>
+                      <p class="text-xs">x{{ product.quantity }}</p>
+                    </div>
                   </div>
                 </div>
               </div>
