@@ -4,7 +4,7 @@ include('db.php');
 
 // Set headers for CORS
 header("Access-Control-Allow-Origin: http://localhost:5173"); // Update this to match your Vue.js development server URL
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: OPTIONS, GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
 
@@ -33,11 +33,32 @@ switch ($action) {
     case 'getProductsByPriceRange':
         getProductsByPriceRange();
         break;
+    case 'deleteCartItem':
+        deleteCartItem();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+function deleteCartItem()
+{
+    global $conn, $res;
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['user_id'];
+
+    $stmt = $conn->prepare("DELETE FROM cart_items WHERE cart_item_id = ?");
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+
+    $res['success'] = true;
+    $res['message'] = 'Cart item deleted successfully';
+
+
+    $stmt->close();
+    $conn->close();
 }
 
 function getProductsByPriceRange()

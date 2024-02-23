@@ -156,8 +156,18 @@ export default {
         cartItemsValue.value[itemIndex].quantity = updatedQuantity;
       }
     };
-    const deleteCartItems = (productId) => {
-      console.log("Product id to delete: ", productId);
+    const deleteCartItems = async (productId) => {
+      try {
+        const res = await axios.post(
+          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=deleteCartItem",
+          {
+            user_id: productId,
+          }
+        );
+        console.log(res);
+      } catch (err) {
+        console.log("Error: ", err);
+      }
     };
 
     // select payment method
