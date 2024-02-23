@@ -196,12 +196,29 @@ export default {
     });
 
     const itemsToCheckout = ref({});
-    // Use toRefs to convert reactive object to plain JavaScript object
+    let priceTotalAll = ref(0);
+    let priceTotalPerItem = ref(0);
+    let shippingFee = ref(10);
+
     const checkout = () => {
       showPayment.value = true;
-      // Collect all the checked item IDs
-      itemsToCheckout.value = checkoutItems.value.map((item) => ({ item }));
-      console.log(itemsToCheckout.value);
+
+      // Collect all the checked items
+      itemsToCheckout.value = checkoutItems.value.map((item) => {
+        // Calculate price per item
+        const pricePerItem = item.quantity * item.price;
+
+        // Add price per item to the total per item
+        priceTotalPerItem.value += pricePerItem;
+
+        // Return item with additional calculated values
+        return { item };
+      });
+
+      // Calculate the total price for all items
+      priceTotalAll.value = (
+        priceTotalPerItem.value + shippingFee.value
+      ).toFixed(2);
     };
 
     getUserFromLocalStorage();
@@ -242,6 +259,7 @@ export default {
       closePayment,
 
       itemsToCheckout,
+      priceTotalAll,
     };
   },
 };
