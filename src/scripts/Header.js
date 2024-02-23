@@ -158,7 +158,7 @@ export default {
     };
     const deleteCartItems = async (cart_id) => {
       let id = cart_id;
-      console.log(id);
+      // console.log(id);
       try {
         const res = await axios.delete(
           `http://localhost/Ecommerce/vue-project/src/backend/api.php?action=deleteCartItem`,
@@ -172,7 +172,7 @@ export default {
         if (res.data.success) {
           cartItems();
         }
-        console.log(res);
+        //  console.log(res);
       } catch (error) {
         console.error(error);
       }
