@@ -200,6 +200,7 @@ export default {
     let priceTotalPerItem = ref(0);
     // shipping fee must come from db
     let shippingFee = ref(10);
+    const selectedPayment = ref("");
 
     const checkout = () => {
       showPayment.value = true;
@@ -216,6 +217,20 @@ export default {
       priceTotalAll.value = (
         priceTotalPerItem.value + shippingFee.value
       ).toFixed(2);
+    };
+    const onDelivery = () => {
+      selectedPayment.value = "delivery";
+    };
+    const onPyment = () => {
+      selectedPayment.value = "payment";
+    };
+    const onCredit = () => {
+      selectedPayment.value = "credit";
+    };
+    const submitOrder = () => {
+      console.log(priceTotalAll.value);
+      console.log(selectedPayment.value);
+      console.log(userLogin.value.user_id);
     };
 
     getUserFromLocalStorage();
@@ -257,6 +272,12 @@ export default {
 
       itemsToCheckout,
       priceTotalAll,
+
+      onDelivery,
+      onCredit,
+      onPyment,
+      submitOrder,
+      selectedPayment,
     };
   },
 };

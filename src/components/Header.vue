@@ -297,18 +297,33 @@
                     <span class="text-sm font-semibold"> Payment Option</span>
                     <div class="block w-full my-2">
                       <button
+                        @click="onDelivery"
+                        :class="{
+                          ' shadow-md shadow-green-500/50 border-green-500':
+                            selectedPayment === 'delivery',
+                        }"
                         class="p-2 bg-green-500/10 flex justify-center items-center gap-1 rounded-full my-1 border border-gray-600/50 w-full text-green-600 font-medium text-sm"
                       >
                         <Icon icon="iconoir:cash-solid" class="text-lg" /> Cash
                         on Delivery
                       </button>
                       <button
+                        @click="onPyment"
+                        :class="{
+                          ' shadow-md shadow-blue-500/50 border-blue-500':
+                            selectedPayment === 'payment',
+                        }"
                         class="p-2 bg-green-blue/10 rounded-full flex justify-center items-center gap-1 my-1 border border-gray-600/50 w-full text-blue-600 font-medium text-sm"
                       >
                         <Icon icon="material-symbols:wallet" class="text-lg" />
                         Payment Center/E-wallet
                       </button>
                       <button
+                        @click="onCredit"
+                        :class="{
+                          ' shadow-md shadow-orange-500/50 border-orange-500':
+                            selectedPayment === 'credit',
+                        }"
                         class="p-2 bg-green-orange/10 rounded-full flex justify-center items-center gap-1 my-1 border border-gray-600/50 w-full text-orange-600 font-medium text-sm"
                       >
                         <Icon
@@ -323,6 +338,11 @@
               </div>
               <div class="my-3">
                 <button
+                  :disabled="selectedPayment === ''"
+                  :class="{
+                    ' cursor-not-allowed opacity-75': selectedPayment === '',
+                  }"
+                  @click="submitOrder"
                   class="w-full rounded-full bg-blue-500 p-2 text-slate-100 text-lg font-semibold shadow-md shadow-blue-500/50"
                 >
                   Place Order
