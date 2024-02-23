@@ -149,7 +149,7 @@
                   />
 
                   <button
-                    @click="deleteCartItems(items.product_id)"
+                    @click="deleteCartItems(items.cart_item_id)"
                     class="flex my-1 absolute top-0 right-0 text-red-500 p-1 rounded-full bg-slate-400/75 shadow-sm"
                   >
                     <Icon icon="ic:round-delete" class="text-lg text-red-500" />

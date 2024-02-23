@@ -69,7 +69,7 @@ export default {
         );
         cartItemsValue.value = res.data;
         // console.log(userLogin.value.user_id);
-        // console.log("cart value: ", cartItemsValue.value);
+        console.log("cart value: ", cartItemsValue.value);
       } catch (error) {
         console.error("Error fetching cart items:", error);
       }
@@ -156,17 +156,25 @@ export default {
         cartItemsValue.value[itemIndex].quantity = updatedQuantity;
       }
     };
-    const deleteCartItems = async (productId) => {
+    const deleteCartItems = async (cart_id) => {
+      let id = cart_id;
+      console.log(id);
       try {
-        const res = await axios.post(
-          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=deleteCartItem",
+        const res = await axios.delete(
+          `http://localhost/Ecommerce/vue-project/src/backend/api.php?action=deleteCartItem`,
           {
-            user_id: productId,
+            data: { id },
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
         );
+        if (res.data.success) {
+          cartItems();
+        }
         console.log(res);
-      } catch (err) {
-        console.log("Error: ", err);
+      } catch (error) {
+        console.error(error);
       }
     };
 

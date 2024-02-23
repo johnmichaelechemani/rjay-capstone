@@ -46,19 +46,20 @@ switch ($action) {
 function deleteCartItem()
 {
     global $conn, $res;
+
     $data = json_decode(file_get_contents("php://input"), true);
-    $id = $data['user_id'];
 
-    $stmt = $conn->prepare("DELETE FROM cart_items WHERE cart_item_id = ?");
-    $stmt->bind_param("s", $id);
-    $stmt->execute();
+    if (isset($data['id'])) {
+        $id = $data['id'];
+        mysqli_query($conn, "DELETE FROM cart_items WHERE cart_item_id=$id");
+        $res['success'] = true;
+        $res['message'] = 'Delete successful.';
+    } else {
+        $res['success'] = false;
+        $res['message'] = 'ID not provided.';
+    }
 
-    $res['success'] = true;
-    $res['message'] = 'Cart item deleted successfully';
-
-
-    $stmt->close();
-    $conn->close();
+    echo json_encode($res);
 }
 
 function getProductsByPriceRange()
