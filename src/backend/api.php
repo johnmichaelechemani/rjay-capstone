@@ -4,7 +4,7 @@ include('db.php');
 
 // Set headers for CORS
 header("Access-Control-Allow-Origin: http://localhost:5173"); // Update this to match your Vue.js development server URL
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: OPTIONS, GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
 
@@ -30,10 +30,9 @@ switch ($action) {
     case 'CheckoutOrder':
         CheckoutOrder();
         break;
-    case 'fetchOrder':
-        fetchOrder();
+    case 'getProductsByPriceRange':
+        getProductsByPriceRange();
         break;
-        //Eto yung pagdelete ng items sa cart
     case 'deleteCartItem':
         deleteCartItem();
         break;
@@ -46,50 +45,52 @@ switch ($action) {
 
 function deleteCartItem()
 {
-    global $conn;
+    global $conn, $res;
+
     $data = json_decode(file_get_contents("php://input"), true);
-    // $id = $data['user_id'];
-    $id = 1;
 
-    $stmt = $conn->prepare("DELETE FROM cart_items WHERE cart_item_id = ?");
-    $stmt->bind_param("s", $id);
-    $stmt->execute();
+    if (isset($data['id'])) {
+        $id = $data['id'];
+        mysqli_query($conn, "DELETE FROM cart_items WHERE cart_item_id=$id");
+        $res['success'] = true;
+        $res['message'] = 'Delete successful.';
+    } else {
+        $res['success'] = false;
+        $res['message'] = 'ID not provided.';
+    }
 
-    echo "Cart item deleted successfully";
-
-    $stmt->close();
-    $conn->close();
+    echo json_encode($res);
 }
 
-function fetchOrder()
+function getProductsByPriceRange()
 {
     global $conn;
 
-    $data = json_decode(file_get_contents("php://input"), true);
-    // $id = $data['user_id'];
-    $id = 8;
-    // Use prepared statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT
-    -- palitan to ng "*" para makuha lahat ng data 
-    p.product_id,
-    od.order_detail_id,
-    o.order_id
-   
-FROM 
-    products AS p
-LEFT JOIN 
-    order_details AS od ON  od.product_id = p.product_id
-LEFT JOIN 
-    orders AS o ON  o.order_id = od.order_id
-WHERE 
-    o.user_id = ?");
-    $stmt->bind_param("i", $id);
+    // Read minPrice and maxPrice from query string
+    $minPrice = isset($_GET['minPrice']) ? (float) $_GET['minPrice'] : 0;
+    $maxPrice = isset($_GET['maxPrice']) ? (float) $_GET['maxPrice'] : PHP_INT_MAX;
+
+    // Prepare SQL statement to select products within the specified price range
+    $stmt = $conn->prepare("SELECT 
+        p.*, 
+        i.inventory_id, 
+        i.quantity
+    FROM 
+        products AS p
+    LEFT JOIN 
+        inventory AS i ON p.product_id = i.product_id
+    WHERE 
+        p.price BETWEEN ? AND ?
+    ORDER BY 
+        p.price ASC");
+
+    // Bind parameters and execute the statement
+    $stmt->bind_param("dd", $minPrice, $maxPrice);
     $stmt->execute();
 
     $result = $stmt->get_result();
     $stmt->close();
 
-    // Fetch data as an associative array
     $products = [];
     while ($row = $result->fetch_assoc()) {
         // Assuming $row['image'] contains the BLOB image data
@@ -100,6 +101,7 @@ WHERE
     // Close the connection
     $conn->close();
 
+    // Return the products as JSON
     echo json_encode($products);
 }
 

@@ -169,13 +169,11 @@
 <script>
 import { Icon } from "@iconify/vue";
 import { onMounted, ref } from "vue";
-import RegisterModal from "./RegisterModal.vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 export default {
   components: {
     Icon,
-    RegisterModal,
   },
   props: {
     isVisible: {
