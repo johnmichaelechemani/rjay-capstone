@@ -285,7 +285,7 @@
                     <span>({{ itemsToCheckout.length }})</span> Item</span
                   >
                   <p class="text-sm font-medium text-red-500">
-                    {{ priceTotalAll }}
+                    ${{ priceTotalAll }}
                   </p>
                 </div>
               </div>

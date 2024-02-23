@@ -198,23 +198,20 @@ export default {
     const itemsToCheckout = ref({});
     let priceTotalAll = ref(0);
     let priceTotalPerItem = ref(0);
+    // shipping fee must come from db
     let shippingFee = ref(10);
 
     const checkout = () => {
       showPayment.value = true;
-
       // Collect all the checked items
       itemsToCheckout.value = checkoutItems.value.map((item) => {
         // Calculate price per item
         const pricePerItem = item.quantity * item.price;
-
         // Add price per item to the total per item
         priceTotalPerItem.value += pricePerItem;
-
         // Return item with additional calculated values
         return { item };
       });
-
       // Calculate the total price for all items
       priceTotalAll.value = (
         priceTotalPerItem.value + shippingFee.value
