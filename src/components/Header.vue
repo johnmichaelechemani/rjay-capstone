@@ -229,88 +229,125 @@
       <div
         class="fixed z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center items-center flex"
       >
-        <div class="justify-center items-center flex overflow-scroll">
-          <div class="p-5 bg-slate-100 rounded-md h-full w-96 overflow-scroll">
-            <h1 class="font-semibold text-lg">Checkout</h1>
-            <div class="bg-slate-200 rounded-md p-2 my-1">
-              <span class="text-slate-900 text-sm">Delivery Address</span>
-              <div class="text-xs text-slate-800">
-                <p>R-jay | (+63) 091234567</p>
-                <p>Door 6, Diko makita street</p>
-                <p>South Philippines, 3000</p>
-              </div>
-            </div>
-            <div class="bg-slate-200 rounded-md p-2">
-              <span class="text-slate-900 text-sm font-medium"
-                >R-jay Store</span
-              >
-              <div class="my-1">
-                <div class="flex gap-2 justify-start items-center">
-                  <div class="w-11 h-11 bg-slate-800 rounded-sm"></div>
-                  <div>
-                    <span class="text-sm font-semibold"
-                      >Monitor 140hz Amoled Display</span
-                    >
-                    <p class="text-xs">$1000</p>
-                    <p class="text-xs">x1</p>
-                  </div>
+        <div class="overflow-scroll bg-slate-100 h-[500px] rounded-md">
+          <div class="p-5 bg-slate-100 rounded-md h-full w-96">
+            <div class="h-full">
+              <h1 class="font-semibold text-lg">Checkout</h1>
+              <div class="bg-slate-200 rounded-md p-2 my-1">
+                <span class="text-slate-900 text-sm">Delivery Address</span>
+                <div class="text-xs text-slate-800">
+                  <p>R-jay | (+63) 091234567</p>
+                  <p>Door 6, Diko makita street</p>
+                  <p>South Philippines, 3000</p>
                 </div>
               </div>
-              <div class="my-2">
+              <div class="bg-slate-200 rounded-md p-2">
                 <div
-                  class="flex gap-2 justify-between items-center border-y p-2 border-cyan-500/50 bg-cyan-300/10"
+                  class="my-1"
+                  v-for="(items, index) in itemsToCheckout"
+                  :key="index"
                 >
-                  <span class="text-sm font-medium">Shipping Fee</span>
-                  <p class="text-xs">$10</p>
-                </div>
-              </div>
-            </div>
-            <div class="my-1">
-              <div
-                class="flex gap-2 justify-between items-center p-2 rounded-md bg-blue-300/10"
-              >
-                <span class="text-xs">Order Total <span>(1)</span> Item</span>
-                <p class="text-sm font-medium text-red-500">$1000</p>
-              </div>
-            </div>
-            <div class="my-1">
-              <div
-                class="flex gap-2 justify-between items-center p-2 rounded-md bg-blue-500/10"
-              >
-                <div class="w-full">
-                  <span class="text-sm font-semibold"> Payment Option</span>
-                  <div class="block w-full my-2">
-                    <button
-                      class="p-2 bg-green-500/10 flex justify-center items-center gap-1 rounded-full my-1 border border-green-600/50 w-full text-green-600 font-medium text-sm"
+                  <hr class="border my-2 border-gray-700/10" />
+                  <div v-for="product in items" :key="product">
+                    <div class="flex gap-2 justify-start items-center">
+                      <div>
+                        <img
+                          :src="'data:image/png;base64,' + product.image"
+                          alt=""
+                          class="w-10 h-10 rounded-md"
+                        />
+                      </div>
+                      <div>
+                        <span class="text-sm font-semibold">{{
+                          product.product_name
+                        }}</span>
+                        <p class="text-xs">{{ product.price }}</p>
+                        <p class="text-xs">x{{ product.quantity }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="my-2">
+                    <div
+                      class="flex gap-2 justify-between items-center border-y p-2 border-cyan-500/50 bg-cyan-300/10"
                     >
-                      <Icon icon="iconoir:cash-solid" class="text-lg" /> Cash on
-                      Delivery
-                    </button>
-                    <button
-                      class="p-2 bg-green-blue/10 rounded-full flex justify-center items-center gap-1 my-1 border border-blue-600/50 w-full text-blue-600 font-medium text-sm"
-                    >
-                      <Icon icon="material-symbols:wallet" class="text-lg" />
-                      Payment Center/E-wallet
-                    </button>
-                    <button
-                      class="p-2 bg-green-orange/10 rounded-full flex justify-center items-center gap-1 my-1 border border-orange-600/50 w-full text-orange-600 font-medium text-sm"
-                    >
-                      <Icon
-                        icon="material-symbols:credit-card"
-                        class="text-lg"
-                      />
-                      Credit Card
-                    </button>
+                      <span class="text-sm font-medium">Shipping Fee</span>
+                      <p class="text-xs">$10</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="my-3">
-              <button
-                class="w-full rounded-full bg-blue-500 p-2 text-slate-100 text-lg font-semibold shadow-md shadow-blue-500/50"
-              >
-                Place Order
-              </button>
+              <div class="my-1">
+                <div
+                  class="flex gap-2 justify-between items-center p-2 rounded-md bg-blue-300/10"
+                >
+                  <span class="text-xs"
+                    >Order Total
+                    <span>({{ itemsToCheckout.length }})</span> Item</span
+                  >
+                  <p class="text-sm font-medium text-red-500">
+                    ${{ priceTotalAll }}
+                  </p>
+                </div>
+              </div>
+              <div class="my-1">
+                <div
+                  class="flex gap-2 justify-between items-center p-2 rounded-md bg-blue-500/10"
+                >
+                  <div class="w-full">
+                    <span class="text-sm font-semibold"> Payment Option</span>
+                    <div class="block w-full my-2">
+                      <button
+                        @click="onDelivery"
+                        :class="{
+                          ' shadow-md shadow-green-500/50 border-green-500':
+                            selectedPayment === 'delivery',
+                        }"
+                        class="p-2 bg-green-500/10 flex justify-center items-center gap-1 rounded-full my-1 border border-gray-600/50 w-full text-green-600 font-medium text-sm"
+                      >
+                        <Icon icon="iconoir:cash-solid" class="text-lg" /> Cash
+                        on Delivery
+                      </button>
+                      <button
+                        @click="onPyment"
+                        :class="{
+                          ' shadow-md shadow-blue-500/50 border-blue-500':
+                            selectedPayment === 'payment',
+                        }"
+                        class="p-2 bg-green-blue/10 rounded-full flex justify-center items-center gap-1 my-1 border border-gray-600/50 w-full text-blue-600 font-medium text-sm"
+                      >
+                        <Icon icon="material-symbols:wallet" class="text-lg" />
+                        Payment Center/E-wallet
+                      </button>
+                      <button
+                        @click="onCredit"
+                        :class="{
+                          ' shadow-md shadow-orange-500/50 border-orange-500':
+                            selectedPayment === 'credit',
+                        }"
+                        class="p-2 bg-green-orange/10 rounded-full flex justify-center items-center gap-1 my-1 border border-gray-600/50 w-full text-orange-600 font-medium text-sm"
+                      >
+                        <Icon
+                          icon="material-symbols:credit-card"
+                          class="text-lg"
+                        />
+                        Credit Card
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="my-3">
+                <button
+                  :disabled="selectedPayment === ''"
+                  :class="{
+                    ' cursor-not-allowed opacity-75': selectedPayment === '',
+                  }"
+                  @click="submitOrder"
+                  class="w-full rounded-full bg-blue-500 p-2 text-slate-100 text-lg font-semibold shadow-md shadow-blue-500/50"
+                >
+                  Place Order
+                </button>
+              </div>
             </div>
           </div>
         </div>

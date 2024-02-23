@@ -1,7 +1,7 @@
 import SearchModal from "@/components/SearchModal.vue";
 import LoginModal from "@/components/LoginModal.vue";
 import { Icon } from "@iconify/vue";
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 export default {
@@ -158,7 +158,7 @@ export default {
     };
     const deleteCartItems = async (cart_id) => {
       let id = cart_id;
-      console.log(id);
+      // console.log(id);
       try {
         const res = await axios.delete(
           `http://localhost/Ecommerce/vue-project/src/backend/api.php?action=deleteCartItem`,
@@ -172,7 +172,7 @@ export default {
         if (res.data.success) {
           cartItems();
         }
-        console.log(res);
+        //  console.log(res);
       } catch (error) {
         console.error(error);
       }
@@ -180,18 +180,63 @@ export default {
 
     // select payment method
     const showPayment = ref(false);
-    const closePayment = () => {
-      showPayment.value = false;
-      console.log("click");
-    };
-    //  Add an item to the checkout
-    const checkout = () => {
-      // Collect all the checked item IDs
+
+    const checkoutItems = computed(() => {
       const checkedItemIds = Object.keys(checkedItems.value).filter(
         (productId) => checkedItems.value[productId]
       );
-      console.log("Checked Item IDs:", checkedItemIds);
+
+      return cartItemsValue.value.filter((item) =>
+        checkedItemIds.includes(item.product_id.toString())
+      );
+    });
+
+    const itemsToCheckout = ref({});
+    let priceTotalAll = ref(0);
+    let priceTotalPerItem = ref(0);
+    // shipping fee must come from db
+    let shippingFee = ref(10);
+    const selectedPayment = ref("");
+
+    const checkout = () => {
       showPayment.value = true;
+      // Collect all the checked items
+      itemsToCheckout.value = checkoutItems.value.map((item) => {
+        // Calculate price per item
+        const pricePerItem = item.quantity * item.price;
+        // Add price per item to the total per item
+        priceTotalPerItem.value += pricePerItem;
+        // Return item with additional calculated values
+        return { item };
+      });
+      // Calculate the total price for all items
+      priceTotalAll.value = (
+        priceTotalPerItem.value + shippingFee.value
+      ).toFixed(2);
+    };
+    const onDelivery = () => {
+      selectedPayment.value = "delivery";
+    };
+    const onPyment = () => {
+      selectedPayment.value = "payment";
+    };
+    const onCredit = () => {
+      selectedPayment.value = "credit";
+    };
+
+    const closePayment = () => {
+      showPayment.value = false;
+
+      priceTotalAll.value = 0;
+      priceTotalPerItem.value = 0;
+      // shipping fee must come from db
+      shippingFee.value = 10;
+      console.log("click");
+    };
+    const submitOrder = () => {
+      console.log(priceTotalAll.value);
+      console.log(selectedPayment.value);
+      console.log(userLogin.value.user_id);
     };
 
     getUserFromLocalStorage();
@@ -230,6 +275,15 @@ export default {
       //
       showPayment,
       closePayment,
+
+      itemsToCheckout,
+      priceTotalAll,
+
+      onDelivery,
+      onCredit,
+      onPyment,
+      submitOrder,
+      selectedPayment,
     };
   },
 };
