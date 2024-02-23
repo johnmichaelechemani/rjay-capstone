@@ -89,6 +89,34 @@
             Apply
           </button>
         </div>
+        <hr class="my-2" />
+
+        <!-- Sidebar Rating Filters -->
+        <div>
+          <h1 class="text-sm px-3 text-sky-800">Ratings</h1>
+          <div class="mx-3 text-xs">
+            <template v-for="rating in 5" :key="`rating-${6 - rating}`">
+              <div
+                @click="filterByRating(6 - rating)"
+                class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition flex items-center"
+              >
+                <div class="flex items-center">
+                  <template v-for="star in 6 - rating" :key="`star-${star}`">
+                    <span class="star-colored">&#9733;</span>
+                  </template>
+                  <template
+                    v-for="emptyStar in rating - 1"
+                    :key="`empty-star-${emptyStar}`"
+                  >
+                    <span class="star-grey">&#9733;</span>
+                  </template>
+                </div>
+                <span v-if="6 - rating < 5">&nbsp; And Up</span>
+                <span v-else></span>
+              </div>
+            </template>
+          </div>
+        </div>
       </div>
     </div>
     <div class="bg-white cursor-pointer">
@@ -184,6 +212,37 @@ export default {
     const categories = ref([]);
     const selectedCategoryName = ref("");
     const spec_data = ref(null);
+    const temp_data_for_ratings = ref([]);
+    const temp_data_for_price = ref([]);
+
+    const filterByRating = (minRatingValue) => {
+      // Filter products based on rounded ratings
+      if (temp_data_for_ratings.value.length === 0) {
+        temp_data_for_ratings.value = products.value;
+      } else {
+        products.value = temp_data_for_ratings.value;
+      }
+      const filtered = products.value.filter((product) => {
+        const roundedRating = Math.round(product.ratings); // Assuming product.ratings is a decimal
+        return roundedRating >= minRatingValue;
+      });
+      products.value = filtered;
+    };
+
+    const filterByPrice = () => {
+      // Assuming `props.products` contains all products you might want to filter
+      // And these are already available in the `products` ref
+      if (temp_data_for_price.value.length === 0) {
+        temp_data_for_price.value = products.value;
+      } else {
+        products.value = temp_data_for_price.value;
+      }
+      const filtered = products.value.filter((product) => {
+        const price = parseFloat(product.price); // Ensure the price is a number
+        return price >= minPrice.value && price <= maxPrice.value;
+      });
+      products.value = filtered;
+    };
 
     const fetchSpecifications = async (productId) => {
       console.log("specs id", productId);
@@ -196,16 +255,6 @@ export default {
         console.error("Error fetching specifications: ", error);
         return null;
       }
-    };
-
-    const filterByPrice = () => {
-      // Assuming `props.products` contains all products you might want to filter
-      // And these are already available in the `products` ref
-      const filtered = products.value.filter((product) => {
-        const price = parseFloat(product.price); // Ensure the price is a number
-        return price >= minPrice.value && price <= maxPrice.value;
-      });
-      products.value = filtered;
     };
 
     const handleSearchCompleted = (product) => {
@@ -317,6 +366,9 @@ export default {
       minPrice,
       maxPrice,
       filterByPrice,
+      filterByRating,
+      temp_data_for_ratings,
+      temp_data_for_price,
 
       fetchSpecifications,
       spec_data,
@@ -343,5 +395,16 @@ export default {
   background-color: #e2e8f0; /* bg-slate-200 color */
   border-radius: 50%;
   padding: 4px;
+}
+.star-rating-filter {
+  background-color: #e2e8f0; /* Light blue background */
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.star-rating-filter:hover {
+  background-color: #cbd5e1; /* Darker shade for hover */
 }
 </style>
