@@ -180,10 +180,6 @@ export default {
 
     // select payment method
     const showPayment = ref(false);
-    const closePayment = () => {
-      showPayment.value = false;
-      console.log("click");
-    };
 
     const checkoutItems = computed(() => {
       const checkedItemIds = Object.keys(checkedItems.value).filter(
@@ -226,6 +222,16 @@ export default {
     };
     const onCredit = () => {
       selectedPayment.value = "credit";
+    };
+
+    const closePayment = () => {
+      showPayment.value = false;
+
+      priceTotalAll.value = 0;
+      priceTotalPerItem.value = 0;
+      // shipping fee must come from db
+      shippingFee.value = 10;
+      console.log("click");
     };
     const submitOrder = () => {
       console.log(priceTotalAll.value);
