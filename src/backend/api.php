@@ -36,11 +36,20 @@ switch ($action) {
     case 'deleteCartItem':
         deleteCartItem();
         break;
+        //eto yung sa track your order hehe
+    case 'trackOrder':
+        trackOrder();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+function trackOrder()
+{
+    
 }
 
 function deleteCartItem()

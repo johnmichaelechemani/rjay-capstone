@@ -288,6 +288,8 @@ export default {
     };
 
     const fetchProducts = async () => {
+      temp_data_for_ratings.value = "";
+      temp_data_for_price.value = "";
       try {
         const response = await axios.get(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProducts"
@@ -316,6 +318,8 @@ export default {
     };
     // Use axios.post instead of axios.get, and pass data in the request body
     const filterByCategory = async (id, name) => {
+      temp_data_for_ratings.value = "";
+      temp_data_for_price.value = "";
       catName.value = name;
       try {
         const response = await axios.post(
