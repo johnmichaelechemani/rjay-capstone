@@ -242,7 +242,22 @@ export default {
     getUserFromLocalStorage();
     cartItems();
 
+    //order tracking
+    const showOrderTracking = ref(false);
+    const orderTracking = (e) => {
+      showOrderTracking.value = !showOrderTracking.value;
+    };
+    const closeOrderTracking = (e) => {
+      showOrderTracking.value = false;
+    };
+
     return {
+      //tracking
+      showOrderTracking,
+      orderTracking,
+      closeOrderTracking,
+
+      //----------
       showCartFunction,
       showCart,
       closeCart,

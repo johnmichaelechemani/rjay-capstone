@@ -6,9 +6,68 @@
     <div class="flex place-items-center">
       <span>Need help? Call us: 09123456789</span>
     </div>
-    <div class="flex items-center gap-3 hover:text-zinc-500">
-      <Icon icon="fluent:vehicle-bus-24-regular" />
+    <div
+      class="flex items-center gap-2 hover:text-zinc-500"
+      @click="orderTracking()"
+    >
+      <Icon icon="fluent:vehicle-bus-24-regular" class="text-lg" />
       <span>Track your order</span>
+    </div>
+  </div>
+
+  <!-- payment popup -->
+  <div
+    v-if="showOrderTracking"
+    class="justify-center items-center flex w-full h-full overflow-scroll"
+  >
+    <div
+      @click="closeOrderTracking()"
+      class="fixed z-40 w-full top-0 left-0 h-full backdrop-blur bg-slate-900 bg-opacity-50"
+    ></div>
+    <div
+      class="fixed z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center items-center flex"
+    >
+      <div class="overflow-scroll bg-slate-100 h-[500px] rounded-md">
+        <div class="p-5 bg-slate-100 rounded-md h-full w-96 text-slate-800">
+          <div class="h-full">
+            <h1 class="font-semibold text-lg">Order Tracking</h1>
+            <div class="py-3">
+              <span class="font-semibold text-slate-800">#12345</span>
+            </div>
+            <div class="p-2">
+              <ol
+                class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base"
+              >
+                <li
+                  class="flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                >
+                  <span
+                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
+                  >
+                    <Icon icon="lets-icons:check-fill" class="text-lg" />
+                    Pending
+                  </span>
+                </li>
+                <li
+                  class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                >
+                  <span
+                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
+                  >
+                    <span class="me-2">2</span>
+                    Processing
+                  </span>
+                </li>
+                <li class="flex items-center text-xs">
+                  <span class="me-2">3</span>
+                  Shipped
+                </li>
+              </ol>
+            </div>
+            <hr class="border" />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <!-- Navigator -->
