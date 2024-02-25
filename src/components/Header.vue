@@ -31,18 +31,36 @@
         <div class="p-5 bg-slate-100 rounded-md h-full w-96 text-slate-800">
           <div class="h-full">
             <h1 class="font-semibold text-lg">Order Tracking</h1>
-            <div class="py-3">
-              <span class="font-semibold text-slate-800">#12345</span>
-            </div>
-            <div class="p-2">
+            <hr class="my-2" />
+            <h1 class="text-base font-semibold py-1">
+              Your Orders (<span class="text-blue-500">3</span>)
+            </h1>
+            <hr class="my-2" />
+            <div class="p-2 rounded-md bg-slate-400/10 my-2">
+              <div>
+                <span class="font-semibold text-slate-800">#12345</span>
+              </div>
+              <div
+                class="mb-5 flex justify-between items-center bg-blue-300/20 rounded-md p-1"
+              >
+                <div>
+                  <p class="text-xs font-light">Date purchased</p>
+                  <p class="text-base font-semibold">Fri, Dec 1, 2024</p>
+                </div>
+                <Icon icon="iconamoon:arrow-right-2-light" class="text-xl" />
+                <div>
+                  <p class="text-xs font-light">Estemated Delivery</p>
+                  <p class="text-base font-semibold">Fri, Dec 25, 2024</p>
+                </div>
+              </div>
               <ol
-                class="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base"
+                class="flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base"
               >
                 <li
-                  class="flex md:w-full items-center text-blue-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                  class="flex md:w-full items-center text-blue-600 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
                 >
                   <span
-                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
+                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
                   >
                     <Icon icon="lets-icons:check-fill" class="text-lg" />
                     Pending
@@ -52,7 +70,7 @@
                   class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
                 >
                   <span
-                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 dark:after:text-gray-500"
+                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
                   >
                     <span class="me-2">2</span>
                     Processing
@@ -63,6 +81,84 @@
                   Shipped
                 </li>
               </ol>
+              <div>
+                <div class="border border-blue-500/50 rounded-md p-2 my-5">
+                  <div class="bg-blue-500/10 rounded-md p-1">
+                    <p class="text-xs font-light">
+                      Fri, Dec 1, 2024 at 9:48 PM
+                    </p>
+                    <p class="text-base font-light text-blue-600">
+                      Your order is being received.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="p-2 rounded-md bg-slate-400/10 my-2">
+              <div>
+                <span class="font-semibold text-slate-800">#65789</span>
+              </div>
+              <div
+                class="mb-5 flex justify-between items-center bg-blue-300/20 rounded-md p-1"
+              >
+                <div>
+                  <p class="text-xs font-light">Date purchased</p>
+                  <p class="text-base font-semibold">Fri, Dec 1, 2024</p>
+                </div>
+                <Icon icon="iconamoon:arrow-right-2-light" class="text-xl" />
+                <div>
+                  <p class="text-xs font-light">Estemated Delivery</p>
+                  <p class="text-base font-semibold">Fri, Dec 26, 2024</p>
+                </div>
+              </div>
+              <ol
+                class="flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base"
+              >
+                <li
+                  class="flex md:w-full items-center text-blue-600 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                >
+                  <span
+                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                  >
+                    <Icon icon="lets-icons:check-fill" class="text-lg" />
+                    Pending
+                  </span>
+                </li>
+                <li
+                  class="flex md:w-full items-center text-blue-600 after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                >
+                  <span
+                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                  >
+                    <Icon icon="lets-icons:check-fill" class="text-lg" />
+                    Processing
+                  </span>
+                </li>
+                <li class="flex items-center text-xs">
+                  <span class="me-2">3</span>
+                  Shipped
+                </li>
+              </ol>
+              <div>
+                <div class="border border-blue-500/50 rounded-md p-2 my-5">
+                  <div class="bg-blue-500/10 rounded-md p-1">
+                    <p class="text-xs font-light">
+                      Fri, Dec 1, 2024 at 9:48 PM
+                    </p>
+                    <p class="text-base font-light text-blue-600">
+                      Your order is being received.
+                    </p>
+                  </div>
+                  <div class="bg-blue-500/10 rounded-md p-1 my-1">
+                    <p class="text-xs font-light">
+                      Fri, Dec 1, 2024 at 9:48 PM
+                    </p>
+                    <p class="text-base font-light text-blue-600">
+                      Your order is being processed.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
             <hr class="border" />
           </div>
