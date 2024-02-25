@@ -258,11 +258,28 @@ export default {
         product_id: 2,
         order_id: 123455,
         product_name: "Intel core I9 13gen",
+        status: "Processing",
+        date_purchased: "Fri, Dec 1, 2024",
+        date_delivery: "Fri, Dec 25, 2024",
+      },
+      {
+        id: 3,
+        product_id: 2,
+        order_id: 123455,
+        product_name: "Intel core I9 13gen",
         status: "Shipping",
         date_purchased: "Fri, Dec 1, 2024",
         date_delivery: "Fri, Dec 25, 2024",
       },
     ];
+    const statusMapping = {
+      Pending: 1,
+      Processing: 2,
+      Shipping: 3,
+    };
+    orderData.forEach((item) => {
+      item.status = statusMapping[item.status];
+    });
     const showOrderTracking = ref(false);
     const orderTracking = (e) => {
       showOrderTracking.value = !showOrderTracking.value;

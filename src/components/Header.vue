@@ -75,15 +75,18 @@
                 class="flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base"
               >
                 <li
-                  class="flex md:w-full items-center text-blue-600 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                  class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
                 >
                   <span
                     class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
                   >
-                    <div v-if="item.status === 'Pending'">
-                      <Icon icon="lets-icons:check-fill" class="text-lg" />
+                    <div v-if="item.status >= 1">
+                      <Icon
+                        icon="lets-icons:check-fill"
+                        class="text-lg text-blue-600"
+                      />
                     </div>
-                    <div><p class="pr-2">1</p></div>
+                    <div v-if="item.status < 1"><p class="pr-2">1</p></div>
                     Pending
                   </span>
                 </li>
@@ -93,29 +96,31 @@
                   <span
                     class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
                   >
-                    <div
-                      v-if="
-                        (item.status === 'Pending', 'Processing', 'Shipped')
-                      "
-                    >
-                      <Icon icon="lets-icons:check-fill" class="text-lg" />
+                    <div v-if="item.status >= 2">
+                      <Icon
+                        icon="lets-icons:check-fill"
+                        class="text-lg text-blue-600"
+                      />
                     </div>
-                    <div><p class="pr-2">2</p></div>
+                    <div v-if="item.status < 2"><p class="pr-2">2</p></div>
                     Processing
                   </span>
                 </li>
                 <li class="flex items-center text-xs">
-                  <div v-if="item.status === 'Shipping'">
-                    <Icon icon="lets-icons:check-fill" class="text-lg" />
+                  <div v-if="item.status >= 3">
+                    <Icon
+                      icon="lets-icons:check-fill"
+                      class="text-lg text-blue-600"
+                    />
                   </div>
-                  <div><p class="pr-2">3</p></div>
-                  Shipped
+                  <div v-if="item.status < 3"><p class="pr-2">3</p></div>
+                  Shipping
                 </li>
               </ol>
               <div>
                 <div class="border border-blue-500/50 rounded-md p-2 my-5">
                   <div
-                    v-if="item.status === 'Pending'"
+                    v-if="item.status >= 1"
                     class="bg-blue-500/10 rounded-md p-1"
                   >
                     <p class="text-xs font-light">
@@ -126,7 +131,7 @@
                     </p>
                   </div>
                   <div
-                    v-if="item.status === 'Processed'"
+                    v-if="item.status >= 2"
                     class="bg-blue-500/10 rounded-md p-1 my-1"
                   >
                     <p class="text-xs font-light">
@@ -137,7 +142,7 @@
                     </p>
                   </div>
                   <div
-                    v-if="item.status === 'Shipping'"
+                    v-if="item.status >= 3"
                     class="bg-blue-500/10 rounded-md p-1 my-1"
                   >
                     <p class="text-xs font-light">
