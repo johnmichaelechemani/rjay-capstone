@@ -55,6 +55,13 @@
                   <h1 class="text-base font-semibold">
                     {{ item.product_name }}
                   </h1>
+                  <p class="font-semibold">
+                    Total:
+                    <span
+                      class="text-red-500 py-1 px-2 bg-slate-500/10 rounded-md"
+                      >${{ item.total_price }}</span
+                    >
+                  </p>
                 </div>
               </div>
               <div
