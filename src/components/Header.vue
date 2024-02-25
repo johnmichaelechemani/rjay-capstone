@@ -40,6 +40,12 @@
               <div>
                 <span class="font-semibold text-slate-800">#12345</span>
               </div>
+              <div class="my-2 flex gap-2 justify-start items-center">
+                <div class="w-10 h-10 bg-slate-900 rounded-md"></div>
+                <div>
+                  <h1 class="text-base font-semibold">Monitor 144hz 36in</h1>
+                </div>
+              </div>
               <div
                 class="mb-5 flex justify-between items-center bg-blue-300/20 rounded-md p-1"
               >
@@ -97,6 +103,12 @@
             <div class="p-2 rounded-md bg-slate-400/10 my-2">
               <div>
                 <span class="font-semibold text-slate-800">#65789</span>
+              </div>
+              <div class="my-2 flex gap-2 justify-start items-center">
+                <div class="w-10 h-10 bg-slate-900 rounded-md"></div>
+                <div>
+                  <h1 class="text-base font-semibold">Intel core I9 13gen</h1>
+                </div>
               </div>
               <div
                 class="mb-5 flex justify-between items-center bg-blue-300/20 rounded-md p-1"
