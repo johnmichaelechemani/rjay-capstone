@@ -33,7 +33,10 @@
             <h1 class="font-semibold text-lg">Order Tracking</h1>
             <hr class="my-2" />
             <h1 class="text-base font-semibold py-1">
-              Your Orders (<span class="text-blue-500">3</span>)
+              Your Orders (<span class="text-blue-500">{{
+                orderData.length
+              }}</span
+              >)
             </h1>
             <hr class="my-2" />
             <div
