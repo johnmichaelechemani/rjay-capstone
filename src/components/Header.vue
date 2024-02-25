@@ -80,7 +80,10 @@
                   <span
                     class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
                   >
-                    <Icon icon="lets-icons:check-fill" class="text-lg" />
+                    <div v-if="item.status === 'Pending'">
+                      <Icon icon="lets-icons:check-fill" class="text-lg" />
+                    </div>
+                    <div><p class="pr-2">1</p></div>
                     Pending
                   </span>
                 </li>
@@ -90,90 +93,42 @@
                   <span
                     class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
                   >
-                    <span class="me-2">2</span>
+                    <div
+                      v-if="
+                        (item.status === 'Pending', 'Processing', 'Shipped')
+                      "
+                    >
+                      <Icon icon="lets-icons:check-fill" class="text-lg" />
+                    </div>
+                    <div><p class="pr-2">2</p></div>
                     Processing
                   </span>
                 </li>
                 <li class="flex items-center text-xs">
-                  <span class="me-2">3</span>
+                  <div v-if="item.status === 'Shipping'">
+                    <Icon icon="lets-icons:check-fill" class="text-lg" />
+                  </div>
+                  <div><p class="pr-2">3</p></div>
                   Shipped
                 </li>
               </ol>
               <div>
                 <div class="border border-blue-500/50 rounded-md p-2 my-5">
-                  <div class="bg-blue-500/10 rounded-md p-1">
+                  <div
+                    v-if="item.status === 'Pending'"
+                    class="bg-blue-500/10 rounded-md p-1"
+                  >
                     <p class="text-xs font-light">
-                      Fri, Dec 1, 2024 at 9:48 PM
+                      {{ item.date_purchased }}
                     </p>
                     <p class="text-base font-light text-blue-600">
                       Your order is being received.
                     </p>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div class="p-2 rounded-md bg-slate-400/10 my-2">
-              <div>
-                <span class="font-semibold text-slate-800">#65789</span>
-              </div>
-              <div class="my-2 flex gap-2 justify-start items-center">
-                <div class="w-10 h-10 bg-slate-900 rounded-md"></div>
-                <div>
-                  <h1 class="text-base font-semibold">Intel core I9 13gen</h1>
-                </div>
-              </div>
-              <div
-                class="mb-5 flex justify-between items-center bg-blue-300/20 rounded-md p-1"
-              >
-                <div>
-                  <p class="text-xs font-light">Date purchased</p>
-                  <p class="text-base font-semibold">Fri, Dec 1, 2024</p>
-                </div>
-                <Icon icon="iconamoon:arrow-right-2-light" class="text-xl" />
-                <div>
-                  <p class="text-xs font-light">Estemated Delivery</p>
-                  <p class="text-base font-semibold">Fri, Dec 26, 2024</p>
-                </div>
-              </div>
-              <ol
-                class="flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base"
-              >
-                <li
-                  class="flex md:w-full items-center text-blue-600 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
-                >
-                  <span
-                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                  <div
+                    v-if="item.status === 'Processed'"
+                    class="bg-blue-500/10 rounded-md p-1 my-1"
                   >
-                    <Icon icon="lets-icons:check-fill" class="text-lg" />
-                    Pending
-                  </span>
-                </li>
-                <li
-                  class="flex md:w-full items-center text-blue-600 after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
-                >
-                  <span
-                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
-                  >
-                    <Icon icon="lets-icons:check-fill" class="text-lg" />
-                    Processing
-                  </span>
-                </li>
-                <li class="flex items-center text-xs">
-                  <span class="me-2">3</span>
-                  Shipped
-                </li>
-              </ol>
-              <div>
-                <div class="border border-blue-500/50 rounded-md p-2 my-5">
-                  <div class="bg-blue-500/10 rounded-md p-1">
-                    <p class="text-xs font-light">
-                      Fri, Dec 1, 2024 at 9:48 PM
-                    </p>
-                    <p class="text-base font-light text-blue-600">
-                      Your order is being received.
-                    </p>
-                  </div>
-                  <div class="bg-blue-500/10 rounded-md p-1 my-1">
                     <p class="text-xs font-light">
                       Fri, Dec 1, 2024 at 9:48 PM
                     </p>
@@ -181,9 +136,21 @@
                       Your order is being processed.
                     </p>
                   </div>
+                  <div
+                    v-if="item.status === 'Shipping'"
+                    class="bg-blue-500/10 rounded-md p-1 my-1"
+                  >
+                    <p class="text-xs font-light">
+                      Fri, Dec 1, 2024 at 9:48 PM
+                    </p>
+                    <p class="text-base font-light text-blue-600">
+                      Your order is being shipped.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
+
             <hr class="border" />
           </div>
         </div>
