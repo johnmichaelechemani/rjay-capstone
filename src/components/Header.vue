@@ -135,7 +135,7 @@
                     class="bg-blue-500/10 rounded-md p-1 my-1"
                   >
                     <p class="text-xs font-light">
-                      Fri, Dec 1, 2024 at 9:48 PM
+                      {{ item.date_purchased }}
                     </p>
                     <p class="text-base font-light text-blue-600">
                       Your order is being processed.
@@ -146,7 +146,7 @@
                     class="bg-blue-500/10 rounded-md p-1 my-1"
                   >
                     <p class="text-xs font-light">
-                      Fri, Dec 1, 2024 at 9:48 PM
+                      {{ item.date_purchased }}
                     </p>
                     <p class="text-base font-light text-blue-600">
                       Your order is being shipped.
