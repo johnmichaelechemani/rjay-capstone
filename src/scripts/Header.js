@@ -243,6 +243,26 @@ export default {
     cartItems();
 
     //order tracking
+    const orderData = [
+      {
+        id: 1,
+        product_id: 1,
+        order_id: 3456789,
+        product_name: "Monitor 16in 144hz",
+        status: "Pending",
+        date_purchased: "Fri, Dec 1, 2024",
+        date_delivery: "Fri, Dec 25, 2024",
+      },
+      {
+        id: 2,
+        product_id: 2,
+        order_id: 123455,
+        product_name: "Intel core I9 13gen",
+        status: "Shipping",
+        date_purchased: "Fri, Dec 1, 2024",
+        date_delivery: "Fri, Dec 25, 2024",
+      },
+    ];
     const showOrderTracking = ref(false);
     const orderTracking = (e) => {
       showOrderTracking.value = !showOrderTracking.value;
@@ -256,7 +276,7 @@ export default {
       showOrderTracking,
       orderTracking,
       closeOrderTracking,
-
+      orderData,
       //----------
       showCartFunction,
       showCart,

@@ -36,14 +36,22 @@
               Your Orders (<span class="text-blue-500">3</span>)
             </h1>
             <hr class="my-2" />
-            <div class="p-2 rounded-md bg-slate-400/10 my-2">
+            <div
+              class="p-2 rounded-md bg-slate-400/10 my-2"
+              v-for="item in orderData"
+              :key="item.id"
+            >
               <div>
-                <span class="font-semibold text-slate-800">#12345</span>
+                <span class="font-semibold text-slate-800"
+                  >#{{ item.order_id }}</span
+                >
               </div>
               <div class="my-2 flex gap-2 justify-start items-center">
                 <div class="w-10 h-10 bg-slate-900 rounded-md"></div>
                 <div>
-                  <h1 class="text-base font-semibold">Monitor 144hz 36in</h1>
+                  <h1 class="text-base font-semibold">
+                    {{ item.product_name }}
+                  </h1>
                 </div>
               </div>
               <div
@@ -51,12 +59,16 @@
               >
                 <div>
                   <p class="text-xs font-light">Date purchased</p>
-                  <p class="text-base font-semibold">Fri, Dec 1, 2024</p>
+                  <p class="text-base font-semibold">
+                    {{ item.date_purchased }}
+                  </p>
                 </div>
                 <Icon icon="iconamoon:arrow-right-2-light" class="text-xl" />
                 <div>
                   <p class="text-xs font-light">Estemated Delivery</p>
-                  <p class="text-base font-semibold">Fri, Dec 25, 2024</p>
+                  <p class="text-base font-semibold">
+                    {{ item.date_delivery }}
+                  </p>
                 </div>
               </div>
               <ol
