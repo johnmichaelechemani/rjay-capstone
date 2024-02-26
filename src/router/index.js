@@ -138,6 +138,29 @@ const router = createRouter({
       ],
     },
     {
+      path: "/seller_index",
+      name: "seller_index",
+      component: () => import("../Sellers/sellerIndex.vue"),
+      children: [
+        {
+          path: "",
+          redirect: { name: "seller_login" },
+        },
+        {
+          path: "/seller_login",
+          name: "seller_login",
+          component: () =>
+            import("../Sellers/sellersComponents/sellerLogin.vue"),
+        },
+        {
+          path: "/seller_register",
+          name: "seller_register",
+          component: () =>
+            import("../Sellers/sellersComponents/sellerregister.vue"),
+        },
+      ],
+    },
+    {
       path: "/:catchAll(.*)",
       name: "notFound",
       component: () => import("../views/NotFound.vue"),
