@@ -120,7 +120,7 @@
             <div class="bg-blue-500/20 shadow-sm rounded-full">
               <Icon icon="typcn:user" class="text-3xl text-blue-500" />
             </div>
-            R-jay
+            {{ userLogin.store_name }}
           </button>
         </div>
 
@@ -138,17 +138,31 @@
   </div>
 </template>
 <script>
+import { ref } from "vue";
 import { Icon } from "@iconify/vue";
+import { useRouter } from "vue-router";
 export default {
   components: {
     Icon,
   },
   setup() {
+    const router = useRouter();
     const logout = () => {
-      confirm("logout?");
+      localStorage.removeItem("seller");
+      router.push("/seller_index");
     };
+    var userLogin = ref([]);
+    const getUserFromLocalStorage = () => {
+      const userData = localStorage.getItem("seller");
+      if (userData) {
+        userLogin.value = JSON.parse(userData);
+      }
+      return null;
+    };
+    getUserFromLocalStorage();
     return {
       logout,
+      userLogin,
     };
   },
 };

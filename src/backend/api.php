@@ -33,12 +33,11 @@ switch ($action) {
     case 'getProductsByPriceRange':
         getProductsByPriceRange();
         break;
+    case 'getTrackOrder':
+        trackOrder();
+        break;
     case 'deleteCartItem':
         deleteCartItem();
-        break;
-        //eto yung sa track your order hehe
-    case 'trackOrder':
-        trackOrder();
         break;
     default:
         $res['error'] = true;
@@ -47,8 +46,10 @@ switch ($action) {
         break;
 }
 
+
 function trackOrder()
 {
+
     global $conn;
 
     $data = json_decode(file_get_contents("php://input"), true);

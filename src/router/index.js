@@ -30,6 +30,10 @@ const router = createRouter({
       children: [
         {
           path: "",
+          redirect: { name: "admin_dashboard_customers" },
+        },
+        {
+          path: "",
           name: "users",
           component: () =>
             import("../Admin/adminViews/adminManageCustomers.vue"),
@@ -41,13 +45,13 @@ const router = createRouter({
           children: [
             {
               path: "",
-              name: "dashboard_customers",
+              name: "admin_dashboard_customers",
               component: () =>
                 import("../Admin/adminViews/adminManageCustomers.vue"),
             },
             {
               path: "/admin_dashboard_customers",
-              name: "dashboard_customers",
+              name: "admin_dashboard_customers",
               component: () =>
                 import("../Admin/adminViews/adminManageCustomers.vue"),
             },
@@ -134,6 +138,29 @@ const router = createRouter({
           name: "seller_product_list",
           component: () =>
             import("../Sellers/sellersViews/sellerProductList.vue"),
+        },
+      ],
+    },
+    {
+      path: "/seller_index",
+      name: "seller_index",
+      component: () => import("../Sellers/sellerIndex.vue"),
+      children: [
+        {
+          path: "",
+          redirect: { name: "seller_login" },
+        },
+        {
+          path: "/seller_login",
+          name: "seller_login",
+          component: () =>
+            import("../Sellers/sellersComponents/sellerLogin.vue"),
+        },
+        {
+          path: "/seller_register",
+          name: "seller_register",
+          component: () =>
+            import("../Sellers/sellersComponents/sellerregister.vue"),
         },
       ],
     },
