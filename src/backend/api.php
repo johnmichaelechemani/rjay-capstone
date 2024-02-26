@@ -33,6 +33,9 @@ switch ($action) {
     case 'getProductsByPriceRange':
         getProductsByPriceRange();
         break;
+    case 'getTrackOrder':
+        trackOrder();
+        break;
     case 'deleteCartItem':
         deleteCartItem();
         break;
@@ -41,6 +44,45 @@ switch ($action) {
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+
+function trackOrder()
+{
+
+    global $conn;
+
+    $data = json_decode(file_get_contents("php://input"), true);
+    // $id = $data['id'];
+    $id = 8;
+
+    // Use prepared statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT 
+    p.*, 
+    o.*,
+    od.*
+FROM 
+    products AS p
+LEFT JOIN 
+order_details AS od ON p.product_id = od.product_id
+LEFT JOIN
+    orders AS o ON od.order_id = o.order_id
+WHERE 
+    o.user_id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    $cat = [];
+    while ($row = $result->fetch_assoc()) {
+        $row['image'] = base64_encode($row['image']);
+        $cat[] = $row;
+    }
+
+    $res = ['order records' => $cat];
+    echo json_encode($res);
 }
 
 function deleteCartItem()
