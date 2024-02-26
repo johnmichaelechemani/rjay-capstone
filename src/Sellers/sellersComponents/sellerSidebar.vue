@@ -140,13 +140,16 @@
 <script>
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
+import { useRouter } from "vue-router";
 export default {
   components: {
     Icon,
   },
   setup() {
+    const router = useRouter();
     const logout = () => {
-      confirm("logout?");
+      localStorage.removeItem("seller");
+      router.push("/seller_index");
     };
     var userLogin = ref([]);
     const getUserFromLocalStorage = () => {

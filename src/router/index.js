@@ -73,7 +73,7 @@ const router = createRouter({
       component: () => import("../Sellers/sellersViews/sellerDashboard.vue"),
       children: [
         {
-          path: "/seller_products",
+          path: "",
           redirect: { name: "seller_products" },
         },
         {
@@ -96,7 +96,7 @@ const router = createRouter({
             ),
           children: [
             {
-              path: "/seller_order_management_pending",
+              path: "",
               redirect: { name: "seller_order_management_pending" },
             },
             {
@@ -143,7 +143,7 @@ const router = createRouter({
       component: () => import("../Sellers/sellerIndex.vue"),
       children: [
         {
-          path: "/seller_login",
+          path: "",
           redirect: { name: "seller_login" },
         },
         {
