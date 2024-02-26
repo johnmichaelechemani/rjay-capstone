@@ -1,6 +1,10 @@
 <template>
-  <div class="bg-sky-900 text-white py-5">
+  <div class="bg-sky-900 text-white py-5 flex justify-start items-center gap-3">
     <h1 class="text-lg pl-5">Admin</h1>
+    <span
+      class="text-xl font-semibold px-4 py-1 capitalize bg-blue-500/50 rounded-full"
+      >{{ userLogin.store_name }}</span
+    >
   </div>
   <div
     class="flex sm:hidden py-2 pl-2 sm:pl-8 bg-slate-200 gap-2 sm:text-sm text-xs"
@@ -65,6 +69,8 @@
 <script>
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
+
+import { useRouter } from "vue-router";
 export default {
   components: {
     Icon,
@@ -74,9 +80,25 @@ export default {
     const handleSidebarCategory = () => {
       showCategory.value = !showCategory.value;
     };
+    const router = useRouter();
+    const logout = () => {
+      localStorage.removeItem("seller");
+      router.push("/seller_index");
+    };
+    var userLogin = ref([]);
+    const getUserFromLocalStorage = () => {
+      const userData = localStorage.getItem("seller");
+      if (userData) {
+        userLogin.value = JSON.parse(userData);
+      }
+      return null;
+    };
+    getUserFromLocalStorage();
     return {
       handleSidebarCategory,
       showCategory,
+      logout,
+      userLogin,
     };
   },
 };

@@ -30,6 +30,10 @@ const router = createRouter({
       children: [
         {
           path: "",
+          redirect: { name: "admin_dashboard_customers" },
+        },
+        {
+          path: "",
           name: "users",
           component: () =>
             import("../Admin/adminViews/adminManageCustomers.vue"),
@@ -41,13 +45,13 @@ const router = createRouter({
           children: [
             {
               path: "",
-              name: "dashboard_customers",
+              name: "admin_dashboard_customers",
               component: () =>
                 import("../Admin/adminViews/adminManageCustomers.vue"),
             },
             {
               path: "/admin_dashboard_customers",
-              name: "dashboard_customers",
+              name: "admin_dashboard_customers",
               component: () =>
                 import("../Admin/adminViews/adminManageCustomers.vue"),
             },
