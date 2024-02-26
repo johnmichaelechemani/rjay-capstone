@@ -109,12 +109,12 @@ export default {
     const registerName = ref("");
     const registerPassword = ref("");
     const contactNumber = ref("");
-    const role = ref("seller");
+    const role = ref(1);
     const registerResponseMessage = ref("");
     const signUp = async () => {
       try {
         const url =
-          "http://localhost/Ecommerce/vue-project/src/backend/auth.php?action=register";
+          "http://localhost/Ecommerce/vue-project/src/backend/seller/sellerAuth.php?action=register";
         const res = await axios.post(
           url,
           {
@@ -128,8 +128,14 @@ export default {
         );
         registerResponseMessage.value = res.data.message;
       } catch (res) {
-        console.log(res.data.success);
+        // console.log(res.data.success);
       }
+      // console.log("Register Name:", registerName.value);
+      // console.log("Register Email:", registerEmail.value);
+      // console.log("Register Password:", registerPassword.value);
+      // console.log("Contact Number:", contactNumber.value);
+      // console.log("Role:", role.value);
+
       registerName.value = "";
       registerEmail.value = "";
       registerPassword.value = "";

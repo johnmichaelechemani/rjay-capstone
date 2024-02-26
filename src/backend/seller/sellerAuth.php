@@ -1,6 +1,6 @@
 <?php
 
-include('db.php');
+include('../db.php');
 
 // Set headers for CORS
 header("Access-Control-Allow-Origin: http://localhost:5173"); // Update this to match your Vue.js development server URL
@@ -30,46 +30,23 @@ function register()
     global $conn, $res;
     $data = json_decode(file_get_contents("php://input"), true);
     // Extract data from the array
-    $customername = $data['name'];
-    $email = $data['email'];
-    $password = $data['password'];
-    $contact_number = $data['contact_number'];
-    $role = $data['role'];
+    $store_name = $data['name'];
+    $store_email = $data['email'];
+    $store_password = $data['password'];
+    $store_contact_number = $data['contact_number'];
+    $store_role = $data['role'];
+    $hashed_password = password_hash($store_password, PASSWORD_DEFAULT);
 
-
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    $stmt = $conn->prepare("INSERT INTO users (username, email, password, contact_number, role) VALUES (?, ?, ? , ?, ?)");
-    $stmt->bind_param("sssss", $customername, $email, $hashed_password, $contact_number, $role);
+    $stmt = $conn->prepare("INSERT INTO user_store (store_name, store_email, store_password, store_contact_number, store_role) VALUES (?, ?, ? , ?, ?)");
+    $stmt->bind_param("sssss", $store_name, $store_email, $hashed_password, $store_contact_number, $store_role);
     $stmt->execute();
     if ($stmt->affected_rows > 0) {
         $res['success'] = true;
         $res['message'] = 'Registered successfully.';
     } else {
         $res['success'] = false;
-        $res['message'] = 'Failed to add customer.';
+        $res['message'] = 'Failed to add seller.';
     }
-
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username=?");
-    $stmt->bind_param("s", $customername);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $customer = $result->fetch_array();
-    if ($customer) {
-        $id = $customer['user_id'];
-        $stmt = $conn->prepare("INSERT INTO cart (cart_id, user_id) VALUES (?, ?)");
-        $stmt->bind_param("ii", $id, $id);
-        $stmt->execute();
-        if ($stmt->affected_rows > 0) {
-            $res['success'] = true;
-            $res['message'] = 'Added successfully.';
-        } else {
-            $res['success'] = false;
-            $res['message'] = 'Failed to add cart id.';
-        }
-
-    }
-
 
     $stmt->close();
     echo json_encode($res);
@@ -82,24 +59,24 @@ function login()
     $post_data = json_decode(file_get_contents("php://input"), true);
 
     // Extract data from the array
-    $email = $post_data['email'];
-    $password = $post_data['password'];
+    $store_email = $post_data['email'];
+    $store_password = $post_data['password'];
 
     // Use prepared statements to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
-    $stmt->bind_param("s", $email);
+    $stmt = $conn->prepare("SELECT * FROM user_store WHERE store_email=?");
+    $stmt->bind_param("s", $store_email);
     $stmt->execute();
     $result = $stmt->get_result();
-    $customer = $result->fetch_array();
+    $store = $result->fetch_array();
 
-    if ($customer) {
-        if (password_verify($password, $customer['password'])) {
-            $_SESSION['customer'] = $customer;
-            $globalUser = $customer;
+    if ($store) {
+        if (password_verify($store_password, $store['store_password'])) {
+            $_SESSION['store'] = $store;
+            $globalUser = $store;
             $res['success'] = true;
             $res['message'] = 'Login Success!';
-            $res['role'] = $customer['role'];
-            $res['customer'] = $customer;
+            $res['store_role'] = $store['store_role'];
+            $res['store'] = $store;
         } else {
             $res['error'] = true;
             $res['message'] = 'logging in';

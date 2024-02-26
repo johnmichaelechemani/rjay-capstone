@@ -3,7 +3,7 @@
     <div>
       <h1 class="text-center font-bold text-2xl text-sky-500">Login</h1>
     </div>
-    <form class="space-y-6" action="#" method="POST">
+    <form class="space-y-6" @submit.prevent="signIn">
       <div>
         <label
           for="email"
@@ -14,6 +14,7 @@
           <input
             id="email"
             name="email"
+            v-model="loginEmail"
             type="email"
             autocomplete="email"
             class="block w-full rounded-md px-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 outline-none sm:text-sm sm:leading-6"
@@ -33,6 +34,7 @@
           <input
             id="password"
             name="password"
+            v-model="loginPassword"
             type="password"
             autocomplete="current-password"
             class="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 outline-none focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
@@ -57,3 +59,46 @@
     </form>
   </div>
 </template>
+<script>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+export default {
+  setup() {
+    const loginEmail = ref("");
+    const loginPassword = ref("");
+    const router = useRouter();
+    let name = ref("");
+    const signIn = async () => {
+      try {
+        const url =
+          "http://localhost/Ecommerce/vue-project/src/backend/seller/sellerAuth.php?action=login";
+        const res = await axios.post(
+          url,
+          {
+            email: loginEmail.value,
+            password: loginPassword.value,
+          },
+          { headers: { "Content-Type": "application/json" } }
+        );
+
+        name.value = res.data.store;
+        localStorage.setItem("seller", JSON.stringify(name.value));
+
+        const role = res.data.store_role;
+        // console.log(res.data);
+        if (role === "seller") {
+          router.push("/seller_dashboard");
+        } else if (role === "admin") {
+          router.push("/admin_dashboard");
+        }
+      } catch {}
+    };
+    return {
+      loginEmail,
+      loginPassword,
+      signIn,
+    };
+  },
+};
+</script>
