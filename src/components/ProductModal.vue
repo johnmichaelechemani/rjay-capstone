@@ -41,6 +41,12 @@
               <span>In stock</span>
               <span class="text-blue-500">{{ product.quantity || "0" }}</span>
             </div>
+            <div
+              class="w-full flex gap-2 justify-start items-center text-sm font-medium text-black-700"
+            >
+              <span>from : </span>
+              <span>{{ product.store_name }}</span>
+            </div>
           </div>
 
           <div>
@@ -100,15 +106,15 @@
         </form>
       </div>
       <div class="text-sm">
-        <div v-if="product.ram">
-          Ram:
-          <span>{{ product.ram }}</span>
-        </div>
-
-        <div v-if="product.storage">
-          Storage:
-          <span>{{ product.storage }}</span>
-        </div>
+        <span>specifications : </span>
+        <ul>
+          <li
+            v-for="(spec, index) in product.specifications.specifications"
+            :key="index"
+          >
+            {{ spec.spec_key }}: {{ spec.spec_value }}
+          </li>
+        </ul>
       </div>
     </div>
   </div>

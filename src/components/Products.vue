@@ -51,16 +51,15 @@
         <!-- Stores filter -->
         <div>
           <h1 class="text-sm px-3 text-sky-800">Stores</h1>
-          <div class="mx-3 text-xs">
-            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">
-              Store1
-            </p>
-            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">
-              Store2
-            </p>
-            <p class="py-2 px-3 hover:bg-slate-700/10 rounded-md transition">
-              Store3
-            </p>
+          <div
+            v-for="name in storeName"
+            :key="name.store_id"
+            class="mx-3 hover:bg-slate-700/10 rounded-md transition"
+            @click="filterbyStoreName(name.store_id)"
+          >
+            <button class="py-1 text-xs my-1 px-2 rounded-md">
+              {{ name.store_name }}
+            </button>
           </div>
         </div>
         <hr class="my-2" />
@@ -214,8 +213,50 @@ export default {
     const spec_data = ref(null);
     const temp_data_for_ratings = ref([]);
     const temp_data_for_price = ref([]);
+    const storeName = ref([]);
+    const temp_data_for_store = ref([]);
+    const temp_data_for_category = ref([]);
+
+    const filterbyStoreName = async (storeID) => {
+      temp_data_for_ratings.value = "";
+      temp_data_for_price.value = "";
+      temp_data_for_category.value = "";
+      if (temp_data_for_store.value.length === 0) {
+        temp_data_for_store.value = products.value;
+      } else {
+        products.value = temp_data_for_store.value;
+      }
+      console.log("store ID", storeID);
+      // Assuming product.value was a typo and it should be products.value
+      const filtered = products.value.filter((product) => {
+
+        // Debugging: Check if IDs match
+        const isMatch = product.store_id === storeID.toString(); // Ensure both are strings
+        console.log("Is Match:", isMatch);
+
+        return isMatch;
+      });
+
+      console.log("Filtered products:", filtered);
+      products.value = filtered;
+    };
+
+    //Get stores
+    const GetStorename = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getStorename"
+        );
+        storeName.value = response.data;
+      } catch (error) {
+        console.error("Error fetching storenames: ", error);
+      }
+    };
 
     const filterByRating = (minRatingValue) => {
+      temp_data_for_price.value = "";
+      temp_data_for_store.value = "";
+      temp_data_for_category.value = "";
       // Filter products based on rounded ratings
       if (temp_data_for_ratings.value.length === 0) {
         temp_data_for_ratings.value = products.value;
@@ -232,6 +273,9 @@ export default {
     const filterByPrice = () => {
       // Assuming `props.products` contains all products you might want to filter
       // And these are already available in the `products` ref
+      temp_data_for_ratings.value = "";
+      temp_data_for_store.value = "";
+      temp_data_for_category.value = "";
       if (temp_data_for_price.value.length === 0) {
         temp_data_for_price.value = products.value;
       } else {
@@ -250,7 +294,7 @@ export default {
         const response = await axios.get(
           `http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProductSpecifications&id=${productId}`
         );
-        spec_data.value = response.data;
+        return response.data;
       } catch (error) {
         console.error("Error fetching specifications: ", error);
         return null;
@@ -264,11 +308,11 @@ export default {
     const getCategories = async () => {
       try {
         const response = await axios.get(
-          "http://localhost/Ecommerce/vue-project/src/backend/categories.php"
+          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=fetchcategories"
         );
         categories.value = response.data;
 
-        // console.log(categories.value);
+        console.log(categories.value);
       } catch (error) {
         console.error("Error fetching categories: ", error);
       }
@@ -290,6 +334,8 @@ export default {
     const fetchProducts = async () => {
       temp_data_for_ratings.value = "";
       temp_data_for_price.value = "";
+      temp_data_for_store.value = "";
+      temp_data_for_category.value = "";
       try {
         const response = await axios.get(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProducts"
@@ -310,39 +356,32 @@ export default {
         return { id: i, colored: i < roundedRating };
       });
     };
-
-    const catName = ref("");
-    // filter by category
-    const getCatName = () => {
-      selectedCategoryName.value = catName.value;
-    };
     // Use axios.post instead of axios.get, and pass data in the request body
     const filterByCategory = async (id, name) => {
       temp_data_for_ratings.value = "";
       temp_data_for_price.value = "";
-      catName.value = name;
-      try {
-        const response = await axios.post(
-          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=fetchCategory",
-          { id: id }, // Send data as an object
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        console.log(response.data.cat); // Use response.data.cat to access the 'cat' property
-        products.value = response.data.cat;
-        getCatName();
-      } catch (error) {
-        console.error(error);
+      temp_data_for_store.value = "";
+      if (temp_data_for_category.value.length === 0) {
+        temp_data_for_category.value = products.value;
+      } else {
+        products.value = temp_data_for_category.value;
       }
+      console.log("Category id", id);
+      // Assuming product.value was a typo and it should be products.value
+      const filtered = products.value.filter((product) => {
 
-      // console.log(`Filtered by Category ID: ${id}`);
+        // Debugging: Check if IDs match
+        const isMatch = product.category_id === id.toString(); // Ensure both are strings
+        console.log("Is Match:", isMatch);
+
+        return isMatch;
+      });
+
+      console.log("Filtered products:", filtered);
+      products.value = filtered;
     };
 
-    onMounted(fetchProducts(), getCategories());
+    onMounted(fetchProducts(), getCategories(), GetStorename());
 
     const onHeartClick = (product) => {
       // Handle the heart icon click event
@@ -364,6 +403,7 @@ export default {
 
       filterByCategory,
       selectedCategoryName,
+      filterbyStoreName,
 
       handleSearchCompleted,
 
@@ -373,9 +413,13 @@ export default {
       filterByRating,
       temp_data_for_ratings,
       temp_data_for_price,
+      temp_data_for_store,
+      temp_data_for_category,
 
       fetchSpecifications,
       spec_data,
+      GetStorename,
+      storeName,
     };
   },
 };
