@@ -10,6 +10,14 @@
       >
         <Icon icon="gravity-ui:xmark" class="text-lg hover:text-red-500" />
       </button>
+      <div
+        class="w-full flex gap-2 capitalize justify-start items-center font-medium text-black-700"
+      >
+        <span
+          class="px-4 py-1 bg-blue-500/10 text-base shadow text-blue-500 font-semibold rounded-md"
+          >{{ product.store_name }}</span
+        >
+      </div>
 
       <div class="flex">
         <div class="flex-none w-48 relative">
@@ -40,12 +48,6 @@
             >
               <span>In stock</span>
               <span class="text-blue-500">{{ product.quantity || "0" }}</span>
-            </div>
-            <div
-              class="w-full flex gap-2 justify-start items-center text-sm font-medium text-black-700"
-            >
-              <span>from : </span>
-              <span>{{ product.store_name }}</span>
             </div>
           </div>
 
