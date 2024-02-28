@@ -4,11 +4,11 @@
       <h1>Order</h1>
     </div>
     <hr />
-    <div class="flex mt-5">
+    <div class="flex mt-5 w-full">
       <div>
         <div class="flex gap-3">
           <div
-            class="border rounded-full w-60 shadow flex justify-between items-center px-4"
+            class="border rounded-md w-60 shadow flex justify-between items-center px-4"
           >
             <input
               type="text"
@@ -24,18 +24,18 @@
           <form class="">
             <select
               id="status"
-              class="shadow border text-gray-900 outline-none text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full px-5 py-2"
+              class="shadow border text-gray-900 outline-none text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-32 px-3 py-2.5"
             >
               <option selected>Status</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
+              <option value="">Pending</option>
+              <option value="">Cancelled</option>
+              <option value="">Shipped</option>
+              <option value="">New order</option>
             </select>
           </form>
         </div>
 
-        <div class="my-5">
+        <div class="my-5 w-full">
           <div class="relative w-full overflow-x-auto shadow rounded-md">
             <table
               class="w-full text-sm text-left rtl:text-right text-gray-900 rounded-md"
