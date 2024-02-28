@@ -226,17 +226,17 @@ export default {
       } else {
         products.value = temp_data_for_store.value;
       }
-      console.log("store ID", storeID);
+      //    console.log("store ID", storeID);
       // Assuming product.value was a typo and it should be products.value
       const filtered = products.value.filter((product) => {
         // Debugging: Check if IDs match
         const isMatch = product.store_id === storeID.toString(); // Ensure both are strings
-        console.log("Is Match:", isMatch);
+        //    console.log("Is Match:", isMatch);
 
         return isMatch;
       });
 
-      console.log("Filtered products:", filtered);
+      //   console.log("Filtered products:", filtered);
       products.value = filtered;
     };
 
@@ -311,7 +311,7 @@ export default {
         );
         categories.value = response.data;
 
-        console.log(categories.value);
+        //    console.log(categories.value);
       } catch (error) {
         console.error("Error fetching categories: ", error);
       }
@@ -323,9 +323,9 @@ export default {
 
     const showModal = async (product) => {
       const specifications = await fetchSpecifications(product.product_id);
-      console.log("specs result in query", specifications);
+      //   console.log("specs result in query", specifications);
       selectedProduct.value = { ...product, specifications };
-      console.log("s afeifabsb", selectedProduct); // Combine product and specifications
+      //   console.log("s afeifabsb", selectedProduct); // Combine product and specifications
       isModalVisible.value = true;
       //console.log(selectedProduct.value);
     };
@@ -339,12 +339,12 @@ export default {
         const response = await axios.get(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProducts"
         );
-        console.log("API Response Data:", response.data);
+        //  console.log("API Response Data:", response.data);
         products.value = response.data;
 
         selectedCategoryName.value = "";
       } catch (error) {
-        console.error("Error fetching products: ", error);
+        //     console.error("Error fetching products: ", error);
       }
     };
 
@@ -365,17 +365,17 @@ export default {
       } else {
         products.value = temp_data_for_category.value;
       }
-      console.log("Category id", id);
+      //   console.log("Category id", id);
       // Assuming product.value was a typo and it should be products.value
       const filtered = products.value.filter((product) => {
         // Debugging: Check if IDs match
         const isMatch = product.category_id === id.toString(); // Ensure both are strings
-        console.log("Is Match:", isMatch);
+        //  console.log("Is Match:", isMatch);
 
         return isMatch;
       });
 
-      console.log("Filtered products:", filtered);
+      //   console.log("Filtered products:", filtered);
       products.value = filtered;
     };
 

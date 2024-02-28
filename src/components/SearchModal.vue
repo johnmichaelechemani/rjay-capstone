@@ -88,8 +88,8 @@ export default {
         const response = await axios.post(url, { query: searchQuery.value });
 
         searchProduct.value = response.data;
-        emit("search-completed", searchProduct.value); // Emitting the event
-        console.log("Response:", searchProduct.value);
+        emit("search-completed", searchProduct.value);
+        //   console.log("Response:", searchProduct.value);
       } catch (error) {
         console.log(error);
       }
@@ -109,10 +109,7 @@ export default {
 </script>
 
 <style>
-/* Define the blur effect */
 .backdrop-blur {
-  backdrop-filter: blur(
-    2px
-  ); /* Adjust the pixel value to increase or decrease the blur effect */
+  backdrop-filter: blur(2px);
 }
 </style>
