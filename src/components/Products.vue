@@ -57,8 +57,11 @@
             class="mx-3 hover:bg-slate-700/10 rounded-md transition"
             @click="filterbyStoreName(name.store_id)"
           >
-            <button class="py-1 text-xs my-1 px-2 rounded-md">
-              {{ name.store_name }}
+            <button
+              class="py-2 text-sm flex gap-2 justify-start text-blue-500 items-center capitalize my-1 px-2 rounded-md"
+            >
+              <Icon icon="fa-solid:store" class="text-lg" />
+              <span class="font-semibold"> {{ name.store_name }}</span>
             </button>
           </div>
         </div>
@@ -247,6 +250,7 @@ export default {
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getStorename"
         );
         storeName.value = response.data;
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching storenames: ", error);
       }
