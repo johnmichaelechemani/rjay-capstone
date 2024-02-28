@@ -233,13 +233,16 @@ function fetchProducts()
                 p.*, 
                 i.inventory_id, 
                 i.quantity,
-                us.store_name
+                us.store_name,
+                c.category_name
             FROM 
                 products AS p
             LEFT JOIN 
                 inventory AS i ON p.product_id = i.product_id
             LEFT JOIN 
                 user_store AS us ON p.store_id = us.store_id
+            LEFT JOIN 
+                categories AS c ON p.category_id = c.category_id
             WHERE 
                 us.store_role = ?
             ORDER BY 
