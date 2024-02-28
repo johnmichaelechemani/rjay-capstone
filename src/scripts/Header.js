@@ -53,12 +53,23 @@ export default {
 
     var userLogin = ref([]);
     const getUserFromLocalStorage = () => {
-      const userData = localStorage.getItem("user");
-      if (userData) {
-        userLogin.value = JSON.parse(userData);
+      try {
+        const userData = localStorage.getItem("user");
+
+        if (userData !== null) {
+          userLogin.value = JSON.parse(userData);
+        }
+
+        return null;
+      } catch (error) {
+        console.error(
+          "Error while getting user data from local storage:",
+          error
+        );
+        return error;
       }
-      return null;
     };
+
     const cartItems = async () => {
       try {
         const res = await axios.post(

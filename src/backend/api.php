@@ -15,9 +15,6 @@ switch ($action) {
     case 'getProducts':
         fetchProducts();
         break;
-    case 'fetchCategory':
-        fetchCategory();
-        break;
     case 'addCart':
         addCart();
         break;
@@ -30,14 +27,17 @@ switch ($action) {
     case 'CheckoutOrder':
         CheckoutOrder();
         break;
-    case 'getProductsByPriceRange':
-        getProductsByPriceRange();
-        break;
     case 'getTrackOrder':
         trackOrder();
         break;
     case 'deleteCartItem':
         deleteCartItem();
+        break;
+    case 'getStorename':
+        getStorename();
+        break;
+    case 'fetchcategories':
+        fetchcategories();
         break;
     default:
         $res['error'] = true;
@@ -46,6 +46,43 @@ switch ($action) {
         break;
 }
 
+function fetchcategories()
+{
+    global $conn;
+    // Use prepared statements to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM categories");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    $users = [];
+    while ($user = $result->fetch_assoc()) {
+        $users[] = $user;
+    }
+
+    $res = ['categories' => $users];
+    echo json_encode($res);
+}
+
+//fetching user store
+function getStorename()
+{
+    global $conn;
+    $role = 'seller';
+    $stmt = $conn->prepare("SELECT * FROM user_store WHERE store_role = ?");
+    $stmt->bind_param("s", $role);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    $specs = [];
+    while ($row = $result->fetch_assoc()) {
+        $specs[] = $row;
+    }
+
+    echo json_encode($specs);
+}
 
 function trackOrder()
 {
@@ -103,50 +140,6 @@ function deleteCartItem()
 
     echo json_encode($res);
 }
-
-function getProductsByPriceRange()
-{
-    global $conn;
-
-    // Read minPrice and maxPrice from query string
-    $minPrice = isset($_GET['minPrice']) ? (float) $_GET['minPrice'] : 0;
-    $maxPrice = isset($_GET['maxPrice']) ? (float) $_GET['maxPrice'] : PHP_INT_MAX;
-
-    // Prepare SQL statement to select products within the specified price range
-    $stmt = $conn->prepare("SELECT 
-        p.*, 
-        i.inventory_id, 
-        i.quantity
-    FROM 
-        products AS p
-    LEFT JOIN 
-        inventory AS i ON p.product_id = i.product_id
-    WHERE 
-        p.price BETWEEN ? AND ?
-    ORDER BY 
-        p.price ASC");
-
-    // Bind parameters and execute the statement
-    $stmt->bind_param("dd", $minPrice, $maxPrice);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-    $stmt->close();
-
-    $products = [];
-    while ($row = $result->fetch_assoc()) {
-        // Assuming $row['image'] contains the BLOB image data
-        $row['image'] = base64_encode($row['image']);
-        $products[] = $row;
-    }
-
-    // Close the connection
-    $conn->close();
-
-    // Return the products as JSON
-    echo json_encode($products);
-}
-
 
 function CheckoutOrder()
 {
@@ -207,43 +200,6 @@ function fetchSpecs()
     echo json_encode($res);
 }
 
-
-function fetchCategory()
-{
-    global $conn;
-
-    $data = json_decode(file_get_contents("php://input"), true);
-    $id = $data['id'];
-
-    // Use prepared statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT 
-    p.*, 
-    c.*,
-    i.quantity
-FROM 
-    products AS p
-LEFT JOIN 
-    categories AS c ON p.category_id = c.category_id
-LEFT JOIN
-    inventory AS i ON p.product_id = i.product_id
-WHERE 
-    p.category_id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-    $stmt->close();
-
-    $cat = [];
-    while ($row = $result->fetch_assoc()) {
-        $row['image'] = base64_encode($row['image']);
-        $cat[] = $row;
-    }
-
-    $res = ['cat' => $cat];
-    echo json_encode($res);
-}
-
 function addCart()
 {
     global $conn, $res;
@@ -276,11 +232,14 @@ function fetchProducts()
     $sql = "SELECT 
     p.*, 
     i.inventory_id, 
-    i.quantity
+    i.quantity,
+    us.store_name
 FROM 
     products AS p
 LEFT JOIN 
     inventory AS i ON p.product_id = i.product_id
+LEFT JOIN 
+    user_store AS us ON p.store_id = us.store_id
 ORDER BY 
     p.ratings DESC";
     $result = $conn->query($sql);

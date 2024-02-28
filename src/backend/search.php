@@ -19,9 +19,15 @@ function fetchSearch()
     $likePattern = '%' . $pname . '%';
 
     // First, try to find matches using LIKE for partial matches
-    $sql = "SELECT * FROM products WHERE product_name LIKE ? OR product_description LIKE ?";
+    $sql = "SELECT * 
+    FROM 
+        products AS p
+    LEFT JOIN
+        categories AS c on p.category_id = c.category_id
+    WHERE 
+        product_name LIKE ? OR product_description LIKE ? OR c.category_name LIKE ? OR c.category_description LIKE ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $likePattern, $likePattern);
+    $stmt->bind_param("ssss", $likePattern, $likePattern, $likePattern, $likePattern);
     $stmt->execute();
     $result = $stmt->get_result();
 
