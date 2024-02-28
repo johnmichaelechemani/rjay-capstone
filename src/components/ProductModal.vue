@@ -3,10 +3,10 @@
     v-if="isVisible"
     class="fixed inset-0 flex items-center justify-center bg-gray-500 border-2 border-zinc-300 bg-opacity-75 z-20"
   >
-    <div class="bg-white rounded-lg shadow-xl max-w-lg mx-auto p-6">
+    <div class="bg-white rounded-lg shadow-xl max-w-lg mx-auto p-6 relative">
       <button
-        @click="closeModal"
-        class="float-end p-2 bg-slate-700/20 rounded-full"
+        @click="closeModal()"
+        class="bg-slate-700/20 absolute right-3 top-3 p-2 rounded-full"
       >
         <Icon icon="gravity-ui:xmark" class="text-lg hover:text-red-500" />
       </button>
@@ -132,15 +132,13 @@ export default {
   components: {
     Icon,
   },
-  methods: {
-    closeModal() {
-      this.$emit("update:isVisible", false);
-    },
-  },
   setup(props, { emit }) {
     const quantity = ref(1);
     const finalQuantity = ref("");
     const isHeartRed = ref(false);
+    const closeModal = () => {
+      emit("update:isVisible", false);
+    };
 
     const increment = () => {
       quantity.value = Math.min(Number(quantity.value) + 1, 3); // Ensure the quantity does not exceed 3
@@ -157,8 +155,9 @@ export default {
       quantity.value = Math.max(Number(quantity.value) - 1, 1); // Ensure the quantity does not go below 1
       finalQuantity.value = quantity.value * props.product.price;
     };
-    const userLogin = ref([]);
 
+    const userLogin = ref([]);
+    // get user data from local storage
     const getUserFromLocalStorage = () => {
       try {
         const userData = localStorage.getItem("user");
@@ -180,11 +179,11 @@ export default {
     const cart_id = userLogin.value.user_id;
 
     const addToCart = async (name, id) => {
-      console.log(finalQuantity.value);
-      console.log(name);
-      console.log(id);
-      console.log(quantity.value);
-      console.log(cart_id);
+      // console.log(finalQuantity.value);
+      // console.log(name);
+      // console.log(id);
+      // console.log(quantity.value);
+      // console.log(cart_id);
 
       try {
         const response = await axios.post(
@@ -195,7 +194,7 @@ export default {
             cart_id: cart_id,
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         emit("update:isVisible", false);
       } catch (error) {
         console.error("Error adding to cart:", error);
@@ -203,7 +202,7 @@ export default {
     };
     const heart = () => {
       isHeartRed.value = !isHeartRed.value;
-      console.log("heart");
+      //  console.log("heart");
     };
 
     return {
@@ -214,6 +213,7 @@ export default {
       addToCart,
       heart,
       isHeartRed,
+      closeModal,
     };
   },
 };

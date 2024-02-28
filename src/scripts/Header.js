@@ -52,6 +52,7 @@ export default {
     };
 
     var userLogin = ref([]);
+    // get user data from local storage
     const getUserFromLocalStorage = () => {
       try {
         const userData = localStorage.getItem("user");
