@@ -91,36 +91,14 @@ const router = createRouter({
           component: () =>
             import("../Sellers/sellersViews/sellerAddProducts.vue"),
         },
+
         {
-          path: "/seller_order_management",
-          name: "seller_order_management",
+          path: "/seller_order",
+          name: "seller_order",
           component: () =>
-            import(
-              "../Sellers/sellersViews/order-management/sellerOrderManagement.vue"
-            ),
-          children: [
-            {
-              path: "",
-              redirect: { name: "seller_order_management_pending" },
-            },
-            {
-              path: "/seller_order_management_pending",
-              name: "seller_order_management_pending",
-              component: () =>
-                import(
-                  "../Sellers/sellersViews/order-management/sellerOrderManagementPending.vue"
-                ),
-            },
-            {
-              path: "/seller_order_management_confirmed",
-              name: "seller_order_management_confirmed",
-              component: () =>
-                import(
-                  "../Sellers/sellersViews/order-management/sellerOrderManagementConfirmed.vue"
-                ),
-            },
-          ],
+            import("../Sellers/sellersViews/sellerOrderManagement.vue"),
         },
+
         {
           path: "/seller_customers",
           name: "seller_customers",
