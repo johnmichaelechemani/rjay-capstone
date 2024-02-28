@@ -226,12 +226,12 @@ export default {
       } else {
         products.value = temp_data_for_store.value;
       }
+
       console.log("store ID", storeID);
       // Assuming product.value was a typo and it should be products.value
       const filtered = products.value.filter((product) => {
-
         // Debugging: Check if IDs match
-        const isMatch = product.store_id === storeID.toString(); // Ensure both are strings
+        const isMatch = product.store_id === storeID; // Ensure both are strings
         console.log("Is Match:", isMatch);
 
         return isMatch;
@@ -369,9 +369,8 @@ export default {
       console.log("Category id", id);
       // Assuming product.value was a typo and it should be products.value
       const filtered = products.value.filter((product) => {
-
         // Debugging: Check if IDs match
-        const isMatch = product.category_id === id.toString(); // Ensure both are strings
+        const isMatch = product.category_id === id; // Ensure both are strings
         console.log("Is Match:", isMatch);
 
         return isMatch;
