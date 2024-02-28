@@ -55,27 +55,41 @@
                 </tr>
               </thead>
               <tbody class="">
-                <tr class="bg-gray-100/10 border-b border-gray-600/50">
+                <tr
+                  v-for="item in orders"
+                  :key="item.id"
+                  class="bg-gray-100/10 border-b border-gray-600/50"
+                >
                   <th
                     scope="row"
                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    1234
+                    {{ item.order_id }}
                   </th>
-                  <td class="px-6 py-4">563421</td>
+                  <td class="px-6 py-4">{{ item.order_number }}</td>
                   <td class="px-6 py-4">
                     <p
-                      class="bg-orange-300/10 shadow px-3 py-1 rounded-full text-orange-600"
+                      class="shadow px-3 py-1 rounded-full"
+                      :class="{
+                        'text-blue-500 bg-blue-300/10':
+                          item.order_status === 'Shipping',
+                        'text-orange-500 bg-orange-300/10':
+                          item.order_status === 'Pending',
+                        'text-red-500 bg-red-300/10':
+                          item.order_status === 'Cancelled',
+                      }"
                     >
-                      Pending
+                      {{ item.order_status }}
                     </p>
                   </td>
-                  <td class="px-6 py-4">1</td>
-                  <td class="px-6 py-4">R-jay</td>
+                  <td class="px-6 py-4">{{ item.order_item }}</td>
+                  <td class="px-6 py-4">{{ item.order_customer_name }}</td>
                   <td class="px-6 py-4">
-                    <p class="text-violet-600">Standard</p>
+                    <p class="text-violet-600">
+                      {{ item.order_shipping_service }}
+                    </p>
                   </td>
-                  <td class="px-6 py-4">12345676890</td>
+                  <td class="px-6 py-4">{{ item.order_tracking_code }}</td>
                   <td class="px-6 py-4">
                     <Icon icon="basil:edit-outline" class="text-lg" />
                   </td>
@@ -93,6 +107,40 @@ import { Icon } from "@iconify/vue";
 export default {
   components: {
     Icon,
+  },
+  setup() {
+    const orders = [
+      {
+        order_id: 1234,
+        order_number: 23451,
+        order_status: "Pending",
+        order_item: 1,
+        order_customer_name: "John Doe",
+        order_shipping_service: "Standard",
+        order_tracking_code: 1234567899,
+      },
+      {
+        order_id: 1254534,
+        order_number: 23454551,
+        order_status: "Shipping",
+        order_item: 1,
+        order_customer_name: "R-jay",
+        order_shipping_service: "Express",
+        order_tracking_code: 856543499,
+      },
+      {
+        order_id: 12312534,
+        order_number: 23454551,
+        order_status: "Cancelled",
+        order_item: 2,
+        order_customer_name: "Jm",
+        order_shipping_service: "Express",
+        order_tracking_code: 456543499,
+      },
+    ];
+    return {
+      orders,
+    };
   },
 };
 </script>
