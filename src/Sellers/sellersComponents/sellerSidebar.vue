@@ -148,8 +148,12 @@ export default {
   setup() {
     const router = useRouter();
     const logout = () => {
-      localStorage.removeItem("seller");
-      router.push("/seller_index");
+      if (confirm("Are you sure you want to logout?")) {
+        localStorage.removeItem("seller");
+        router.push("/seller_index");
+      } else {
+        console.log("Logout canceled or dialog closed.");
+      }
     };
     var userLogin = ref([]);
     const getUserFromLocalStorage = () => {
