@@ -91,7 +91,11 @@
                   </td>
                   <td class="px-6 py-4">{{ item.order_tracking_code }}</td>
                   <td class="px-6 py-4">
-                    <Icon icon="basil:edit-outline" class="text-lg" />
+                    <Icon
+                      :icon="item.icon"
+                      class="text-lg"
+                      @click="editData(item.id)"
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -111,6 +115,7 @@ export default {
   setup() {
     const orders = [
       {
+        id: 1,
         order_id: 1234,
         order_number: 23451,
         order_status: "Pending",
@@ -118,8 +123,10 @@ export default {
         order_customer_name: "John Doe",
         order_shipping_service: "Standard",
         order_tracking_code: 1234567899,
+        icon: "basil:edit-outline",
       },
       {
+        id: 2,
         order_id: 1254534,
         order_number: 23454551,
         order_status: "Shipping",
@@ -127,8 +134,10 @@ export default {
         order_customer_name: "R-jay",
         order_shipping_service: "Express",
         order_tracking_code: 856543499,
+        icon: "basil:edit-outline",
       },
       {
+        id: 3,
         order_id: 12312534,
         order_number: 23454551,
         order_status: "Cancelled",
@@ -136,10 +145,16 @@ export default {
         order_customer_name: "Jm",
         order_shipping_service: "Express",
         order_tracking_code: 456543499,
+        icon: "basil:edit-outline",
       },
     ];
+
+    const editData = (id) => {
+      console.log(id);
+    };
     return {
       orders,
+      editData,
     };
   },
 };
