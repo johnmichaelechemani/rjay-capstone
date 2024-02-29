@@ -22,9 +22,9 @@
   <div :class="showCategory ? 'flex relative' : ''">
     <div
       v-if="showCategory"
-      class="text-base min-h-full w-72 shadow absolute z-10 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
+      class="text-base h-full w-72 shadow absolute z-10 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
     >
-      <div class="h-screen">
+      <div class="min-h-screen">
         <p class="px-3 pt-5 pb-3 text-sm text-sky-800">Catergories</p>
         <div>
           <button
