@@ -4,11 +4,15 @@
     class="sm:flex justify-between py-4 px-2 sm:px-12 text-xs sm:text-sm cursor-pointer hidden"
   >
     <div class="flex place-items-center">
-      <span>Need help? Call us: 09123456789</span>
+      <p class="text-slate-600">
+        Need help? Call us:
+        <span class="text-blue-500 text-base"> 09123456789</span>
+      </p>
     </div>
     <div
-      class="flex items-center gap-2 hover:text-zinc-500"
+      class="flex items-center gap-2 px-3 py-2 bg-blue-400/10 rounded-full shadow text-blue-500 hover:font-semibold transition"
       @click="orderTracking()"
+      :class="userLogin.length === 0 ? 'text-blue-500 pointer-events-none' : ''"
     >
       <Icon icon="fluent:vehicle-bus-24-regular" class="text-lg" />
       <span>Track your order</span>
