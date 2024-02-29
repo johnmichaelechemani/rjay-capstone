@@ -185,12 +185,6 @@ export default {
     const cart_id = userLogin.value.user_id;
 
     const addToCart = async (name, id) => {
-      // console.log(finalQuantity.value);
-      // console.log(name);
-      // console.log(id);
-      // console.log(quantity.value);
-      // console.log(cart_id);
-
       try {
         const response = await axios.post(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=addCart",
