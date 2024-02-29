@@ -86,7 +86,6 @@ export default {
         console.error("Error fetching cart items:", error);
       }
     };
-
     const refreshPage = () => {
       location.reload(true);
     };
@@ -253,7 +252,9 @@ export default {
     };
 
     getUserFromLocalStorage();
-    cartItems();
+    onMounted(() => {
+      cartItems();
+    });
 
     //order tracking
     const orderData = [
