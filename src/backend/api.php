@@ -90,8 +90,8 @@ function trackOrder()
     global $conn;
 
     $data = json_decode(file_get_contents("php://input"), true);
-    // $id = $data['id'];
-    $id = 8;
+    $id = $data['order_id'];
+    
 
     // Use prepared statement to prevent SQL injection
     $stmt = $conn->prepare("SELECT 
@@ -118,7 +118,7 @@ WHERE
         $cat[] = $row;
     }
 
-    $res = ['order records' => $cat];
+    $res['order_records'] = $cat;
     echo json_encode($res);
 }
 
@@ -227,33 +227,54 @@ function addCart()
 function fetchProducts()
 {
     global $conn;
-
-    // Fetch products from the database
+    $storeName = 'seller';
+    // Prepare the SQL query with a placeholder for the store_name
     $sql = "SELECT 
-    p.*, 
-    i.inventory_id, 
-    i.quantity,
-    us.store_name
-FROM 
-    products AS p
-LEFT JOIN 
-    inventory AS i ON p.product_id = i.product_id
-LEFT JOIN 
-    user_store AS us ON p.store_id = us.store_id
-ORDER BY 
-    p.ratings DESC";
-    $result = $conn->query($sql);
+                p.*, 
+                i.inventory_id, 
+                i.quantity,
+                us.store_name,
+                c.category_name
+            FROM 
+                products AS p
+            LEFT JOIN 
+                inventory AS i ON p.product_id = i.product_id
+            LEFT JOIN 
+                user_store AS us ON p.store_id = us.store_id
+            LEFT JOIN 
+                categories AS c ON p.category_id = c.category_id
+            WHERE 
+                us.store_role = ?
+            ORDER BY 
+                p.ratings DESC";
 
-    // Fetch data as an associative array
+    // Prepare the statement
+    $stmt = $conn->prepare($sql);
+
+    // Bind the $storeName variable to the placeholder in the SQL query
+    $stmt->bind_param("s", $storeName);
+
+    // Execute the query
+    $stmt->execute();
+
+    // Get the result of the query
+    $result = $stmt->get_result();
+
     $products = [];
     while ($row = $result->fetch_assoc()) {
         // Assuming $row['image'] contains the BLOB image data
-        $row['image'] = base64_encode($row['image']);
+        // Encode the image data to base64
+        if(isset($row['image'])) {
+            $row['image'] = base64_encode($row['image']);
+        }
         $products[] = $row;
     }
 
-    // Close the connection
-    $conn->close();
+    // Close the statement
+    $stmt->close();
+
+    // It's generally not a good idea to close the global connection within a function
+    // as it might be used elsewhere. Consider removing the $conn->close();
 
     echo json_encode($products);
 }

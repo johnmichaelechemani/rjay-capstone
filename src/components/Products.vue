@@ -233,7 +233,7 @@ export default {
       // Assuming product.value was a typo and it should be products.value
       const filtered = products.value.filter((product) => {
         // Debugging: Check if IDs match
-        const isMatch = product.store_id === storeID.toString(); // Ensure both are strings
+        const isMatch = product.store_id === storeID;
         //    console.log("Is Match:", isMatch);
 
         return isMatch;
@@ -373,7 +373,7 @@ export default {
       // Assuming product.value was a typo and it should be products.value
       const filtered = products.value.filter((product) => {
         // Debugging: Check if IDs match
-        const isMatch = product.category_id === id.toString(); // Ensure both are strings
+        const isMatch = product.category_id === id;
         //  console.log("Is Match:", isMatch);
 
         return isMatch;
