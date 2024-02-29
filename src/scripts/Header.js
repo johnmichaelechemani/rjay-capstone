@@ -246,6 +246,7 @@ export default {
       console.log("click");
     };
     const submitOrder = () => {
+      // write a function asycn axios post that post in order and order details table here
       console.log(priceTotalAll.value);
       console.log(selectedPayment.value);
       console.log(userLogin.value.user_id);
