@@ -95,11 +95,15 @@
                 </button>
               </div>
               <button
-                class="flex-none hover:text-red-400 transition flex items-center justify-center w-9 h-9 rounded-md text-slate-300 border border-slate-200"
+                class="flex-none hover:text-red-400 transition flex items-center justify-center w-9 h-9 rounded-md border border-slate-200"
                 type="button"
                 aria-label="Favorites"
-                @click="heart"
-                :class="{ 'text-red-400': isHeartRed }"
+                @click="heart(product.product_id)"
+                :class="
+                  isHeartRed[product.product_id]
+                    ? 'text-red-400'
+                    : 'text-slate-400'
+                "
               >
                 <Icon icon="ph:heart-fill" class="text-lg" />
               </button>
@@ -125,7 +129,7 @@
 <script>
 import { Icon } from "@iconify/vue";
 import axios from "axios";
-import { ref, watch } from "vue";
+import { ref, watch, onMounted, reactive } from "vue";
 export default {
   props: {
     isVisible: Boolean,
@@ -137,7 +141,7 @@ export default {
   setup(props, { emit }) {
     const quantity = ref(1);
     const finalQuantity = ref("");
-    const isHeartRed = ref(false);
+    const isHeartRed = reactive([]);
     const closeModal = () => {
       emit("update:isVisible", false);
     };
@@ -202,10 +206,17 @@ export default {
         console.error("Error adding to cart:", error);
       }
     };
-    const heart = () => {
-      isHeartRed.value = !isHeartRed.value;
-      //  console.log("heart");
+    const heart = (productId) => {
+      // Toggle the heart state for the clicked product
+      isHeartRed[productId] = !isHeartRed[productId];
+
+      console.log("heart for product", productId);
+      console.log(isHeartRed[productId]);
     };
+
+    onMounted(() => {
+      heart();
+    });
 
     return {
       quantity,
