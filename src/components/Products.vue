@@ -121,8 +121,8 @@
         </div>
       </div>
     </div>
-    <div class="bg-white cursor-pointer">
-      <div class="mx-auto max-w-2xl px-4 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+    <div class="bg-white cursor-pointer w-full">
+      <div class="px-10 py-10">
         <div>
           <h2 class="md:text-2xl text-lg font-bold tracking-tight text-sky-900">
             {{ selectedCategoryName || "Popular Products" }}
@@ -130,47 +130,51 @@
         </div>
 
         <div
-          class="mt-6 grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8"
+          class="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 xl:gap-x-4"
         >
           <div
             @click="showModal(product)"
             v-for="product in products"
             :key="product.product_id"
-            class="group relative border-2 border-zinc-300 rounded-2xl p-1 sm:p-2 overflow-hidden"
+            class="group relative bg-gradient-to-tr from-blue-500 via-violet-500 to-orange-500 rounded-xl p-[1px] overflow-hidden hover:shadow-lg hover:shadow-blue-500/50 transition"
           >
-            <div
-              class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-sky-900 lg:aspect-none group-hover:opacity-75 lg:h-44"
-            >
-              <img
-                :src="'data:image/png;base64,' + product.image"
-                :alt="product.imageAlt"
-                class="h-32 w-full object-center lg:h-44 lg:w-full"
-              />
-              <Icon
-                icon="ph:heart-light"
-                class="heart-icon"
-                @click="onHeartClick(product)"
-              />
-            </div>
-            <div class="mt-24 text-xs sm:text-sm">
-              <div class="absolute bottom-0 w-full inset-x-0 rounded-b-md p-2">
-                <div class="flex flex-col space-y-2 pl-2">
-                  <h3 class="text-sky-900 font-bold">
-                    <a :href="product.href">
-                      {{ product.product_name }}
-                    </a>
-                  </h3>
-                  <p class="font-medium">₱{{ product.price }}</p>
-                  <div class="mt-1">
-                    <span
-                      v-for="star in getStars(product.ratings)"
-                      :key="star.id"
-                      :class="{
-                        'star-colored': star.colored,
-                        'star-grey': !star.colored,
-                      }"
-                      >&#9733;</span
-                    >
+            <div class="bg-slate-100 w-full h-full rounded-xl">
+              <div
+                class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-xl bg-sky-900 lg:aspect-none group-hover:opacity-75 lg:h-44"
+              >
+                <img
+                  :src="'data:image/png;base64,' + product.image"
+                  :alt="product.imageAlt"
+                  class="h-32 w-full object-center lg:h-44 lg:w-full"
+                />
+                <Icon
+                  icon="ph:heart-light"
+                  class="heart-icon"
+                  @click="onHeartClick(product)"
+                />
+              </div>
+              <div class="mt-24 text-xs sm:text-sm">
+                <div
+                  class="absolute bottom-0 w-full inset-x-0 rounded-b-md p-2"
+                >
+                  <div class="flex flex-col space-y-2 pl-2">
+                    <h3 class="text-sky-900 font-bold">
+                      <a :href="product.href">
+                        {{ product.product_name }}
+                      </a>
+                    </h3>
+                    <p class="font-medium">₱{{ product.price }}</p>
+                    <div class="mt-1">
+                      <span
+                        v-for="star in getStars(product.ratings)"
+                        :key="star.id"
+                        :class="{
+                          'star-colored': star.colored,
+                          'star-grey': !star.colored,
+                        }"
+                        >&#9733;</span
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
