@@ -30,7 +30,6 @@ export default {
       this.user = name;
       this.$emit("login-completed", name);
     },
-    // ... other methods ...
   },
   setup(props) {
     const showCart = ref(false);
@@ -252,9 +251,7 @@ export default {
     };
 
     getUserFromLocalStorage();
-    onMounted(() => {
-      cartItems();
-    });
+    cartItems();
 
     //order tracking
     const orderData = [

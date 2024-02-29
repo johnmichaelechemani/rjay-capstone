@@ -186,6 +186,11 @@ export default {
 
     const addToCart = async (name, id) => {
       try {
+        if (cart_id === null || cart_id === undefined) {
+          console.log("You have to login first");
+          return;
+        }
+
         const response = await axios.post(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=addCart",
           {
@@ -194,12 +199,14 @@ export default {
             cart_id: cart_id,
           }
         );
+
         // console.log(response.data);
         emit("update:isVisible", false);
       } catch (error) {
         console.error("Error adding to cart:", error);
       }
     };
+
     const heart = (productId) => {
       // Toggle the heart state for the clicked product
       isHeartRed[productId] = !isHeartRed[productId];
