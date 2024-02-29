@@ -196,10 +196,10 @@
   >
     <!-- kulang ng logo dito -->
     <div class="flex sm:ml-10 ml-0">
-      <p class="text-sm sm:text-2xl font-bold text-white pr-4">Logo Here</p>
+      <img src="@/assets/logo.jpg" alt="" class="w-12 h-12 rounded-full mr-2" />
     </div>
     <!-- Search bar -->
-    <div class="md:ml-12">
+    <div class="sm:ml-5">
       <div
         class="flex justify-between bg-none lg:bg-white border rounded-full overflow-hidden"
       >
@@ -230,7 +230,7 @@
       <!-- sign in -->
       <div
         v-if="user"
-        class="flex items-center gap-2 text-white hover:text-zinc-400"
+        class="flex items-center gap-2 p-2 rounded-md hover:bg-slate-800/50 w-full text-white hover:font-bold"
         @click="showLogin = true"
       >
         <div v-if="userLogin.length === 0" class="flex gap-2">
@@ -556,38 +556,44 @@
         'translate-x-0': isSidebarOpen,
         'translate-x-full': !isSidebarOpen,
       }"
-      class="sm:hidden fixed inset-y-0 right-0 bg-sky-900 bg-opacity-90 z-50 transition-transform duration-300 ease-in-out"
+      class="sm:hidden fixed w-72 inset-y-0 right-0 bg-sky-800 z-50 transition-transform duration-300 ease-in-out"
     >
-      <div class="flex flex-col items-end p-4 pl-16">
+      <div class="flex flex-col items-end p-4">
         <!-- Close Button -->
-        <div class="cursor-pointer text-white" @click="toggleSidebar">
+        <div
+          class="cursor-pointer text-red-400 bg-red-500/20 rounded-full p-2"
+          @click="toggleSidebar"
+        >
           <Icon icon="heroicons-solid:x" class="text-2xl" />
         </div>
-
+      </div>
+      <div class="px-4">
         <!-- Sidebar Content -->
-        <div class="flex flex-col items-end mt-4 gap-2">
+        <div class="flex flex-col items-start">
           <!-- track your order -->
-          <div class="flex items-center gap-2 text-white hover:text-zinc-400">
-            <Icon icon="fluent:vehicle-bus-24-regular" />
-            <span>Track your order</span>
+          <div
+            class="flex items-center gap-2 p-2 rounded-md hover:bg-slate-800/50 w-full text-white hover:font-bold"
+          >
+            <Icon icon="fluent:vehicle-bus-24-regular" class="text-xl" />
+            <h1 class="text-base font-medium">Track your order</h1>
           </div>
 
           <!-- Cart -->
           <div
             @click="showCartFunction"
-            class="flex items-center gap-2 text-white hover:text-zinc-400"
+            class="flex items-center gap-2 p-2 rounded-md hover:bg-slate-800/50 w-full text-white hover:font-bold"
           >
-            <Icon icon="ion:cart-outline" />
-            <span>Cart</span>
+            <Icon icon="ion:cart-outline" class="text-xl" />
+            <h1 class="text-base font-medium">Cart</h1>
           </div>
 
           <!-- Sign In -->
           <div
-            class="flex items-center gap-2 text-white hover:text-zinc-400"
+            class="flex items-center gap-2 p-2 rounded-md hover:bg-slate-800/50 w-full text-white hover:font-bold"
             @click="Handlesignin"
           >
-            <Icon icon="bi:person" />
-            <span>Sign in</span>
+            <Icon icon="bi:person" class="text-xl" />
+            <h1 class="text-base font-medium">Sign in</h1>
           </div>
         </div>
       </div>
