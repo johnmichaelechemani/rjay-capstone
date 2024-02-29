@@ -309,6 +309,7 @@
             <h1 class="font-semibold text-lg">Cart</h1>
           </div>
           <div
+            v-if="cartItemsValue.length !== 0"
             class="p-2 bg-slate-500/10 h-96 overflow-scroll overflow-x-hidden rounded-md shadow-sm"
           >
             <div class="flex gap-2 font-semibold mb-2">
@@ -388,6 +389,11 @@
               </button>
             </div>
             <!--  -->
+          </div>
+          <div v-if="cartItemsValue.length === 0">
+            <p class="px-5 py-2 text-red-500 bg-red-400/10 rounded-full shadow">
+              No items
+            </p>
           </div>
         </div>
       </div>
