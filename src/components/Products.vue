@@ -4,16 +4,18 @@
   </div>
   <div>
     <!-- after navigator -->
-    <div class="flex py-2 pl-2 sm:pl-8 bg-slate-200 gap-2 sm:text-sm text-xs">
+    <div
+      class="flex py-2 pl-2 sm:pl-8 bg-gradient-to-r from-blue-500/20 from-10% to-blue-500/0 to-100% gap-2 sm:text-sm text-xs"
+    >
       <button
         @click="handleSidebarCategory"
-        class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold shadow"
+        class="bg-slate-700/10 py-2 px-4 rounded-full text-slate-800 font-semibold shadow-lg border"
       >
         Category
       </button>
       <RouterLink
         to="/"
-        class="bg-sky-700 py-2 text-slate-100 px-4 rounded-md font-semibold shadow"
+        class="bg-blue-500 py-2 text-slate-100 px-4 rounded-full font-semibold shadow"
         >Home</RouterLink
       >
     </div>
@@ -86,7 +88,7 @@
           </div>
           <button
             @click="filterByPrice"
-            class="bg-sky-700 py-2 text-slate-100 px-4 rounded-md font-semibold shadow w-full"
+            class="bg-blue-500/95 py-2 text-slate-100 px-4 rounded-md font-semibold shadow w-full"
           >
             Apply
           </button>

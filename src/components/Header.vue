@@ -192,7 +192,7 @@
   </div>
   <!-- Navigator -->
   <div
-    class="text-xs sm:text-sm flex container-fluid bg-sky-900 p-2 sm:p-4 pl-2 sm:pl-12 place-items-center cursor-pointer"
+    class="text-xs sm:text-sm flex container-fluid shadow-lg bg-gradient-to-r from-blue-600/75 via-violet-500/50 to-orange-500/10 p-2 sm:p-4 pl-2 sm:pl-12 place-items-center cursor-pointer"
   >
     <!-- kulang ng logo dito -->
     <div class="flex sm:ml-10 ml-0">
@@ -201,7 +201,7 @@
     <!-- Search bar -->
     <div class="sm:ml-5">
       <div
-        class="flex justify-between bg-none lg:bg-white border rounded-full overflow-hidden"
+        class="flex justify-between bg-none lg:bg-slate-100 border shadow-lg rounded-full overflow-hidden"
       >
         <button
           @click="showSearch = true"
@@ -230,10 +230,13 @@
       <!-- sign in -->
       <div
         v-if="user"
-        class="flex items-center gap-2 p-2 rounded-md hover:bg-slate-800/50 w-full text-white hover:font-bold"
+        class="flex items-center gap-2 rounded-full w-full text-white"
         @click="showLogin = true"
       >
-        <div v-if="userLogin.length === 0" class="flex gap-2">
+        <div
+          v-if="userLogin.length === 0"
+          class="flex gap-1 bg-blue-600 shadow-xl hover:bg-blue-500 py-2 px-3 rounded-full"
+        >
           <Icon icon="bi:person" class="text-lg" />
           <span>Sign in</span>
         </div>
@@ -249,10 +252,10 @@
       <!-- Cart -->
       <div
         :class="
-          userLogin.length === 0 ? 'text-slate-200 pointer-events-none' : ''
+          userLogin.length === 0 ? 'text-slate-800  pointer-events-none' : ''
         "
         @click="showCartFunction"
-        class="flex items-center gap-2 text-white hover:text-zinc-400 relative"
+        class="flex items-center gap-2 text-slate-800 relative hover:bg-slate-500/20 rounded-full py-1 px-2"
       >
         <div v-if="cartItemsValue.length !== 0">
           <Icon
@@ -260,8 +263,8 @@
             class="text-xl text-red-500 absolute -top-2 left-0"
           />
         </div>
-        <Icon icon="ion:cart-outline" class="text-lg" />
-        <span>Cart</span>
+        <Icon icon="ion:cart-outline" class="text-xl" />
+        <p class="text-base">Cart</p>
       </div>
       <div
         class="flex gap-2 justify-start items-center relative"
@@ -271,9 +274,9 @@
           @click="showCustomerSettings"
           class="flex gap-2 justify-start items-center"
         >
-          <div class="h-10 w-10 bg-slate-100 rounded-full"></div>
+          <div class="h-10 w-10 bg-slate-800 rounded-full"></div>
           <div>
-            <h1 class="text-white font-bold">{{ userLogin.username }}</h1>
+            <h1 class="text-slate-800 font-bold">{{ userLogin.username }}</h1>
           </div>
         </button>
 
