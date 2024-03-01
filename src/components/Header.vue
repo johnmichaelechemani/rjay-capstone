@@ -272,9 +272,14 @@
       >
         <button
           @click="showCustomerSettings"
-          class="flex gap-2 justify-start items-center"
+          class="flex gap-2 justify-start mx-5 items-center"
         >
-          <div class="h-10 w-10 bg-slate-800 rounded-full"></div>
+          <img
+            src="@/assets/luffy2.jpg"
+            alt=""
+            class="w-10 h-10 rounded-full mr-2"
+          />
+
           <div>
             <h1 class="text-slate-800 font-bold">{{ userLogin.username }}</h1>
           </div>
