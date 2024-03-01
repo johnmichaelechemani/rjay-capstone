@@ -22,20 +22,19 @@
               Dashboard
             </div>
           </RouterLink>
-          <RouterLink to="/seller_order_management">
+          <RouterLink to="/seller_order">
             <div
               :class="{
                 ' text-slate-700 bg-sky-500/25 shadow font-medium':
-                  $route.name === 'seller_order_management' ||
-                  $route.name === 'seller_order_management_pending',
+                  $route.name === 'seller_order',
                 'text-slate-500 bg-sky-100/10 font-normal':
-                  $route.name !== 'seller_order_management',
+                  $route.name !== 'seller_order',
                 ' font-semibold text-base': true,
               }"
               class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
             >
               <Icon icon="bi:cart" class="text-xl" />
-              Order Management
+              Order
             </div>
           </RouterLink>
           <RouterLink to="/seller_customers">
@@ -148,8 +147,12 @@ export default {
   setup() {
     const router = useRouter();
     const logout = () => {
-      localStorage.removeItem("seller");
-      router.push("/seller_index");
+      if (confirm("Are you sure you want to logout?")) {
+        localStorage.removeItem("seller");
+        router.push("/seller_index");
+      } else {
+        console.log("Logout canceled or dialog closed.");
+      }
     };
     var userLogin = ref([]);
     const getUserFromLocalStorage = () => {

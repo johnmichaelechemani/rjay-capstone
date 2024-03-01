@@ -161,7 +161,7 @@ export default {
 
     const getUserFromLocalStorage = () => {
       const userData = localStorage.getItem("user");
-      if (userData) {
+      if (userData !== null) {
         userLogin.value = JSON.parse(userData);
       }
       return null;
