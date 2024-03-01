@@ -17,7 +17,7 @@
             v-model="loginEmail"
             type="email"
             autocomplete="email"
-            class="block w-full rounded-md px-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 outline-none sm:text-sm sm:leading-6"
+            class="block w-full rounded-md bg-slate-400/20 border border-blue-500/25 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 outline-none sm:text-sm sm:leading-6"
           />
         </div>
       </div>
@@ -37,7 +37,7 @@
             v-model="loginPassword"
             type="password"
             autocomplete="current-password"
-            class="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 outline-none focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
+            class="block w-full px-2 rounded-md py-1.5 text-gray-900 bg-slate-400/20 border border-blue-500/25 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 outline-none focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
           />
         </div>
       </div>

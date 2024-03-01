@@ -90,8 +90,8 @@ function trackOrder()
     global $conn;
 
     $data = json_decode(file_get_contents("php://input"), true);
-    // $id = $data['id'];
-    $id = 8;
+    $id = $data['order_id'];
+    
 
     // Use prepared statement to prevent SQL injection
     $stmt = $conn->prepare("SELECT 
@@ -118,7 +118,7 @@ WHERE
         $cat[] = $row;
     }
 
-    $res = ['order records' => $cat];
+    $res['order_records'] = $cat;
     echo json_encode($res);
 }
 

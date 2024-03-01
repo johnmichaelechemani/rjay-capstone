@@ -49,8 +49,8 @@
                   <th scope="col" class="px-6 py-3">STATUS</th>
                   <th scope="col" class="px-6 py-3">ITEM</th>
                   <th scope="col" class="px-6 py-3">CUSTOMER NAME</th>
-                  <th scope="col" class="px-6 py-3">SHIPPING SERVICE</th>
-                  <th scope="col" class="px-6 py-3">TRACKING CODE</th>
+                  <th scope="col" class="px-6 py-3">PAYMENT METHOD</th>
+                  <th scope="col" class="px-6 py-3">ORDER DATE</th>
                   <th scope="col" class="px-6 py-3"></th>
                 </tr>
               </thead>
@@ -72,24 +72,27 @@
                       class="shadow px-3 py-1 rounded-full"
                       :class="{
                         'text-blue-500 bg-blue-300/10':
-                          item.ostatus === 'Shipping',
+                          item.status === 'shipping',
                         'text-orange-500 bg-orange-300/10':
-                          item.status === 'Pending',
-                        'text-red-500 bg-red-300/10':
-                          item.status === 'Cancelled',
+                          item.status === 'pending',
+                        'text-green-500 bg-red-300/10':
+                          item.status === 'completed',
                       }"
                     >
                       {{ item.status }}
                     </p>
                   </td>
-                  <td class="px-6 py-4">{{ item.quantitynpm }}</td>
-                  <td class="px-6 py-4">{{ item.order_customer_name }}</td>
+                  <td class="px-6 py-4">{{ item.quantity }}</td>
+                  <td class="px-6 py-4">{{ item.username }}</td>
                   <td class="px-6 py-4">
                     <p class="text-violet-600">
-                      {{ item.order_shipping_service }}
+                      {{ item.payment_method }}
                     </p>
                   </td>
-                  <td class="px-6 py-4">{{ item.order_tracking_code }}</td>
+                  <td class="px-6 py-4">
+                    {{ item.created_at }}
+                    >
+                  </td>
                   <td class="px-6 py-4">
                     <Icon
                       :icon="item.icon"
@@ -107,28 +110,26 @@
   </div>
 </template>
 <script>
-import { ref } from "vue";
+// YourComponent.vue <script> part
+import { ref, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
 import axios from "axios";
+import { userLogin, getUserFromLocalStorage } from "@/scripts/Seller"; // Adjust the path as necessary
+
 export default {
   components: {
     Icon,
   },
   setup() {
-    const userLogin = ref([]);
     const orders = ref([]);
 
-    const getUserFromLocalStorage = () => {
-      const userData = localStorage.getItem("seller");
-      if (userData) {
-        userLogin.value = JSON.parse(userData);
-      }
-      return null;
-    };
-    getUserFromLocalStorage();
+    // Now userLogin is directly accessible here, and it's reactive
+    onMounted(() => {
+      getUserFromLocalStorage(); // Initialize userLogin from localStorage when component mounts
+      fetchOrders(); // Then fetch orders
+    });
 
     const fetchOrders = async () => {
-      // Fetch and store orders
       console.log("seller ", userLogin.value.store_id);
       try {
         const response = await axios.post(
@@ -137,23 +138,19 @@ export default {
             store_id: userLogin.value.store_id,
           }
         );
-        console.log("getOrders value:", response.data);
-        orders.value = response.data; // Store fetched data
+        orders.value = response.data;
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
     };
 
-    fetchOrders();
-
-    console.log("orders", orders.value);
     const editData = (id) => {
       console.log(id);
     };
+
     return {
       orders,
       editData,
-      userLogin,
     };
   },
 };

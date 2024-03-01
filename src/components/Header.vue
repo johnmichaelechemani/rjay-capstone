@@ -4,11 +4,15 @@
     class="sm:flex justify-between py-4 px-2 sm:px-12 text-xs sm:text-sm cursor-pointer hidden"
   >
     <div class="flex place-items-center">
-      <span>Need help? Call us: 09123456789</span>
+      <p class="text-slate-600">
+        Need help? Call us:
+        <span class="text-blue-500 text-base"> 09123456789</span>
+      </p>
     </div>
     <div
-      class="flex items-center gap-2 hover:text-zinc-500"
+      class="flex items-center gap-2 px-3 py-2 bg-blue-400/10 rounded-full shadow text-blue-500 hover:font-semibold transition"
       @click="orderTracking()"
+      :class="userLogin.length === 0 ? 'text-blue-500 pointer-events-none' : ''"
     >
       <Icon icon="fluent:vehicle-bus-24-regular" class="text-lg" />
       <span>Track your order</span>
@@ -32,138 +36,152 @@
           <div class="h-full">
             <h1 class="font-semibold text-lg">Order Tracking</h1>
             <hr class="my-2" />
-            <h1 class="text-base font-semibold py-1">
-              Your Orders (<span class="text-blue-500">{{
-                orderData.length
-              }}</span
-              >)
-            </h1>
-            <hr class="my-2" />
-            <div
-              class="p-2 rounded-md bg-slate-400/10 my-2"
-              v-for="item in orderData"
-              :key="item.id"
-            >
-              <div>
-                <span class="font-semibold text-slate-800"
-                  >#{{ item.order_id }}</span
-                >
-              </div>
-              <div class="my-2 flex gap-2 justify-start items-center">
-                <div class="w-10 h-10 bg-slate-900 rounded-md"></div>
-                <div>
-                  <h1 class="text-base font-semibold">
-                    {{ item.product_name }}
-                  </h1>
-                  <p class="font-semibold">
-                    Total:
-                    <span
-                      class="text-red-500 py-1 px-2 bg-slate-500/10 rounded-md"
-                      >${{ item.total_price }}</span
-                    >
-                  </p>
-                </div>
-              </div>
+            <div v-if="orderData.length !== 0">
+              <h1 class="text-base font-semibold py-1">
+                Your Orders (<span class="text-blue-500">{{
+                  orderData.length
+                }}</span
+                >)
+              </h1>
+              <hr class="my-2" />
               <div
-                class="mb-5 flex justify-between items-center bg-blue-300/20 rounded-md p-1"
+                class="p-2 rounded-md bg-slate-400/10 my-2"
+                v-for="(items, index) in orderData"
+                :key="index"
               >
-                <div>
-                  <p class="text-xs font-light">Date purchased</p>
-                  <p class="text-base font-semibold">
-                    {{ item.date_purchased }}
-                  </p>
-                </div>
-                <Icon icon="iconamoon:arrow-right-2-light" class="text-xl" />
-                <div>
-                  <p class="text-xs font-light">Estemated Delivery</p>
-                  <p class="text-base font-semibold">
-                    {{ item.date_delivery }}
-                  </p>
-                </div>
-              </div>
-              <ol
-                class="flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base"
-              >
-                <li
-                  class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
-                >
-                  <span
-                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
-                  >
-                    <div v-if="item.status >= 1">
-                      <Icon
-                        icon="lets-icons:check-fill"
-                        class="text-lg text-blue-600"
-                      />
+                <div v-for="item in items" :key="item.id">
+                  <div>
+                    <span class="font-semibold text-slate-800"
+                      >#{{ item.order_id }}</span
+                    >
+                  </div>
+                  <div class="my-2 flex gap-2 justify-start items-center">
+                    <div class="w-10 h-10 bg-slate-900 rounded-md"></div>
+                    <div>
+                      <h1 class="text-base font-semibold">
+                        {{ item.product_name }}
+                      </h1>
+                      <p class="font-semibold">
+                        Total:
+                        <span
+                          class="text-red-500 py-1 px-2 bg-slate-500/10 rounded-md"
+                          >${{ item.total_price }}</span
+                        >
+                      </p>
                     </div>
-                    <div v-if="item.status < 1"><p class="pr-2">1</p></div>
-                    Pending
-                  </span>
-                </li>
-                <li
-                  class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
-                >
-                  <span
-                    class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                  </div>
+                  <div
+                    class="mb-5 flex justify-between items-center bg-blue-300/20 rounded-md p-1"
                   >
-                    <div v-if="item.status >= 2">
-                      <Icon
-                        icon="lets-icons:check-fill"
-                        class="text-lg text-blue-600"
-                      />
+                    <div>
+                      <p class="text-xs font-light">Date purchased</p>
+                      <p class="text-base font-semibold">
+                        {{ item.date_purchased }}
+                      </p>
                     </div>
-                    <div v-if="item.status < 2"><p class="pr-2">2</p></div>
-                    Processing
-                  </span>
-                </li>
-                <li class="flex items-center text-xs">
-                  <div v-if="item.status >= 3">
                     <Icon
-                      icon="lets-icons:check-fill"
-                      class="text-lg text-blue-600"
+                      icon="iconamoon:arrow-right-2-light"
+                      class="text-xl"
                     />
+                    <div>
+                      <p class="text-xs font-light">Estemated Delivery</p>
+                      <p class="text-base font-semibold">
+                        {{ item.date_delivery }}
+                      </p>
+                    </div>
                   </div>
-                  <div v-if="item.status < 3"><p class="pr-2">3</p></div>
-                  Shipping
-                </li>
-              </ol>
-              <div>
-                <div class="border border-blue-500/50 rounded-md p-2 my-5">
-                  <div
-                    v-if="item.status >= 1"
-                    class="bg-blue-500/10 rounded-md p-1"
+                  <ol
+                    class="flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base"
                   >
-                    <p class="text-xs font-light">
-                      {{ item.date_purchased }}
-                    </p>
-                    <p class="text-base font-light text-blue-600">
-                      Your order is being received.
-                    </p>
-                  </div>
-                  <div
-                    v-if="item.status >= 2"
-                    class="bg-blue-500/10 rounded-md p-1 my-1"
-                  >
-                    <p class="text-xs font-light">
-                      {{ item.date_purchased }}
-                    </p>
-                    <p class="text-base font-light text-blue-600">
-                      Your order is being processed.
-                    </p>
-                  </div>
-                  <div
-                    v-if="item.status >= 3"
-                    class="bg-blue-500/10 rounded-md p-1 my-1"
-                  >
-                    <p class="text-xs font-light">
-                      {{ item.date_purchased }}
-                    </p>
-                    <p class="text-base font-light text-blue-600">
-                      Your order is being shipped.
-                    </p>
+                    <li
+                      class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                    >
+                      <span
+                        class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                      >
+                        <div v-if="item.status >= 1">
+                          <Icon
+                            icon="lets-icons:check-fill"
+                            class="text-lg text-blue-600"
+                          />
+                        </div>
+                        <div v-if="item.status < 1"><p class="pr-2">1</p></div>
+                        Pending
+                      </span>
+                    </li>
+                    <li
+                      class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                    >
+                      <span
+                        class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                      >
+                        <div v-if="item.status >= 2">
+                          <Icon
+                            icon="lets-icons:check-fill"
+                            class="text-lg text-blue-600"
+                          />
+                        </div>
+                        <div v-if="item.status < 2"><p class="pr-2">2</p></div>
+                        Processing
+                      </span>
+                    </li>
+                    <li class="flex items-center text-xs">
+                      <div v-if="item.status >= 3">
+                        <Icon
+                          icon="lets-icons:check-fill"
+                          class="text-lg text-blue-600"
+                        />
+                      </div>
+                      <div v-if="item.status < 3"><p class="pr-2">3</p></div>
+                      Shipping
+                    </li>
+                  </ol>
+                  <div>
+                    <div class="border border-blue-500/50 rounded-md p-2 my-5">
+                      <div
+                        v-if="item.status >= 1"
+                        class="bg-blue-500/10 rounded-md p-1"
+                      >
+                        <p class="text-xs font-light">
+                          {{ item.date_purchased }}
+                        </p>
+                        <p class="text-base font-light text-blue-600">
+                          Your order is being received.
+                        </p>
+                      </div>
+                      <div
+                        v-if="item.status >= 2"
+                        class="bg-blue-500/10 rounded-md p-1 my-1"
+                      >
+                        <p class="text-xs font-light">
+                          {{ item.date_purchased }}
+                        </p>
+                        <p class="text-base font-light text-blue-600">
+                          Your order is being processed.
+                        </p>
+                      </div>
+                      <div
+                        v-if="item.status >= 3"
+                        class="bg-blue-500/10 rounded-md p-1 my-1"
+                      >
+                        <p class="text-xs font-light">
+                          {{ item.date_purchased }}
+                        </p>
+                        <p class="text-base font-light text-blue-600">
+                          Your order is being shipped.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div v-if="orderData.length === 0">
+              <h1
+                class="text-base font-semibold text-red-500 px-5 py-2 bg-red-300/10 rounded-full border my-2"
+              >
+                You have no orders
+              </h1>
             </div>
 
             <hr class="border" />
@@ -174,16 +192,16 @@
   </div>
   <!-- Navigator -->
   <div
-    class="text-xs sm:text-sm flex container-fluid bg-sky-900 p-2 sm:p-4 pl-2 sm:pl-12 place-items-center cursor-pointer"
+    class="text-xs sm:text-sm flex container-fluid shadow-lg bg-gradient-to-r from-blue-600/75 via-violet-500/50 to-orange-500/10 p-2 sm:p-4 pl-2 sm:pl-12 place-items-center cursor-pointer"
   >
     <!-- kulang ng logo dito -->
     <div class="flex sm:ml-10 ml-0">
-      <p class="text-sm sm:text-2xl font-bold text-white pr-4">Logo Here</p>
+      <img src="@/assets/logo.jpg" alt="" class="w-12 h-12 rounded-full mr-2" />
     </div>
     <!-- Search bar -->
-    <div class="md:ml-12">
+    <div class="sm:ml-5">
       <div
-        class="flex justify-between bg-none lg:bg-white border rounded-full overflow-hidden"
+        class="flex justify-between bg-none lg:bg-slate-100 border shadow-lg rounded-full overflow-hidden"
       >
         <button
           @click="showSearch = true"
@@ -206,16 +224,17 @@
       </div>
     </div>
     <!-- right nav -->
-    <div
-      class="hidden sm:flex ml-auto items-center gap-5 sm:mr-12 cursor-pointer"
-    >
+    <div class="hidden sm:flex ml-auto items-center sm:mr-12 cursor-pointer">
       <!-- sign in -->
       <div
         v-if="user"
-        class="flex items-center gap-2 text-white hover:text-zinc-400"
+        class="flex items-center gap-2 rounded-full w-full text-white"
         @click="showLogin = true"
       >
-        <div v-if="userLogin.length === 0" class="flex gap-2">
+        <div
+          v-if="userLogin.length === 0"
+          class="flex gap-1 bg-blue-600 shadow-xl hover:bg-blue-500 py-2 px-3 rounded-full"
+        >
           <Icon icon="bi:person" class="text-lg" />
           <span>Sign in</span>
         </div>
@@ -231,10 +250,10 @@
       <!-- Cart -->
       <div
         :class="
-          userLogin.length === 0 ? 'text-slate-200 pointer-events-none' : ''
+          userLogin.length === 0 ? 'text-slate-800  pointer-events-none' : ''
         "
         @click="showCartFunction"
-        class="flex items-center gap-2 text-white hover:text-zinc-400 relative"
+        class="flex items-center gap-2 text-slate-800 relative hover:bg-slate-500/20 rounded-full py-1 px-2"
       >
         <div v-if="cartItemsValue.length !== 0">
           <Icon
@@ -242,8 +261,8 @@
             class="text-xl text-red-500 absolute -top-2 left-0"
           />
         </div>
-        <Icon icon="ion:cart-outline" class="text-lg" />
-        <span>Cart</span>
+        <Icon icon="ion:cart-outline" class="text-xl" />
+        <p class="text-base">Cart</p>
       </div>
       <div
         class="flex gap-2 justify-start items-center relative"
@@ -251,11 +270,16 @@
       >
         <button
           @click="showCustomerSettings"
-          class="flex gap-2 justify-start items-center"
+          class="flex gap-2 justify-start mx-5 items-center"
         >
-          <div class="h-10 w-10 bg-slate-100 rounded-full"></div>
+          <img
+            src="@/assets/luffy2.jpg"
+            alt=""
+            class="w-10 h-10 rounded-full mr-2"
+          />
+
           <div>
-            <h1 class="text-white font-bold">{{ userLogin.username }}</h1>
+            <h1 class="text-slate-800 font-bold">{{ userLogin.username }}</h1>
           </div>
         </button>
 
@@ -295,6 +319,7 @@
             <h1 class="font-semibold text-lg">Cart</h1>
           </div>
           <div
+            v-if="cartItemsValue.length !== 0"
             class="p-2 bg-slate-500/10 h-96 overflow-scroll overflow-x-hidden rounded-md shadow-sm"
           >
             <div class="flex gap-2 font-semibold mb-2">
@@ -374,6 +399,11 @@
               </button>
             </div>
             <!--  -->
+          </div>
+          <div v-if="cartItemsValue.length === 0">
+            <p class="px-5 py-2 text-red-500 bg-red-400/10 rounded-full shadow">
+              No items
+            </p>
           </div>
         </div>
       </div>
@@ -532,38 +562,44 @@
         'translate-x-0': isSidebarOpen,
         'translate-x-full': !isSidebarOpen,
       }"
-      class="sm:hidden fixed inset-y-0 right-0 bg-sky-900 bg-opacity-90 z-50 transition-transform duration-300 ease-in-out"
+      class="sm:hidden fixed w-72 inset-y-0 right-0 bg-sky-800 z-50 transition-transform duration-300 ease-in-out"
     >
-      <div class="flex flex-col items-end p-4 pl-16">
+      <div class="flex flex-col items-end p-4">
         <!-- Close Button -->
-        <div class="cursor-pointer text-white" @click="toggleSidebar">
+        <div
+          class="cursor-pointer text-red-400 bg-red-500/20 rounded-full p-2"
+          @click="toggleSidebar"
+        >
           <Icon icon="heroicons-solid:x" class="text-2xl" />
         </div>
-
+      </div>
+      <div class="px-4">
         <!-- Sidebar Content -->
-        <div class="flex flex-col items-end mt-4 gap-2">
+        <div class="flex flex-col items-start">
           <!-- track your order -->
-          <div class="flex items-center gap-2 text-white hover:text-zinc-400">
-            <Icon icon="fluent:vehicle-bus-24-regular" />
-            <span>Track your order</span>
+          <div
+            class="flex items-center gap-2 p-2 rounded-md hover:bg-slate-800/50 w-full text-white hover:font-bold"
+          >
+            <Icon icon="fluent:vehicle-bus-24-regular" class="text-xl" />
+            <h1 class="text-base font-medium">Track your order</h1>
           </div>
 
           <!-- Cart -->
           <div
             @click="showCartFunction"
-            class="flex items-center gap-2 text-white hover:text-zinc-400"
+            class="flex items-center gap-2 p-2 rounded-md hover:bg-slate-800/50 w-full text-white hover:font-bold"
           >
-            <Icon icon="ion:cart-outline" />
-            <span>Cart</span>
+            <Icon icon="ion:cart-outline" class="text-xl" />
+            <h1 class="text-base font-medium">Cart</h1>
           </div>
 
           <!-- Sign In -->
           <div
-            class="flex items-center gap-2 text-white hover:text-zinc-400"
+            class="flex items-center gap-2 p-2 rounded-md hover:bg-slate-800/50 w-full text-white hover:font-bold"
             @click="Handlesignin"
           >
-            <Icon icon="bi:person" />
-            <span>Sign in</span>
+            <Icon icon="bi:person" class="text-xl" />
+            <h1 class="text-base font-medium">Sign in</h1>
           </div>
         </div>
       </div>

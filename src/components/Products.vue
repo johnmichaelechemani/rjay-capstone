@@ -4,16 +4,18 @@
   </div>
   <div>
     <!-- after navigator -->
-    <div class="flex py-2 pl-2 sm:pl-8 bg-slate-200 gap-2 sm:text-sm text-xs">
+    <div
+      class="flex py-2 pl-2 sm:pl-8 bg-gradient-to-r from-blue-500/20 from-10% to-blue-500/0 to-100% gap-2 sm:text-sm text-xs"
+    >
       <button
         @click="handleSidebarCategory"
-        class="bg-slate-700/10 py-2 px-4 rounded-md font-semibold shadow"
+        class="bg-slate-700/10 py-2 px-4 rounded-full text-slate-800 font-semibold shadow-lg border"
       >
         Category
       </button>
       <RouterLink
         to="/"
-        class="bg-sky-700 py-2 text-slate-100 px-4 rounded-md font-semibold shadow"
+        class="bg-blue-500 py-2 text-slate-100 px-4 rounded-full font-semibold shadow"
         >Home</RouterLink
       >
     </div>
@@ -22,9 +24,9 @@
   <div :class="showCategory ? 'flex relative' : ''">
     <div
       v-if="showCategory"
-      class="text-base min-h-full w-72 shadow absolute z-10 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
+      class="text-base h-full w-72 shadow absolute z-10 sm:relative font-medium bg-gray-50 border border-r-slate-700/10"
     >
-      <div class="h-screen">
+      <div class="min-h-screen">
         <p class="px-3 pt-5 pb-3 text-sm text-sky-800">Catergories</p>
         <div>
           <button
@@ -57,8 +59,11 @@
             class="mx-3 hover:bg-slate-700/10 rounded-md transition"
             @click="filterbyStoreName(name.store_id)"
           >
-            <button class="py-1 text-xs my-1 px-2 rounded-md">
-              {{ name.store_name }}
+            <button
+              class="py-2 text-sm flex gap-2 justify-start text-blue-500 items-center capitalize my-1 px-2 rounded-md"
+            >
+              <Icon icon="fa-solid:store" class="text-lg" />
+              <span class="font-semibold"> {{ name.store_name }}</span>
             </button>
           </div>
         </div>
@@ -83,7 +88,7 @@
           </div>
           <button
             @click="filterByPrice"
-            class="bg-sky-700 py-2 text-slate-100 px-4 rounded-md font-semibold shadow w-full"
+            class="bg-blue-500/95 py-2 text-slate-100 px-4 rounded-md font-semibold shadow w-full"
           >
             Apply
           </button>
@@ -118,56 +123,62 @@
         </div>
       </div>
     </div>
-    <div class="bg-white cursor-pointer">
-      <div class="mx-auto max-w-2xl px-4 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+    <div class="bg-white cursor-pointer w-full">
+      <div class="px-10 py-10">
         <div>
-          <h2 class="md:text-2xl text-lg font-bold tracking-tight text-sky-900">
+          <h2
+            class="md:text-2xl text-lg font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r drop-shadow-lg from-blue-600 from-10% to-violet-500"
+          >
             {{ selectedCategoryName || "Popular Products" }}
           </h2>
         </div>
 
         <div
-          class="mt-6 grid grid-cols-2 gap-x-8 gap-y-8 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8"
+          class="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 xl:gap-x-4"
         >
           <div
             @click="showModal(product)"
             v-for="product in products"
             :key="product.product_id"
-            class="group relative border-2 border-zinc-300 rounded-2xl p-1 sm:p-2 overflow-hidden"
+            class="group relative bg-gradient-to-tr from-blue-500 via-violet-500 to-orange-500 rounded-xl p-[1px] overflow-hidden hover:shadow-lg hover:shadow-blue-500/50 transition"
           >
-            <div
-              class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-sky-900 lg:aspect-none group-hover:opacity-75 lg:h-44"
-            >
-              <img
-                :src="'data:image/png;base64,' + product.image"
-                :alt="product.imageAlt"
-                class="h-32 w-full object-center lg:h-44 lg:w-full"
-              />
-              <Icon
-                icon="ph:heart-light"
-                class="heart-icon"
-                @click="onHeartClick(product)"
-              />
-            </div>
-            <div class="mt-24 text-xs sm:text-sm">
-              <div class="absolute bottom-0 w-full inset-x-0 rounded-b-md p-2">
-                <div class="flex flex-col space-y-2 pl-2">
-                  <h3 class="text-sky-900 font-bold">
-                    <a :href="product.href">
-                      {{ product.product_name }}
-                    </a>
-                  </h3>
-                  <p class="font-medium">₱{{ product.price }}</p>
-                  <div class="mt-1">
-                    <span
-                      v-for="star in getStars(product.ratings)"
-                      :key="star.id"
-                      :class="{
-                        'star-colored': star.colored,
-                        'star-grey': !star.colored,
-                      }"
-                      >&#9733;</span
-                    >
+            <div class="bg-slate-100 w-full h-full rounded-xl">
+              <div
+                class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-xl bg-sky-900 lg:aspect-none group-hover:opacity-75 lg:h-44"
+              >
+                <img
+                  :src="'data:image/png;base64,' + product.image"
+                  :alt="product.imageAlt"
+                  class="h-32 w-full object-center lg:h-44 lg:w-full"
+                />
+                <Icon
+                  icon="ph:heart-light"
+                  class="heart-icon"
+                  @click="onHeartClick(product)"
+                />
+              </div>
+              <div class="mt-24 text-xs sm:text-sm">
+                <div
+                  class="absolute bottom-0 w-full inset-x-0 rounded-b-md p-2"
+                >
+                  <div class="flex flex-col space-y-2 pl-2">
+                    <h3 class="text-sky-900 font-bold">
+                      <a :href="product.href">
+                        {{ product.product_name }}
+                      </a>
+                    </h3>
+                    <p class="font-medium">₱{{ product.price }}</p>
+                    <div class="mt-1">
+                      <span
+                        v-for="star in getStars(product.ratings)"
+                        :key="star.id"
+                        :class="{
+                          'star-colored': star.colored,
+                          'star-grey': !star.colored,
+                        }"
+                        >&#9733;</span
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
@@ -226,18 +237,17 @@ export default {
       } else {
         products.value = temp_data_for_store.value;
       }
-
-      console.log("store ID", storeID);
+      //    console.log("store ID", storeID);
       // Assuming product.value was a typo and it should be products.value
       const filtered = products.value.filter((product) => {
         // Debugging: Check if IDs match
-        const isMatch = product.store_id === storeID; // Ensure both are strings
-        console.log("Is Match:", isMatch);
+        const isMatch = product.store_id === storeID;
+        //    console.log("Is Match:", isMatch);
 
         return isMatch;
       });
 
-      console.log("Filtered products:", filtered);
+      //   console.log("Filtered products:", filtered);
       products.value = filtered;
     };
 
@@ -248,6 +258,7 @@ export default {
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getStorename"
         );
         storeName.value = response.data;
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching storenames: ", error);
       }
@@ -312,7 +323,7 @@ export default {
         );
         categories.value = response.data;
 
-        console.log(categories.value);
+        //    console.log(categories.value);
       } catch (error) {
         console.error("Error fetching categories: ", error);
       }
@@ -324,9 +335,9 @@ export default {
 
     const showModal = async (product) => {
       const specifications = await fetchSpecifications(product.product_id);
-      console.log("specs result in query", specifications);
+      //   console.log("specs result in query", specifications);
       selectedProduct.value = { ...product, specifications };
-      console.log("s afeifabsb", selectedProduct); // Combine product and specifications
+      //   console.log("s afeifabsb", selectedProduct); // Combine product and specifications
       isModalVisible.value = true;
       //console.log(selectedProduct.value);
     };
@@ -340,12 +351,12 @@ export default {
         const response = await axios.get(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getProducts"
         );
-        console.log("API Response Data:", response.data);
+        //  console.log("API Response Data:", response.data);
         products.value = response.data;
 
         selectedCategoryName.value = "";
       } catch (error) {
-        console.error("Error fetching products: ", error);
+        //     console.error("Error fetching products: ", error);
       }
     };
 
@@ -366,17 +377,17 @@ export default {
       } else {
         products.value = temp_data_for_category.value;
       }
-      console.log("Category id", id);
+      //   console.log("Category id", id);
       // Assuming product.value was a typo and it should be products.value
       const filtered = products.value.filter((product) => {
         // Debugging: Check if IDs match
-        const isMatch = product.category_id === id; // Ensure both are strings
-        console.log("Is Match:", isMatch);
+        const isMatch = product.category_id === id;
+        //  console.log("Is Match:", isMatch);
 
         return isMatch;
       });
 
-      console.log("Filtered products:", filtered);
+      //   console.log("Filtered products:", filtered);
       products.value = filtered;
     };
 

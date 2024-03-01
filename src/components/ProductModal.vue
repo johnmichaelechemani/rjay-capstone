@@ -3,13 +3,21 @@
     v-if="isVisible"
     class="fixed inset-0 flex items-center justify-center bg-gray-500 border-2 border-zinc-300 bg-opacity-75 z-20"
   >
-    <div class="bg-white rounded-lg shadow-xl max-w-lg mx-auto p-6">
+    <div class="bg-white rounded-lg shadow-xl max-w-lg mx-auto p-6 relative">
       <button
-        @click="closeModal"
-        class="float-end p-2 bg-slate-700/20 rounded-full"
+        @click="closeModal()"
+        class="bg-slate-700/20 absolute right-3 top-3 p-2 rounded-full"
       >
         <Icon icon="gravity-ui:xmark" class="text-lg hover:text-red-500" />
       </button>
+      <div
+        class="w-full flex gap-2 capitalize justify-start items-center font-medium text-black-700"
+      >
+        <span
+          class="px-4 py-1 bg-blue-500/10 text-base shadow text-blue-500 font-semibold rounded-md"
+          >{{ product.store_name }}</span
+        >
+      </div>
 
       <div class="flex">
         <div class="flex-none w-48 relative">
@@ -40,12 +48,6 @@
             >
               <span>In stock</span>
               <span class="text-blue-500">{{ product.quantity || "0" }}</span>
-            </div>
-            <div
-              class="w-full flex gap-2 justify-start items-center text-sm font-medium text-black-700"
-            >
-              <span>from : </span>
-              <span>{{ product.store_name }}</span>
             </div>
           </div>
 
@@ -93,11 +95,15 @@
                 </button>
               </div>
               <button
-                class="flex-none hover:text-red-400 transition flex items-center justify-center w-9 h-9 rounded-md text-slate-300 border border-slate-200"
+                class="flex-none hover:text-red-400 transition flex items-center justify-center w-9 h-9 rounded-md border border-slate-200"
                 type="button"
                 aria-label="Favorites"
-                @click="heart"
-                :class="{ 'text-red-400': isHeartRed }"
+                @click="heart(product.product_id)"
+                :class="
+                  isHeartRed[product.product_id]
+                    ? 'text-red-400'
+                    : 'text-slate-400'
+                "
               >
                 <Icon icon="ph:heart-fill" class="text-lg" />
               </button>
@@ -123,7 +129,7 @@
 <script>
 import { Icon } from "@iconify/vue";
 import axios from "axios";
-import { ref, watch } from "vue";
+import { ref, watch, onMounted, reactive } from "vue";
 export default {
   props: {
     isVisible: Boolean,
@@ -132,15 +138,13 @@ export default {
   components: {
     Icon,
   },
-  methods: {
-    closeModal() {
-      this.$emit("update:isVisible", false);
-    },
-  },
   setup(props, { emit }) {
     const quantity = ref(1);
     const finalQuantity = ref("");
-    const isHeartRed = ref(false);
+    const isHeartRed = reactive([]);
+    const closeModal = () => {
+      emit("update:isVisible", false);
+    };
 
     const increment = () => {
       quantity.value = Math.min(Number(quantity.value) + 1, 3); // Ensure the quantity does not exceed 3
@@ -157,26 +161,36 @@ export default {
       quantity.value = Math.max(Number(quantity.value) - 1, 1); // Ensure the quantity does not go below 1
       finalQuantity.value = quantity.value * props.product.price;
     };
-    const userLogin = ref([]);
 
+    const userLogin = ref([]);
+    // get user data from local storage
     const getUserFromLocalStorage = () => {
-      const userData = localStorage.getItem("user");
-      if (userData !== null) {
-        userLogin.value = JSON.parse(userData);
+      try {
+        const userData = localStorage.getItem("user");
+
+        if (userData !== null) {
+          userLogin.value = JSON.parse(userData);
+        }
+
+        return null;
+      } catch (error) {
+        console.error(
+          "Error while getting user data from local storage:",
+          error
+        );
+        return error;
       }
-      return null;
     };
     getUserFromLocalStorage();
     const cart_id = userLogin.value.user_id;
 
     const addToCart = async (name, id) => {
-      console.log(finalQuantity.value);
-      console.log(name);
-      console.log(id);
-      console.log(quantity.value);
-      console.log(cart_id);
-
       try {
+        if (cart_id === null || cart_id === undefined) {
+          console.log("You have to login first");
+          return;
+        }
+
         const response = await axios.post(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=addCart",
           {
@@ -185,16 +199,25 @@ export default {
             cart_id: cart_id,
           }
         );
-        console.log(response.data);
+
+        // console.log(response.data);
         emit("update:isVisible", false);
       } catch (error) {
         console.error("Error adding to cart:", error);
       }
     };
-    const heart = () => {
-      isHeartRed.value = !isHeartRed.value;
-      console.log("heart");
+
+    const heart = (productId) => {
+      // Toggle the heart state for the clicked product
+      isHeartRed[productId] = !isHeartRed[productId];
+
+      console.log("heart for product", productId);
+      console.log(isHeartRed[productId]);
     };
+
+    onMounted(() => {
+      heart();
+    });
 
     return {
       quantity,
@@ -204,6 +227,7 @@ export default {
       addToCart,
       heart,
       isHeartRed,
+      closeModal,
     };
   },
 };
