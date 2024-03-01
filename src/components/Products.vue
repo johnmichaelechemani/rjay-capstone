@@ -126,7 +126,9 @@
     <div class="bg-white cursor-pointer w-full">
       <div class="px-10 py-10">
         <div>
-          <h2 class="md:text-2xl text-lg font-bold tracking-tight text-sky-900">
+          <h2
+            class="md:text-2xl text-lg font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r drop-shadow-lg from-blue-600 from-10% to-violet-500"
+          >
             {{ selectedCategoryName || "Popular Products" }}
           </h2>
         </div>

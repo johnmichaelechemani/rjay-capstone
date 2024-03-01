@@ -224,9 +224,7 @@
       </div>
     </div>
     <!-- right nav -->
-    <div
-      class="hidden sm:flex ml-auto items-center gap-5 sm:mr-12 cursor-pointer"
-    >
+    <div class="hidden sm:flex ml-auto items-center sm:mr-12 cursor-pointer">
       <!-- sign in -->
       <div
         v-if="user"
