@@ -144,14 +144,16 @@ function deleteCartItem()
 function CheckoutOrder()
 {
     global $conn;
-
-    $stmt = $conn->prepare("INSERT INTO orders (user_id, total_price, status) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $user_id, $total_price, $status);
+    $data = json_decode(file_get_contents("php://input"), true);
+    
+    $stmt = $conn->prepare("INSERT INTO orders (user_id, total_price, status, item) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $user_id, $total_price, $status, $item);
 
     // Set parameters and execute
-    $user_id = 1;
-    $total_price = 799;
-    $status = "pending";
+    $user_id = $data['user_id'];
+    $total_price = $data['total_price'];
+    $status = $data['status'];
+    $item = $data['item'];
     $stmt->execute();
 
     // Capture the last inserted ID to use as a foreign key
@@ -161,11 +163,24 @@ function CheckoutOrder()
     $stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("isss", $order_id, $product_id, $quantity, $price);
 
-    // Set parameters and execute
-    $product_id = 1;
-    $quantity = 2;
-    $price = 70;
-    $stmt->execute();
+
+
+    foreach ($data['product_id'] as $key => $product_id) {
+        $quantity = $data['quantity'][$key];
+        $price = $data['price'][$key];
+    
+        // Re-bind the parameters for each iteration
+        $stmt->bind_param("iiid", $order_id, $product_id, $quantity, $price);
+    
+        // Execute the statement for each set of data
+        $stmt->execute();
+
+        // Delete the product from cart_items
+        $deleteStmt = $conn->prepare("DELETE FROM cart_items WHERE product_id = ?");
+        $deleteStmt->bind_param("i", $product_id);
+        $deleteStmt->execute();
+        $deleteStmt->close();
+    }
 
     echo "New records created successfully";
 
