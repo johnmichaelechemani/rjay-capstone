@@ -6,7 +6,7 @@
     <div>
       <div class="flex justify-end">
         <button
-          class="bg-blue-400/20 text-blue-600 px-3 font-medium text-sm py-1 rounded-full mb-2 shadow"
+          class="bg-blue-400/20 text-blue-600 px-3 font-medium text-sm py-2 rounded-full mb-2 shadow"
         >
           Save Product
         </button>
