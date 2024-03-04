@@ -273,7 +273,7 @@
           class="flex gap-2 justify-start mx-5 items-center"
         >
           <img
-            src="@/assets/luffy2.jpg"
+            src="@/assets/profile.jpg"
             alt=""
             class="w-10 h-10 rounded-full mr-2"
           />

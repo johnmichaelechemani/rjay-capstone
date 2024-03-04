@@ -209,10 +209,13 @@ export default {
     const selectedPayment = ref("");
 
     const checkout = () => {
+
       showPayment.value = true;
+      console.log(checkoutItems.value);
       // Collect all the checked items
       itemsToCheckout.value = checkoutItems.value.map((item) => {
         // Calculate price per item
+        
         const pricePerItem = item.quantity * item.price;
         // Add price per item to the total per item
         priceTotalPerItem.value += pricePerItem;
@@ -245,6 +248,7 @@ export default {
     };
     const submitOrder = () => {
       // write a function asycn axios post that post in order and order details table here
+      console.log("items", checkedItems.value);
       console.log(priceTotalAll.value);
       console.log(selectedPayment.value);
       console.log(userLogin.value.user_id);

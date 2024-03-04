@@ -10,9 +10,9 @@
         <div class="sm:flex gap-10 py-10">
           <div class="my-10 pt-20 px-5">
             <h1
-              class="text-6xl font-extrabold py-3 text-slate-800 text-transparent bg-gradient-to-tr from-blue-500 from-40% via-violet-500 via-50% to-orange-500 to-80% bg-clip-text"
+              class="text-3xl font-extrabold py-3 text-slate-800 text-transparent bg-gradient-to-tr from-blue-500 from-40% via-violet-500 via-50% to-orange-500 to-80% bg-clip-text"
             >
-              Shopp to the best!
+              Order na tabi pang patak patak lang oh.
             </h1>
             <img src="../assets/login.svg" alt="" class="sm:w-full sm:h-full" />
           </div>
