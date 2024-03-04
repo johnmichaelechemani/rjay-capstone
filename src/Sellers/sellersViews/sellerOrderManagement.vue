@@ -45,7 +45,7 @@
               >
                 <tr class="bg-gray-100/10 border-b border-gray-600/50">
                   <th scope="col" class="px-6 py-3">Order Id</th>
-                  <th scope="col" class="px-6 py-3">ORDER NUMBER</th>
+
                   <th scope="col" class="px-6 py-3">STATUS</th>
                   <th scope="col" class="px-6 py-3">ITEM</th>
                   <th scope="col" class="px-6 py-3">CUSTOMER NAME</th>
@@ -67,7 +67,7 @@
                   >
                     {{ item.order_id }}
                   </th>
-                  <td class="px-6 py-4">{{ item.order_number }}</td>
+
                   <td class="px-6 py-4">
                     <p
                       class="shadow px-3 py-1 text-center rounded-full"

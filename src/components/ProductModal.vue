@@ -121,7 +121,7 @@
           <li
             v-for="(spec, index) in product.specifications.specifications"
             :key="index"
-            class="flex gap-2"
+            class="flex gap-2 justify-start items-center"
           >
             <span class="font-medium text-base">{{ spec.spec_key }}</span
             >: <span class="text-sm">{{ spec.spec_value }}</span>
