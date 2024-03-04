@@ -49,8 +49,8 @@
                   <th scope="col" class="px-6 py-3">STATUS</th>
                   <th scope="col" class="px-6 py-3">ITEM</th>
                   <th scope="col" class="px-6 py-3">CUSTOMER NAME</th>
-                  <th scope="col" class="px-6 py-3">SHIPPING SERVICE</th>
-                  <th scope="col" class="px-6 py-3">TRACKING CODE</th>
+                  <th scope="col" class="px-6 py-3">PAYMENT METHOD</th>
+                  <th scope="col" class="px-6 py-3">ORDER DATE</th>
                   <th scope="col" class="px-6 py-3"></th>
                 </tr>
               </thead>
@@ -72,24 +72,26 @@
                       class="shadow px-3 py-1 rounded-full"
                       :class="{
                         'text-blue-500 bg-blue-300/10':
-                          item.order_status === 'Shipping',
+                          item.status === 'shipping',
                         'text-orange-500 bg-orange-300/10':
-                          item.order_status === 'Pending',
-                        'text-red-500 bg-red-300/10':
-                          item.order_status === 'Cancelled',
+                          item.status === 'pending',
+                        'text-green-500 bg-red-300/10':
+                          item.status === 'completed',
                       }"
                     >
-                      {{ item.order_status }}
+                      {{ item.status }}
                     </p>
                   </td>
-                  <td class="px-6 py-4">{{ item.order_item }}</td>
-                  <td class="px-6 py-4">{{ item.order_customer_name }}</td>
+                  <td class="px-6 py-4">{{ item.quantity }}</td>
+                  <td class="px-6 py-4">{{ item.username }}</td>
                   <td class="px-6 py-4">
                     <p class="text-violet-600">
-                      {{ item.order_shipping_service }}
+                      {{ item.payment_method }}
                     </p>
                   </td>
-                  <td class="px-6 py-4">{{ item.order_tracking_code }}</td>
+                  <td class="px-6 py-4">
+                    {{ item.created_at }}
+                  </td>
                   <td class="px-6 py-4">
                     <Icon
                       :icon="item.icon"
@@ -107,51 +109,44 @@
   </div>
 </template>
 <script>
+// YourComponent.vue <script> part
+import { ref, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
+import axios from "axios";
+import { userLogin, getUserFromLocalStorage } from "@/scripts/Seller"; // Adjust the path as necessary
+
 export default {
   components: {
     Icon,
   },
   setup() {
-    const orders = [
-      {
-        id: 1,
-        order_id: 1234,
-        order_number: 23451,
-        order_status: "Pending",
-        order_item: 1,
-        order_customer_name: "John Doe",
-        order_shipping_service: "Standard",
-        order_tracking_code: 1234567899,
-        icon: "basil:edit-outline",
-      },
-      {
-        id: 2,
-        order_id: 1254534,
-        order_number: 23454551,
-        order_status: "Shipping",
-        order_item: 1,
-        order_customer_name: "R-jay",
-        order_shipping_service: "Express",
-        order_tracking_code: 856543499,
-        icon: "basil:edit-outline",
-      },
-      {
-        id: 3,
-        order_id: 12312534,
-        order_number: 23454551,
-        order_status: "Cancelled",
-        order_item: 2,
-        order_customer_name: "Jm",
-        order_shipping_service: "Express",
-        order_tracking_code: 456543499,
-        icon: "basil:edit-outline",
-      },
-    ];
+    const orders = ref([]);
+
+    // Now userLogin is directly accessible here, and it's reactive
+    onMounted(() => {
+      getUserFromLocalStorage(); // Initialize userLogin from localStorage when component mounts
+      fetchOrders(); // Then fetch orders
+    });
+
+    const fetchOrders = async () => {
+      console.log("seller ", userLogin.value.store_id);
+      try {
+        const response = await axios.post(
+          "http://localhost/Ecommerce/vue-project/src/backend/seller/sellerApi.php?action=getOrders",
+          {
+            store_id: userLogin.value.store_id,
+          }
+        );
+        orders.value = response.data;
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
 
     const editData = (id) => {
       console.log(id);
     };
+
     return {
       orders,
       editData,
