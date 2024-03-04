@@ -37,36 +37,6 @@
               Order
             </div>
           </RouterLink>
-          <RouterLink to="/seller_customers">
-            <div
-              :class="{
-                ' text-slate-700 bg-sky-500/25 shadow font-medium':
-                  $route.name === 'seller_customers',
-                'text-slate-500 bg-sky-100/10 font-normal':
-                  $route.name !== 'seller_customers',
-                ' font-semibold text-base': true,
-              }"
-              class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
-            >
-              <Icon icon="bi:people" class="text-xl" />
-              Customers
-            </div>
-          </RouterLink>
-          <RouterLink to="/seller_transations">
-            <div
-              :class="{
-                ' text-slate-700 bg-sky-500/25 shadow font-medium':
-                  $route.name === 'seller_transations',
-                'text-slate-500 bg-sky-100/10 font-normal':
-                  $route.name !== 'seller_transations',
-                ' font-semibold text-base': true,
-              }"
-              class="px-2 py-1 my-2 flex gap-2 justify-start rounded-md items-center"
-            >
-              <Icon icon="bitcoin-icons:transactions-filled" class="text-xl" />
-              Transactions
-            </div>
-          </RouterLink>
           <div>
             <hr />
             <h1 class="font-semibold text-gray-500 py-3">Products</h1>
