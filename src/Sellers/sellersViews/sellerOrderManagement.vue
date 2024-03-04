@@ -69,7 +69,7 @@
                   <td class="px-6 py-4">{{ item.order_number }}</td>
                   <td class="px-6 py-4">
                     <p
-                      class="shadow px-3 py-1 rounded-full"
+                      class="shadow px-3 py-1 text-center rounded-full"
                       :class="{
                         'text-blue-500 bg-blue-300/10':
                           item.status === 'shipping',
