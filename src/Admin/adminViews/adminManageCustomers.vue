@@ -51,13 +51,13 @@ export default {
       {
         customer_id: 1,
         customer_name: "John Doe",
-        email: "johndoe@example.com",
+        phone_number: "+380999999999",
         category: "Laptop PC",
       },
       {
         customer_id: 2,
         customer_name: "John",
-        email: "johndoe@example.com",
+        phone_number: "+380999999999",
         category: "Shafol PC",
       },
     ];
