@@ -13,52 +13,26 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-gray-200 border-b border-gray-800">
+          <tr
+            v-for="user in customer"
+            :key="user"
+            class="bg-gray-200 border-b border-gray-700"
+          >
             <th
               scope="row"
               class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
             >
-              Apple MacBook Pro 17"
+              {{ user.customer_name }}
             </th>
-            <td class="px-6 py-4">Silver</td>
-            <td class="px-6 py-4">Laptop</td>
+            <td class="px-6 py-4">{{ user.email }}</td>
+            <td class="px-6 py-4">{{ user.category }}</td>
             <td class="px-6 py-4 flex justify-center">
-              <Icon
-                icon="material-symbols-light:delete-sharp"
-                class="text-2xl text-red-500"
-              />
-            </td>
-          </tr>
-          <tr class="bg-gray-200 border-b border-gray-700">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-            >
-              Microsoft Surface Pro
-            </th>
-            <td class="px-6 py-4">White</td>
-            <td class="px-6 py-4">Laptop PC</td>
-            <td class="px-6 py-4 flex justify-center">
-              <Icon
-                icon="material-symbols-light:delete-sharp"
-                class="text-2xl text-red-500"
-              />
-            </td>
-          </tr>
-          <tr class="bg-gray-200">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-            >
-              Magic Mouse 2
-            </th>
-            <td class="px-6 py-4">Black</td>
-            <td class="px-6 py-4">Accessories</td>
-            <td class="px-6 py-4 flex justify-center">
-              <Icon
-                icon="material-symbols-light:delete-sharp"
-                class="text-2xl text-red-500"
-              />
+              <button @click="deleteCustomer(user.customer_id)">
+                <Icon
+                  icon="material-symbols-light:delete-sharp"
+                  class="text-2xl text-red-500"
+                />
+              </button>
             </td>
           </tr>
         </tbody>
@@ -71,6 +45,29 @@ import { Icon } from "@iconify/vue";
 export default {
   components: {
     Icon,
+  },
+  setup() {
+    const customer = [
+      {
+        customer_id: 1,
+        customer_name: "John Doe",
+        email: "johndoe@example.com",
+        category: "Laptop PC",
+      },
+      {
+        customer_id: 2,
+        customer_name: "John",
+        email: "johndoe@example.com",
+        category: "Shafol PC",
+      },
+    ];
+    const deleteCustomer = (customer_id) => {
+      console.log("delete customer: ", customer_id);
+    };
+    return {
+      deleteCustomer,
+      customer,
+    };
   },
 };
 </script>
