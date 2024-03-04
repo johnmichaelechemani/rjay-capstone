@@ -24,7 +24,7 @@
             >
               {{ user.customer_name }}
             </th>
-            <td class="px-6 py-4">{{ user.email }}</td>
+            <td class="px-6 py-4">{{ user.phone_number }}</td>
             <td class="px-6 py-4">{{ user.category }}</td>
             <td class="px-6 py-4 flex justify-center">
               <button @click="deleteCustomer(user.customer_id)">
