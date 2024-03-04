@@ -279,7 +279,7 @@
           />
 
           <div>
-            <h1 class="text-slate-800 font-bold">{{ userLogin.username }}</h1>
+            <h1 class="text-slate-800 truncate font-bold">{{ userLogin.username }}</h1>
           </div>
         </button>
 
