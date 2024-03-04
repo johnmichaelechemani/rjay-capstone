@@ -93,17 +93,54 @@
                     {{ item.created_at }}
                   </td>
                   <td class="px-6 py-4">
-                    <Icon
-                      :icon="item.icon"
-                      class="text-lg"
-                      @click="editData(item.id)"
-                    />
+                    <button @click="editStatus(item.order_id)">
+                      <Icon
+                        icon="material-symbols:edit"
+                        class="text-lg text-green-500"
+                      />
+                    </button>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <!-- edit status modal -->
+  <div
+    v-if="showStatusModal"
+    class="z-50 fixed top-0 left-0 h-full w-full flex justify-center items-center"
+  >
+    <div class="w-72 bg-gray-200 p-5 rounded-md shadow">
+      <h1 class="text-lg font-semibold text-blue-400">Select order Status</h1>
+      <div>
+        <p class="text-sm">Customer Name:</p>
+        <p class="bg-gray-500/20 rounded-md my-2 p-2">
+          {{ userOrderName }}
+        </p>
+      </div>
+      <div>
+        <select v-model="selectValue" class="w-full p-2 rounded-md">
+          <option value="Shipping">Shipping</option>
+          <option value="Pending">Pending</option>
+          <option value="Completed">Completed</option>
+        </select>
+      </div>
+      <div class="flex justify-evenly my-5 gap-5 items-center">
+        <button
+          @click="closeEditStatusModal()"
+          class="px-4 py-2 bg-gray-400/20 text-slate-700 w-full rounded-md shadow"
+        >
+          Cancel
+        </button>
+        <button
+          @click="handleEditStatusOrder"
+          class="px-4 py-2 bg-green-400/20 text-green-700 hover:bg-green-500/25 w-full rounded-md shadow"
+        >
+          Save
+        </button>
       </div>
     </div>
   </div>
@@ -122,10 +159,43 @@ export default {
   setup() {
     const orders = ref([]);
 
+    let selectValue = ref("");
+
+    const showStatusModal = ref(false);
+
+    const editableOrderStatus = ref({});
+
+    const userOrderName = ref(""); // constaining  the name of the order that is being edited in status modal
+
+    let orderIdToEdit = ref(null); // pass the id to this
+
+    const editStatus = (orderId) => {
+      orderIdToEdit.value = orderId;
+      const orderToEdit = orders.value.find(
+        (order) => order.order_id === orderId
+      );
+      if (orderToEdit) {
+        showStatusModal.value = true;
+        // Set the found product to the productEditable ref
+        editableOrderStatus.value = { ...orderToEdit };
+        userOrderName.value = editableOrderStatus.value.username;
+        console.log(editableOrderStatus.value);
+      }
+    };
+    const closeEditStatusModal = () => {
+      showStatusModal.value = false;
+    };
+
+    // request a axios to update the status for an order
+    const handleEditStatusOrder = () => {
+      console.log("Status: ", selectValue.value);
+      console.log("orderId:  ", orderIdToEdit.value);
+    };
+
     // Now userLogin is directly accessible here, and it's reactive
     onMounted(() => {
-      getUserFromLocalStorage(); // Initialize userLogin from localStorage when component mounts
-      fetchOrders(); // Then fetch orders
+      getUserFromLocalStorage();
+      fetchOrders();
     });
 
     const fetchOrders = async () => {
@@ -150,6 +220,13 @@ export default {
     return {
       orders,
       editData,
+      selectValue,
+
+      editStatus,
+      showStatusModal,
+      closeEditStatusModal,
+      handleEditStatusOrder,
+      userOrderName,
     };
   },
 };

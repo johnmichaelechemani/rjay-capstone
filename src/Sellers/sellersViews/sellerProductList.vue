@@ -66,7 +66,7 @@
       class="bg-gray-400/50 fixed top-0 left-0 flex justify-center item-center z-30 w-full min-h-screen"
     >
       <div class="bg-slate-200 w-96 py-2 px-5">
-        <h1 class="py-5 text-xl font-semibold text-gray-800">Edit Product</h1>
+        <h1 class="py-5 text-2xl font-semibold text-gray-700">Edit Product</h1>
         <div>
           <p for="" class="text-sm">Product Name:</p>
           <input
