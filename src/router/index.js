@@ -63,12 +63,6 @@ const router = createRouter({
             },
           ],
         },
-
-        {
-          path: "/admin_stores",
-          name: "admin_stores",
-          component: () => import("../Admin/adminViews/adminStoreRequest.vue"),
-        },
       ],
     },
     {
@@ -99,18 +93,6 @@ const router = createRouter({
             import("../Sellers/sellersViews/sellerOrderManagement.vue"),
         },
 
-        {
-          path: "/seller_customers",
-          name: "seller_customers",
-          component: () =>
-            import("../Sellers/sellersViews/sellerCustomers.vue"),
-        },
-        {
-          path: "/seller_transations",
-          name: "seller_transations",
-          component: () =>
-            import("../Sellers/sellersViews/sellerTransactions.vue"),
-        },
         {
           path: "/seller_product_list",
           name: "seller_product_list",

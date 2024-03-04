@@ -3,16 +3,16 @@
     <header
       class="py-5 absolute z-10 w-full top-0 bg-gradient-to-r from-blue-500/75 from-30% via-violet-500/50 shadow-md shadow-blue-400/25 via-60% to-orange-500/25 to-90% font-semibold text-white text-xl px-10"
     >
-      Login
+      Tabudi
     </header>
     <div class="min-h-screen">
       <div class="flex justify-center items-center h-full">
         <div class="sm:flex gap-10 py-10">
           <div class="my-10 pt-20 px-5">
             <h1
-              class="text-3xl font-extrabold py-3 text-slate-800 text-transparent bg-gradient-to-tr from-blue-500 from-40% via-violet-500 via-50% to-orange-500 to-80% bg-clip-text"
+              class="text-6xl font-extrabold py-3 text-slate-800 text-transparent bg-gradient-to-tr from-blue-500 from-40% via-violet-500 via-50% to-orange-500 to-80% bg-clip-text"
             >
-              Order na tabi pang patak patak lang oh.
+              Shopp to the best!
             </h1>
             <img src="../assets/login.svg" alt="" class="sm:w-full sm:h-full" />
           </div>

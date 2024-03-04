@@ -3,7 +3,7 @@
     <div class="py-3 px-10 font-bold text-2xl text-slate-700">
       <h1>Product Lists</h1>
     </div>
-    <div class="my-5">
+    <div class="">
       <div class="relative overflow-x-auto shadow rounded-md">
         <table
           class="w-full text-sm text-left rtl:text-right text-gray-900 rounded-md"
@@ -18,6 +18,7 @@
               <th scope="col" class="px-6 py-3">Ratings</th>
               <th scope="col" class="px-6 py-3">Date uploaded</th>
               <th scope="col" class="px-6 py-3">Updated at</th>
+              <th colspan="2" scope="col" class="px-6 py-3">Action</th>
             </tr>
           </thead>
           <tbody class="">
@@ -35,11 +36,67 @@
               </td>
               <td class="px-6 py-4">{{ item.price }}</td>
               <td class="px-6 py-4">{{ item.ratings }}</td>
-              <td class="px-6 py-4">{{item.created_at}}</td>
-              <td class="px-6 py-4">{{item.updated_at}}</td>
+              <td class="px-6 py-4">{{ item.created_at }}</td>
+              <td class="px-6 py-4">{{ item.updated_at }}</td>
+              <td class="px-6 py-4">
+                <button @click="deleteProduct(item.product_id)">
+                  <Icon
+                    icon="material-symbols:delete"
+                    class="text-lg text-red-500"
+                  />
+                </button>
+              </td>
+              <td class="px-6 py-4">
+                <button @click="editProduct(item.product_id)">
+                  <Icon
+                    icon="material-symbols:edit"
+                    class="text-lg text-green-500"
+                  />
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+  <!-- edit modal -->
+  <div v-if="showEditModal">
+    <div
+      class="bg-gray-400/50 fixed top-0 left-0 flex justify-center item-center z-30 w-full min-h-screen"
+    >
+      <div class="bg-slate-200 w-96 py-2 px-5">
+        <h1 class="py-5 text-2xl font-semibold text-gray-700">Edit Product</h1>
+        <div>
+          <p for="" class="text-sm">Product Name:</p>
+          <input
+            type="text"
+            v-model="product_name"
+            class="p-2 rounded-md w-full"
+          />
+        </div>
+        <div class="py-2">
+          <p for="" class="text-sm">Price:</p>
+          <input
+            type="number"
+            v-model="product_price"
+            class="p-2 rounded-md w-full"
+          />
+        </div>
+        <div class="flex justify-evenly my-5 gap-5 items-center">
+          <button
+            @click="closeEditModal()"
+            class="px-4 py-2 bg-gray-400/20 text-slate-700 w-full rounded-md shadow"
+          >
+            Cancel
+          </button>
+          <button
+            @click="handleEditProduct"
+            class="px-4 py-2 bg-green-400/20 text-green-700 hover:bg-green-500/25 w-full rounded-md shadow"
+          >
+            Edit
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -57,6 +114,49 @@ export default {
   },
   setup() {
     const Products = ref([]);
+
+    const deleteProduct = (deleteId) => {
+      console.log(deleteId);
+      if (confirm("Are you sure you want to delete this product?")) {
+        console.log(deleteId);
+      } else {
+        console.log("delete canceled");
+      }
+    };
+
+    // get product is for editing
+
+    const showEditModal = ref(false);
+
+    const closeEditModal = () => {
+      showEditModal.value = false;
+    };
+    const productEditable = ref({});
+    const product_name = ref("");
+    const product_price = ref("");
+    const editProductId = ref("");
+    const editProduct = (editId) => {
+      editProductId.value = editId;
+      const productToEdit = Products.value.find(
+        (product) => product.product_id === editId
+      );
+
+      if (productToEdit) {
+        // Set the found product to the productEditable ref
+        productEditable.value = { ...productToEdit };
+        // Show the edit modal
+        showEditModal.value = true;
+        console.log("edit products:", productEditable.value);
+        product_name.value = productEditable.value.product_name;
+        product_price.value = productEditable.value.price;
+      }
+    };
+
+    const handleEditProduct = async () => {
+      console.log(editProductId.value);
+      console.log(product_name.value);
+      console.log(product_price.value);
+    };
 
     // Now userLogin is directly accessible here, and it's reactive
     onMounted(() => {
@@ -87,6 +187,15 @@ export default {
     return {
       Products,
       editData,
+
+      editProduct,
+      deleteProduct,
+
+      showEditModal,
+      product_name,
+      product_price,
+      closeEditModal,
+      handleEditProduct,
     };
   },
 };

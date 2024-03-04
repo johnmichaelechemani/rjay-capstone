@@ -38,19 +38,6 @@
             User Management
           </div>
         </RouterLink>
-
-        <RouterLink to="/admin_stores">
-          <div
-            class="w-full bg-slate-500/10 py-3 p-2 my-2"
-            :class="{
-              ' text-sky-700': $route.name === 'admin_stores',
-              'text-sky-900': $route.name !== 'admin_stores',
-              'p-2 font-semibold text-base': true,
-            }"
-          >
-            Store Request
-          </div></RouterLink
-        >
       </div>
     </div>
 

@@ -210,22 +210,24 @@ export default {
     const checkout = () => {
       showPayment.value = true;
       console.log("checked out items value", checkoutItems.value);
-    
+
       // Reset the total price before calculation
       priceTotalPerItem.value = 0;
-    
+
       // Collect all the checked items and calculate the total price
-      itemsToCheckout.value = checkoutItems.value.map(item => {
+      itemsToCheckout.value = checkoutItems.value.map((item) => {
         // Calculate price per item including shipping fee
-        const pricePerItem = (item.quantity * parseFloat(item.price)) + parseFloat(item.shipping_fee);
-        
+        const pricePerItem =
+          item.quantity * parseFloat(item.price) +
+          parseFloat(item.shipping_fee);
+
         // Add price per item to the total
         priceTotalPerItem.value += pricePerItem;
-        
+
         // Return item with pricePerItem if you need it, or just return the item
         return { item }; // Spread operator to include original item properties
       });
-    
+
       // Assuming priceTotalPerItem is already the total price for all items
       // No need to add pricePerItem again
       priceTotalAll.value = priceTotalPerItem.value.toFixed(2);
@@ -254,13 +256,13 @@ export default {
       console.log(selectedPayment.value); // Assuming selectedPayment is a reactive reference
       console.log(userLogin.value.user_id); // Assuming userLogin is a reactive reference
       console.log("checkoutItems length", checkoutItems.value.length);
-    
+
       // Directly use the value for the API call
       let userID = userLogin.value.user_id;
       let totalPrice = priceTotalAll.value;
       let orderStatus = "pending";
       let numofItems = checkoutItems.value.length;
-    
+
       // This is for Order details
       let ids = checkoutItems.value.map((item) => item.product_id);
       console.log("product IDs", ids);
@@ -274,8 +276,11 @@ export default {
           ).toFixed(2)
         )
       );
-      console.log("Total Prices including shipping", productsTotalIncludingShipping);
-      
+      console.log(
+        "Total Prices including shipping",
+        productsTotalIncludingShipping
+      );
+
       // API call
       try {
         const res = await axios.post(
@@ -295,12 +300,12 @@ export default {
             },
           }
         );
-        console.log('Response from server', res.data);
+        console.log("Response from server", res.data);
       } catch (error) {
         console.error(error);
       }
       refreshPage();
-    };    
+    };
 
     getUserFromLocalStorage();
     cartItems();
