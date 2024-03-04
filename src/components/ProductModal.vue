@@ -111,14 +111,20 @@
           </div>
         </form>
       </div>
-      <div class="text-sm">
-        <span>specifications : </span>
-        <ul>
+      <div class="">
+        <div>
+          <h1 class="p-2 bg-slate-800/10 text-blue-500 rounded-md">
+            Specifications :
+          </h1>
+        </div>
+        <ul class="py-3">
           <li
             v-for="(spec, index) in product.specifications.specifications"
             :key="index"
+            class="flex gap-2"
           >
-            {{ spec.spec_key }}: {{ spec.spec_value }}
+            <span class="font-medium text-base">{{ spec.spec_key }}</span
+            >: <span class="text-sm">{{ spec.spec_value }}</span>
           </li>
         </ul>
       </div>
