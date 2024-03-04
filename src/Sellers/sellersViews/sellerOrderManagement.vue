@@ -49,6 +49,7 @@
                   <th scope="col" class="px-6 py-3">STATUS</th>
                   <th scope="col" class="px-6 py-3">ITEM</th>
                   <th scope="col" class="px-6 py-3">CUSTOMER NAME</th>
+                  <th scope="col" class="px-6 py-3">PRICE</th>
                   <th scope="col" class="px-6 py-3">PAYMENT METHOD</th>
                   <th scope="col" class="px-6 py-3">ORDER DATE</th>
                   <th scope="col" class="px-6 py-3"></th>
@@ -82,8 +83,9 @@
                       {{ item.status }}
                     </p>
                   </td>
-                  <td class="px-6 py-4">{{ item.quantity }}</td>
+                  <td class="px-6 py-4">{{ item.item }}</td>
                   <td class="px-6 py-4">{{ item.username }}</td>
+                  <td class="px-6 py-4">{{ item.price }}</td>
                   <td class="px-6 py-4">
                     <p class="text-violet-600">
                       {{ item.payment_method }}
