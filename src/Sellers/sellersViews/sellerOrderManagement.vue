@@ -52,7 +52,7 @@
                   <th scope="col" class="px-6 py-3">PRICE</th>
                   <th scope="col" class="px-6 py-3">PAYMENT METHOD</th>
                   <th scope="col" class="px-6 py-3">ORDER DATE</th>
-                  <th scope="col" class="px-6 py-3"></th>
+                  <th scope="col" class="px-6 py-3">EDIT</th>
                 </tr>
               </thead>
               <tbody class="">
