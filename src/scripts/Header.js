@@ -209,13 +209,12 @@ export default {
     const selectedPayment = ref("");
 
     const checkout = () => {
-
       showPayment.value = true;
-      console.log(checkoutItems.value);
+      console.log("checked out items value", checkoutItems.value);
       // Collect all the checked items
       itemsToCheckout.value = checkoutItems.value.map((item) => {
         // Calculate price per item
-        
+
         const pricePerItem = item.quantity * item.price;
         // Add price per item to the total per item
         priceTotalPerItem.value += pricePerItem;
@@ -246,12 +245,24 @@ export default {
       shippingFee.value = 10;
       console.log("click");
     };
+
     const submitOrder = () => {
-      // write a function asycn axios post that post in order and order details table here
-      console.log("items", checkedItems.value);
-      console.log(priceTotalAll.value);
-      console.log(selectedPayment.value);
-      console.log(userLogin.value.user_id);
+      console.log(priceTotalAll.value); // Correct if priceTotalAll is a ref
+      console.log(selectedPayment.value); // Correct if selectedPayment is a ref
+      console.log(userLogin.value.user_id); // Correct if userLogin is a ref and contains an object
+
+      // This is for order table
+      let orderNumber = ref(22538668);
+      let UserID = ref(userLogin.value.user_id);
+      let TotalPrice = ref(priceTotalAll.value);
+      let OrderStatus = ref("pending");
+
+      // This is for Order deatails
+      let Ids = checkoutItems.value.map((item) => item.product_id);
+      console.log("product Ids", Ids);
+      let quantities = checkoutItems.value.map((item) => item.quantity);
+      console.log("Quantities", quantities);
+
     };
 
     getUserFromLocalStorage();
