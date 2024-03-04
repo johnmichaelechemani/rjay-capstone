@@ -63,12 +63,6 @@ const router = createRouter({
             },
           ],
         },
-
-        {
-          path: "/admin_stores",
-          name: "admin_stores",
-          component: () => import("../Admin/adminViews/adminStoreRequest.vue"),
-        },
       ],
     },
     {

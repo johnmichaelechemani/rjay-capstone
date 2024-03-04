@@ -205,25 +205,34 @@ export default {
     let priceTotalAll = ref(0);
     let priceTotalPerItem = ref(0);
     // shipping fee must come from db
-    let shippingFee = ref(10);
     const selectedPayment = ref("");
 
     const checkout = () => {
       showPayment.value = true;
-      // Collect all the checked items
+      console.log("checked out items value", checkoutItems.value);
+
+      // Reset the total price before calculation
+      priceTotalPerItem.value = 0;
+
+      // Collect all the checked items and calculate the total price
       itemsToCheckout.value = checkoutItems.value.map((item) => {
-        // Calculate price per item
-        const pricePerItem = item.quantity * item.price;
-        // Add price per item to the total per item
+        // Calculate price per item including shipping fee
+        const pricePerItem =
+          item.quantity * parseFloat(item.price) +
+          parseFloat(item.shipping_fee);
+
+        // Add price per item to the total
         priceTotalPerItem.value += pricePerItem;
-        // Return item with additional calculated values
-        return { item };
+
+        // Return item with pricePerItem if you need it, or just return the item
+        return { item }; // Spread operator to include original item properties
       });
-      // Calculate the total price for all items
-      priceTotalAll.value = (
-        priceTotalPerItem.value + shippingFee.value
-      ).toFixed(2);
+
+      // Assuming priceTotalPerItem is already the total price for all items
+      // No need to add pricePerItem again
+      priceTotalAll.value = priceTotalPerItem.value.toFixed(2);
     };
+
     const onDelivery = () => {
       selectedPayment.value = "delivery";
     };
@@ -239,15 +248,63 @@ export default {
 
       priceTotalAll.value = 0;
       priceTotalPerItem.value = 0;
-      // shipping fee must come from db
-      shippingFee.value = 10;
       console.log("click");
     };
-    const submitOrder = () => {
-      // write a function asycn axios post that post in order and order details table here
-      console.log(priceTotalAll.value);
-      console.log(selectedPayment.value);
-      console.log(userLogin.value.user_id);
+
+    const submitOrder = async () => {
+      console.log(priceTotalAll.value); // Assuming priceTotalAll is a reactive reference
+      console.log(selectedPayment.value); // Assuming selectedPayment is a reactive reference
+      console.log(userLogin.value.user_id); // Assuming userLogin is a reactive reference
+      console.log("checkoutItems length", checkoutItems.value.length);
+
+      // Directly use the value for the API call
+      let userID = userLogin.value.user_id;
+      let totalPrice = priceTotalAll.value;
+      let orderStatus = "pending";
+      let numofItems = checkoutItems.value.length;
+
+      // This is for Order details
+      let ids = checkoutItems.value.map((item) => item.product_id);
+      console.log("product IDs", ids);
+      let quantities = checkoutItems.value.map((item) => item.quantity);
+      console.log("Quantities", quantities);
+      let productsTotalIncludingShipping = checkoutItems.value.map((item) =>
+        parseFloat(
+          (
+            parseFloat(item.price) * item.quantity +
+            parseFloat(item.shipping_fee)
+          ).toFixed(2)
+        )
+      );
+      console.log(
+        "Total Prices including shipping",
+        productsTotalIncludingShipping
+      );
+
+      // API call
+      try {
+        const res = await axios.post(
+          `http://localhost/Ecommerce/vue-project/src/backend/api.php?action=CheckoutOrder`,
+          {
+            user_id: userID,
+            total_price: totalPrice,
+            status: orderStatus,
+            item: numofItems,
+            product_id: ids,
+            quantity: quantities,
+            price: productsTotalIncludingShipping,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("Response from server", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+      refreshPage();
     };
 
     getUserFromLocalStorage();

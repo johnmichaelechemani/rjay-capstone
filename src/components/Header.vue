@@ -273,7 +273,7 @@
           class="flex gap-2 justify-start mx-5 items-center"
         >
           <img
-            src="@/assets/luffy2.jpg"
+            src="@/assets/profile.jpg"
             alt=""
             class="w-10 h-10 rounded-full mr-2"
           />
@@ -456,13 +456,13 @@
                         <p class="text-xs">x{{ product.quantity }}</p>
                       </div>
                     </div>
-                  </div>
-                  <div class="my-2">
-                    <div
-                      class="flex gap-2 justify-between items-center border-y p-2 border-cyan-500/50 bg-cyan-300/10"
-                    >
-                      <span class="text-sm font-medium">Shipping Fee</span>
-                      <p class="text-xs">$10</p>
+                    <div class="my-2">
+                      <div
+                        class="flex gap-2 justify-between items-center border-y p-2 border-cyan-500/50 bg-cyan-300/10"
+                      >
+                        <span class="text-sm font-medium">Shipping Fee</span>
+                        <p class="text-xs">{{ product.shipping_fee }}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -476,7 +476,7 @@
                     <span>({{ itemsToCheckout.length }})</span> Item</span
                   >
                   <p class="text-sm font-medium text-red-500">
-                    ${{ priceTotalAll }}
+                    ₱{{ priceTotalAll }}
                   </p>
                 </div>
               </div>
