@@ -49,23 +49,29 @@
                 v-for="(items, index) in orderData"
                 :key="index"
               >
-                <div v-for="item in items" :key="item.id">
+                <div>
                   <div>
                     <span class="font-semibold text-slate-800"
-                      >#{{ item.order_id }}</span
+                      >#{{ items.order_id }}</span
                     >
                   </div>
                   <div class="my-2 flex gap-2 justify-start items-center">
-                    <div class="w-10 h-10 bg-slate-900 rounded-md"></div>
+                    <div>
+                      <img
+                        :src="'data:image/png;base64,' + items.image"
+                        :alt="items.imageAlt"
+                        class="h-32 w-full object-center lg:h-44 lg:w-full"
+                      />
+                    </div>
                     <div>
                       <h1 class="text-base font-semibold">
-                        {{ item.product_name }}
+                        {{ items.product_name }}
                       </h1>
                       <p class="font-semibold">
                         Total:
                         <span
                           class="text-red-500 py-1 px-2 bg-slate-500/10 rounded-md"
-                          >${{ item.total_price }}</span
+                          >${{ items.total_price }}</span
                         >
                       </p>
                     </div>
@@ -76,7 +82,7 @@
                     <div>
                       <p class="text-xs font-light">Date purchased</p>
                       <p class="text-base font-semibold">
-                        {{ item.date_purchased }}
+                        {{ items.created_at }}
                       </p>
                     </div>
                     <Icon
@@ -86,7 +92,7 @@
                     <div>
                       <p class="text-xs font-light">Estemated Delivery</p>
                       <p class="text-base font-semibold">
-                        {{ item.date_delivery }}
+                        {{ items.created_at }}
                       </p>
                     </div>
                   </div>
@@ -99,14 +105,14 @@
                       <span
                         class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
                       >
-                        <div v-if="item.status >= 1">
+                        <div v-if="items.status >= 1">
                           <Icon
                             icon="lets-icons:check-fill"
                             class="text-lg text-blue-600"
                           />
                         </div>
-                        <div v-if="item.status < 1"><p class="pr-2">1</p></div>
-                        Pending
+                        <div v-if="items.status < 1"><p class="pr-2">1</p></div>
+                        Processing
                       </span>
                     </li>
                     <li
@@ -115,60 +121,63 @@
                       <span
                         class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
                       >
-                        <div v-if="item.status >= 2">
+                        <div v-if="items.status >= 2">
                           <Icon
                             icon="lets-icons:check-fill"
                             class="text-lg text-blue-600"
                           />
                         </div>
-                        <div v-if="item.status < 2"><p class="pr-2">2</p></div>
-                        Processing
+                        <div v-if="items.status < 2"><p class="pr-2">2</p></div>
+                        Out for delivery
                       </span>
                     </li>
                     <li class="flex items-center text-xs">
-                      <div v-if="item.status >= 3">
+                      <div v-if="items.status >= 3">
                         <Icon
                           icon="lets-icons:check-fill"
                           class="text-lg text-blue-600"
                         />
                       </div>
-                      <div v-if="item.status < 3"><p class="pr-2">3</p></div>
-                      Shipping
+                      <div v-if="items.status < 3"><p class="pr-2">3</p></div>
+                      Delivered
                     </li>
                   </ol>
                   <div>
                     <div class="border border-blue-500/50 rounded-md p-2 my-5">
                       <div
-                        v-if="item.status >= 1"
+                        v-if="items.status >= 1"
                         class="bg-blue-500/10 rounded-md p-1"
                       >
                         <p class="text-xs font-light">
-                          {{ item.date_purchased }}
+                          {{ items.created_at }}
                         </p>
                         <p class="text-base font-light text-blue-600">
-                          Your order is being received.
+                          Your order is currently being processed. We'll update
+                          you once it's on its way!
                         </p>
                       </div>
                       <div
-                        v-if="item.status >= 2"
+                        v-if="items.status >= 2"
                         class="bg-blue-500/10 rounded-md p-1 my-1"
                       >
                         <p class="text-xs font-light">
-                          {{ item.date_purchased }}
+                          {{ items.created_at }}
                         </p>
                         <p class="text-base font-light text-blue-600">
-                          Your order is being processed.
+                          Great news! Your order is out for delivery. It'll be
+                          with you soon.
                         </p>
                       </div>
                       <div
-                        v-if="item.status >= 3"
+                        v-if="items.status >= 3"
                         class="bg-blue-500/10 rounded-md p-1 my-1"
                       >
                         <p class="text-xs font-light">
-                          {{ item.date_purchased }}
+                          {{ items.created_at }}
                         </p>
                         <p class="text-base font-light text-blue-600">
-                          Your order is being shipped.
+                          Your order has been delivered. We hope you enjoy your
+                          purchase!
                         </p>
                       </div>
                     </div>
@@ -279,7 +288,9 @@
           />
 
           <div>
-            <h1 class="text-slate-800 truncate font-bold">{{ userLogin.username }}</h1>
+            <h1 class="text-slate-800 truncate font-bold">
+              {{ userLogin.username }}
+            </h1>
           </div>
         </button>
 

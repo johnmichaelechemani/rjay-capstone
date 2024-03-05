@@ -90,7 +90,7 @@ function trackOrder()
     global $conn;
 
     $data = json_decode(file_get_contents("php://input"), true);
-    $id = $data['order_id'];
+    $id = $data['id'];
     
 
     // Use prepared statement to prevent SQL injection
