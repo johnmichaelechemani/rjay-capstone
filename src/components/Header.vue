@@ -71,7 +71,7 @@
                         Total:
                         <span
                           class="text-red-500 py-1 px-2 bg-slate-500/10 rounded-md"
-                          >${{ items.total_price }}</span
+                          >${{ items.total_price_products }}</span
                         >
                       </p>
                     </div>

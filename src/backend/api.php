@@ -159,7 +159,7 @@ function CheckoutOrder()
     $order_id = $conn->insert_id;
 
     // Insert into the second table (order_details)
-    $stmt = $conn->prepare("INSERT INTO order_details (order_number, order_id, product_id, quantity, price) VALUES ( ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO order_details (order_number, order_id, product_id, quantity, total_price_products) VALUES ( ?, ?, ?, ?, ?)");
     $stmt->bind_param("iiidd",$order_number, $order_id, $product_id, $quantity, $price); // Assumed correction to parameter types
 
     foreach ($data['product_id'] as $key => $product_id) {
