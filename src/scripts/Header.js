@@ -235,7 +235,7 @@ export default {
     };
 
     const onDelivery = () => {
-      selectedPayment.value = "delivery";
+      selectedPayment.value = "cash on delivery";
     };
     const onPyment = () => {
       selectedPayment.value = "payment";
@@ -263,6 +263,7 @@ export default {
       let totalPrice = priceTotalAll.value;
       let orderStatus = "pending";
       let numofItems = checkoutItems.value.length;
+      let payment = selectedPayment.value;
 
       // This is for Order details
       let ids = checkoutItems.value.map((item) => item.product_id);
@@ -294,6 +295,7 @@ export default {
             product_id: ids,
             quantity: quantities,
             price: productsTotalIncludingShipping,
+            payment_method: payment,
           },
           {
             headers: {

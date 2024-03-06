@@ -502,7 +502,7 @@
                         @click="onDelivery"
                         :class="{
                           ' shadow-md shadow-green-500/50 border-green-500':
-                            selectedPayment === 'delivery',
+                            selectedPayment === 'cash on delivery',
                         }"
                         class="p-2 bg-green-500/10 flex justify-center items-center gap-1 rounded-full my-1 border border-gray-600/50 w-full text-green-600 font-medium text-sm"
                       >

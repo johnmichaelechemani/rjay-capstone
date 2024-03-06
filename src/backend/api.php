@@ -146,34 +146,31 @@ function CheckoutOrder()
     global $conn;
     $data = json_decode(file_get_contents("php://input"), true);
 
+    // Assuming the initial insert into 'orders' is correct and does not involve the payment method
     $stmt = $conn->prepare("INSERT INTO orders (user_id, total_price, item) VALUES (?, ?, ?)");
-    $stmt->bind_param("sis", $user_id, $total_price, $item); // Changed "sssss" to "sisss" assuming user_id is an integer
-
-    // Set parameters and execute
     $user_id = $data['user_id'];
     $total_price = $data['total_price'];
     $item = $data['item'];
+    // Assuming user_id is an integer, total_price is a string that needs conversion, and item is a string
+    $stmt->bind_param("ids", $user_id, $total_price, $item);
     $stmt->execute();
 
-    // Capture the last inserted ID to use as a foreign key
     $order_id = $conn->insert_id;
+    $payment = $data['payment_method']; // This is used in the next insert
 
-    // Insert into the second table (order_details)
-    $stmt = $conn->prepare("INSERT INTO order_details (order_number, order_id, product_id, quantity, total_price_products) VALUES ( ?, ?, ?, ?, ?)");
-    $stmt->bind_param("iiidd",$order_number, $order_id, $product_id, $quantity, $price); // Assumed correction to parameter types
+    $stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, total_price_products, payment_method) VALUES (?, ?, ?, ?, ?)");
+
+    // Bind parameters just once outside the loop
+    $stmt->bind_param("iiids", $order_id, $product_id, $quantity, $price, $payment);
 
     foreach ($data['product_id'] as $key => $product_id) {
         $quantity = $data['quantity'][$key];
         $price = $data['price'][$key];
-        $order_number = generateUniqueOrderNumber($conn);
-    
-        // Re-bind the parameters for each iteration
-        $stmt->bind_param("iiidd",$order_number, $order_id, $product_id, $quantity, $price);
-    
-        // Execute the statement for each set of data
-        $stmt->execute();
 
-        // Delete the product from cart_items
+        // No need to re-bind; just execute
+        $stmt->execute();
+        
+        // Assuming deletion from cart_items is as intended
         $deleteStmt = $conn->prepare("DELETE FROM cart_items WHERE product_id = ?");
         $deleteStmt->bind_param("i", $product_id);
         $deleteStmt->execute();

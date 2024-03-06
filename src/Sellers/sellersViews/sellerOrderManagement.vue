@@ -42,7 +42,7 @@
               <thead
                 class="text-xs text-slate-800 bg-slate-100/20 uppercase rounded-md"
               >
-                <tr class="bg-gray-100/10 border-b border-gray-600/50">
+                <tr class="text-center bg-gray-100/10 border-b border-gray-600/50">
                   <th scope="col" class="px-6 py-3">Order Id</th>
                   <th scope="col" class="px-6 py-3">Order Number</th>
                   <th scope="col" class="px-6 py-3">Product name</th>
@@ -53,10 +53,12 @@
                   <th scope="col" class="px-6 py-3">PAYMENT METHOD</th>
                   <th scope="col" class="px-6 py-3">ORDER DATE</th>
                   <th scope="col" class="px-6 py-3">ESTIMATED DELIVERY</th>
+                  <th scope="col" class="px-6 py-3">out for delivery</th>
+                  <th scope="col" class="px-6 py-3">delivered</th>
                   <th scope="col" class="px-6 py-3">EDIT</th>
                 </tr>
               </thead>
-              <tbody class="">
+              <tbody class="text-center">
                 <tr
                   v-for="item in orders"
                   :key="item.id"
@@ -98,6 +100,12 @@
                   </td>
                   <td class="px-6 py-4">
                     {{ item.estimated_delivery }}
+                  </td>
+                  <td class="px-6 py-4">
+                    {{ item.delivery_date }}
+                  </td>
+                  <td class="px-6 py-4">
+                    {{ item.delivered_date }}
                   </td>
                   <td class="px-6 py-4">
                     <button @click="editStatus(item.order_detail_id)">
@@ -146,7 +154,7 @@
           <option value="delivered">Delivered</option>
         </select>
       </div>
-      <div v-if="selectValue === 'pending'">
+      <div v-if="selectValue === 'out_for_delivery' || selectValue === 'pending'">
         <h1 class="text-lg font-semibold text-blue-400 mt-4">
           Estimated Delivery Date:
         </h1>
@@ -181,6 +189,7 @@ import { ref, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
 import axios from "axios";
 import { userLogin, getUserFromLocalStorage } from "@/scripts/Seller"; // Adjust the path as necessary
+import moment from "moment-timezone";
 
 export default {
   components: {
@@ -227,6 +236,13 @@ export default {
       console.log("Status: ", selectValue.value);
       console.log("orderId:  ", orderIdToEdit.value);
       console.log("estimated date:  ", estimatedDelivery.value);
+
+      // Generate current date and time in Philippine time zone and format it
+      const DateToupdate = moment()
+        .tz("Asia/Manila")
+        .format("YYYY-MM-DD HH:mm:ss");
+        console.log("date:  ", DateToupdate);
+
       try {
         const response = await axios.put(
           "http://localhost/Ecommerce/vue-project/src/backend/seller/sellerApi.php?action=EditStatus",
@@ -234,14 +250,16 @@ export default {
             id: orderIdToEdit.value,
             status: selectValue.value,
             estimated_delivery: estimatedDelivery.value,
+            date: DateToupdate,
           }
         );
+        // Assuming you might want to do something with the response here
+        console.log(response.data);
       } catch (error) {
         console.error("Error editing status:", error);
       }
       refreshPage();
     };
-
     // Now userLogin is directly accessible here, and it's reactive
     onMounted(() => {
       getUserFromLocalStorage();

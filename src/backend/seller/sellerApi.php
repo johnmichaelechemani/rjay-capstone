@@ -35,15 +35,29 @@ function EditStatus()
     $id = $data['id'];
     $newStatus = $data['status'];
     $estdate = $data['estimated_delivery'];
-    var_dump($newStatus);
-    
-    $stmt = $conn->prepare("UPDATE order_details SET status = ?, estimated_delivery = ? WHERE order_detail_id = ?");
-    $stmt->bind_param("ssi", $newStatus, $estdate, $id);
+    $UpdateDate = $data['date'];
+
+    // Use '==' for comparison (or '===' for strict comparison)
+    if ($newStatus == 'delivered') {
+        // Assuming 'delivered_date' is the correct column name when the status is 'delivered'
+        $stmt = $conn->prepare("UPDATE order_details SET status = ?, delivered_date = ? WHERE order_detail_id = ?");
+        $stmt->bind_param("ssi", $newStatus, $UpdateDate, $id);
+    } else {
+        // Adjust accordingly if 'delivery_date' or another column should be used here
+        $stmt = $conn->prepare("UPDATE order_details SET status = ?, estimated_delivery = ?, delivery_date = ? WHERE order_detail_id = ?");
+        $stmt->bind_param("sssi", $newStatus, $estdate, $UpdateDate, $id);
+    }
+
     $stmt->execute();
 
-    $result = $stmt->get_result();
-    $stmt->close();
+    // Check if the update was successful
+    if ($stmt->affected_rows > 0) {
+        echo "Order status updated successfully.";
+    } else {
+        echo "No order was updated. Please check your input.";
+    }
 
+    $stmt->close();
 }
 
 function getProducts()
