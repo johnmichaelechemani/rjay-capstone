@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 04, 2024 at 08:42 AM
+-- Generation Time: Mar 06, 2024 at 02:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,20 +58,6 @@ CREATE TABLE `cart_items` (
   `quantity` int(11) NOT NULL,
   `added_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `cart_items`
---
-
-INSERT INTO `cart_items` (`cart_item_id`, `cart_id`, `product_id`, `quantity`, `added_at`) VALUES
-(1, 1, 1, 1, '2024-01-31 02:50:58'),
-(2, 2, 2, 2, '2024-01-31 02:50:58'),
-(3, 1, 2, 1, '2024-01-31 02:50:58'),
-(27, 5, 11, 1, '2024-02-25 06:26:36'),
-(28, 5, 4, 1, '2024-02-25 06:27:04'),
-(69, 12, 11, 1, '2024-03-02 01:48:53'),
-(70, 12, 1, 1, '2024-03-02 01:49:00'),
-(71, 5, 10, 2, '2024-03-04 06:36:19');
 
 -- --------------------------------------------------------
 
@@ -145,10 +131,8 @@ INSERT INTO `inventory` (`inventory_id`, `product_id`, `quantity`, `location`) V
 
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
-  `order_number` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `total_price` decimal(10,2) DEFAULT NULL,
-  `status` enum('pending','completed','shipped') DEFAULT 'pending',
   `item` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -157,9 +141,10 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `order_number`, `user_id`, `total_price`, `status`, `item`, `created_at`) VALUES
-(1, 4578304, 5, 579.98, 'pending', 3, '2024-01-29 07:49:27'),
-(2, 534636748, 9, 779.98, 'completed', 5, '2024-01-29 07:49:27');
+INSERT INTO `orders` (`order_id`, `user_id`, `total_price`, `item`, `created_at`) VALUES
+(2, 9, 779.98, 5, '2024-01-29 07:49:27'),
+(21, 5, 58.00, 2, '2024-03-06 01:18:32'),
+(23, 5, 35.00, 1, '2024-03-06 01:38:36');
 
 -- --------------------------------------------------------
 
@@ -169,8 +154,10 @@ INSERT INTO `orders` (`order_id`, `order_number`, `user_id`, `total_price`, `sta
 
 CREATE TABLE `order_details` (
   `order_detail_id` int(11) NOT NULL,
+  `order_number` int(11) NOT NULL,
   `order_id` int(11) DEFAULT NULL,
   `product_id` int(11) DEFAULT NULL,
+  `status` enum('pending','out_for_delivery','delivered') NOT NULL DEFAULT 'pending',
   `quantity` int(11) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `payment_method` enum('cash on delivery','none') DEFAULT 'cash on delivery'
@@ -180,9 +167,11 @@ CREATE TABLE `order_details` (
 -- Dumping data for table `order_details`
 --
 
-INSERT INTO `order_details` (`order_detail_id`, `order_id`, `product_id`, `quantity`, `price`, `payment_method`) VALUES
-(1, 1, 3, 2, 79.99, 'cash on delivery'),
-(2, 2, 2, 1, 699.99, 'cash on delivery');
+INSERT INTO `order_details` (`order_detail_id`, `order_number`, `order_id`, `product_id`, `status`, `quantity`, `price`, `payment_method`) VALUES
+(2, 0, 2, 2, 'pending', 1, 699.99, 'cash on delivery'),
+(18, 31587, 21, 10, 'out_for_delivery', 1, 35.99, 'cash on delivery'),
+(19, 53261, 21, 11, 'pending', 1, 22.99, 'cash on delivery'),
+(20, 32063, 23, 10, 'delivered', 1, 35.99, 'cash on delivery');
 
 -- --------------------------------------------------------
 
@@ -500,7 +489,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `cart_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `cart_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -518,13 +507,13 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `order_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `products`

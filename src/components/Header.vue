@@ -52,7 +52,7 @@
                 <div>
                   <div>
                     <span class="font-semibold text-slate-800"
-                      >#{{ items.order_id }}</span
+                      >#{{ items.order_number }}</span
                     >
                   </div>
                   <div class="my-2 flex gap-2 justify-start items-center">
