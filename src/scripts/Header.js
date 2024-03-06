@@ -60,6 +60,7 @@ export default {
           userLogin.value = JSON.parse(userData);
         }
 
+        console.log("user", userLogin.value);
         return null;
       } catch (error) {
         console.error(

@@ -60,7 +60,7 @@
                       <img
                         :src="'data:image/png;base64,' + items.image"
                         :alt="items.imageAlt"
-                        class="h-32 w-full object-center lg:h-44 lg:w-full"
+                        class="h-20 w-20 object-center"
                       />
                     </div>
                     <div>
@@ -81,8 +81,8 @@
                   >
                     <div>
                       <p class="text-xs font-light">Date purchased</p>
-                      <p class="text-base font-semibold">
-                        {{ items.created_at }}
+                      <p class="text-sm font-semibold">
+                        {{ items.date_purchased }}
                       </p>
                     </div>
                     <Icon
@@ -91,8 +91,8 @@
                     />
                     <div>
                       <p class="text-xs font-light">Estemated Delivery</p>
-                      <p class="text-base font-semibold">
-                        {{ items.created_at }}
+                      <p class="text-sm font-semibold">
+                        {{ items.estimated_delivery }}
                       </p>
                     </div>
                   </div>
@@ -151,7 +151,7 @@
                         <p class="text-xs font-light">
                           {{ items.created_at }}
                         </p>
-                        <p class="text-base font-light text-blue-600">
+                        <p class="text-sm font-light text-blue-600">
                           Your order is currently being processed. We'll update
                           you once it's on its way!
                         </p>
@@ -161,9 +161,9 @@
                         class="bg-blue-500/10 rounded-md p-1 my-1"
                       >
                         <p class="text-xs font-light">
-                          {{ items.created_at }}
+                          {{ items.delivery_date }}
                         </p>
-                        <p class="text-base font-light text-blue-600">
+                        <p class="text-sm font-light text-blue-600">
                           Great news! Your order is out for delivery. It'll be
                           with you soon.
                         </p>
@@ -173,9 +173,9 @@
                         class="bg-blue-500/10 rounded-md p-1 my-1"
                       >
                         <p class="text-xs font-light">
-                          {{ items.created_at }}
+                          {{ items.delivered_date }}
                         </p>
-                        <p class="text-base font-light text-blue-600">
+                        <p class="text-sm font-light text-blue-600">
                           Your order has been delivered. We hope you enjoy your
                           purchase!
                         </p>
@@ -436,11 +436,11 @@
             <div class="h-full">
               <h1 class="font-semibold text-lg">Checkout</h1>
               <div class="bg-slate-200 rounded-md p-2 my-1">
-                <span class="text-slate-900 text-sm">Delivery Address</span>
-                <div class="text-xs text-slate-800">
-                  <p>R-jay | (+63) 091234567</p>
-                  <p>Door 6, Diko makita street</p>
-                  <p>South Philippines, 3000</p>
+                <span class="text-slate-900 text-sm">Customer Information</span>
+                <div v-if="userLogin" class="text-xs text-slate-800">
+                  <p>Name: {{ userLogin.username }}</p>
+                  <p>Contact No: {{ userLogin.contact_number }}</p>
+                  <p>Address: {{ userLogin.address }}</p>
                 </div>
               </div>
               <div class="bg-slate-200 rounded-md p-2">

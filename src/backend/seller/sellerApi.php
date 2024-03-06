@@ -17,11 +17,33 @@ switch ($action) {
     case 'getProducts':
         getProducts();
         break;
+    case 'EditStatus':
+        EditStatus();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+function EditStatus()
+{
+    global $conn;
+
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['id'];
+    $newStatus = $data['status'];
+    $estdate = $data['estimated_delivery'];
+    var_dump($newStatus);
+    
+    $stmt = $conn->prepare("UPDATE order_details SET status = ?, estimated_delivery = ? WHERE order_detail_id = ?");
+    $stmt->bind_param("ssi", $newStatus, $estdate, $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $stmt->close();
+
 }
 
 function getProducts()
@@ -65,14 +87,14 @@ function getOrders()
 
     // Use prepared statement to prevent SQL injection
     $stmt = $conn->prepare("SELECT 
-    o.*, 
-    od.*,
+    od.*, 
+    o.*,
     p.*,
-    u.username
+    u.*
 FROM 
-orders AS o
+order_details AS od
 LEFT JOIN 
-order_details AS od ON o.order_id = od.order_id
+orders AS o ON o.order_id = od.order_id
 LEFT JOIN
     products AS p ON  p.product_id = od.product_id
 LEFT JOIN
