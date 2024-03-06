@@ -38,14 +38,17 @@ function EditStatus()
     $UpdateDate = $data['date'];
 
     // Use '==' for comparison (or '===' for strict comparison)
-    if ($newStatus == 'delivered') {
+    if ($newStatus == 'processing') {
         // Assuming 'delivered_date' is the correct column name when the status is 'delivered'
+        $stmt = $conn->prepare("UPDATE order_details SET status = ?, estimated_delivery = ?, processing_date = ? WHERE order_detail_id = ?");
+        $stmt->bind_param("sssi", $newStatus, $estdate, $UpdateDate, $id);
+    } elseif ($newStatus == 'out_for_delivery') {
+        // Adjust accordingly if 'delivery_date' or another column should be used here
+        $stmt = $conn->prepare("UPDATE order_details SET status = ?, delivery_date = ? WHERE order_detail_id = ?");
+        $stmt->bind_param("ssi", $newStatus, $UpdateDate, $id);
+    } elseif ($newStatus == 'delivered') {
         $stmt = $conn->prepare("UPDATE order_details SET status = ?, delivered_date = ? WHERE order_detail_id = ?");
         $stmt->bind_param("ssi", $newStatus, $UpdateDate, $id);
-    } else {
-        // Adjust accordingly if 'delivery_date' or another column should be used here
-        $stmt = $conn->prepare("UPDATE order_details SET status = ?, estimated_delivery = ?, delivery_date = ? WHERE order_detail_id = ?");
-        $stmt->bind_param("sssi", $newStatus, $estdate, $UpdateDate, $id);
     }
 
     $stmt->execute();

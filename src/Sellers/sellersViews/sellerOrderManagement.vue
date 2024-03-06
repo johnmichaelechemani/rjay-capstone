@@ -42,7 +42,9 @@
               <thead
                 class="text-xs text-slate-800 bg-slate-100/20 uppercase rounded-md"
               >
-                <tr class="text-center bg-gray-100/10 border-b border-gray-600/50">
+                <tr
+                  class="text-center bg-gray-100/10 border-b border-gray-600/50"
+                >
                   <th scope="col" class="px-6 py-3">Order Id</th>
                   <th scope="col" class="px-6 py-3">Order Number</th>
                   <th scope="col" class="px-6 py-3">Product name</th>
@@ -53,6 +55,7 @@
                   <th scope="col" class="px-6 py-3">PAYMENT METHOD</th>
                   <th scope="col" class="px-6 py-3">ORDER DATE</th>
                   <th scope="col" class="px-6 py-3">ESTIMATED DELIVERY</th>
+                  <th scope="col" class="px-6 py-3">date processed</th>
                   <th scope="col" class="px-6 py-3">out for delivery</th>
                   <th scope="col" class="px-6 py-3">delivered</th>
                   <th scope="col" class="px-6 py-3">EDIT</th>
@@ -78,6 +81,8 @@
                       :class="{
                         'text-orange-500 bg-orange-300/10':
                           item.status === 'pending',
+                        'text-yellow-500 bg-yellow-300/10':
+                          item.status === 'processing',
                         'text-blue-500 bg-blue-300/10':
                           item.status === 'out_for_delivery',
                         'text-green-500 bg-red-300/10':
@@ -100,6 +105,9 @@
                   </td>
                   <td class="px-6 py-4">
                     {{ item.estimated_delivery }}
+                  </td>
+                  <td class="px-6 py-4">
+                    {{ item.processing_date }}
                   </td>
                   <td class="px-6 py-4">
                     {{ item.delivery_date }}
@@ -149,12 +157,15 @@
           Select order Status:
         </h1>
         <select v-model="selectValue" class="w-full p-2 rounded-md">
-          <option value="pending">pending</option>
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
           <option value="out_for_delivery">Out for delivery</option>
           <option value="delivered">Delivered</option>
         </select>
       </div>
-      <div v-if="selectValue === 'out_for_delivery' || selectValue === 'pending'">
+      <div
+        v-if="selectValue === 'pending' || selectValue === 'processing'"
+      >
         <h1 class="text-lg font-semibold text-blue-400 mt-4">
           Estimated Delivery Date:
         </h1>
@@ -241,7 +252,7 @@ export default {
       const DateToupdate = moment()
         .tz("Asia/Manila")
         .format("YYYY-MM-DD HH:mm:ss");
-        console.log("date:  ", DateToupdate);
+      console.log("date:  ", DateToupdate);
 
       try {
         const response = await axios.put(

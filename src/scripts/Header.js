@@ -373,8 +373,9 @@ export default {
 
     const statusMapping = {
       pending: 1,
-      out_for_delivery: 2,
-      delivered: 3,
+      processing: 2,
+      out_for_delivery: 3,
+      delivered: 4,
     };
 
     const showOrderTracking = ref(false);

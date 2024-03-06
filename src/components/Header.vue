@@ -111,8 +111,7 @@
                             class="text-lg text-blue-600"
                           />
                         </div>
-                        <div v-if="items.status < 1"><p class="pr-2">1</p></div>
-                        Processing
+                        Pending
                       </span>
                     </li>
                     <li
@@ -127,18 +126,31 @@
                             class="text-lg text-blue-600"
                           />
                         </div>
-                        <div v-if="items.status < 2"><p class="pr-2">2</p></div>
+                        Processing
+                      </span>
+                    </li>
+                    <li
+                      class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                    >
+                      <span
+                        class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                      >
+                        <div v-if="items.status >= 3">
+                          <Icon
+                            icon="lets-icons:check-fill"
+                            class="text-lg text-blue-600"
+                          />
+                        </div>
                         Out for delivery
                       </span>
                     </li>
                     <li class="flex items-center text-xs">
-                      <div v-if="items.status >= 3">
+                      <div v-if="items.status >= 4">
                         <Icon
                           icon="lets-icons:check-fill"
                           class="text-lg text-blue-600"
                         />
                       </div>
-                      <div v-if="items.status < 3"><p class="pr-2">3</p></div>
                       Delivered
                     </li>
                   </ol>
@@ -152,8 +164,7 @@
                           {{ items.created_at }}
                         </p>
                         <p class="text-sm font-light text-blue-600">
-                          Your order is currently being processed. We'll update
-                          you once it's on its way!
+                          Thank you for your order! It is currently pending. We're getting it ready to be processed. Stay tuned for more updates.
                         </p>
                       </div>
                       <div
@@ -161,11 +172,10 @@
                         class="bg-blue-500/10 rounded-md p-1 my-1"
                       >
                         <p class="text-xs font-light">
-                          {{ items.delivery_date }}
+                          {{ items.processing_date }}
                         </p>
                         <p class="text-sm font-light text-blue-600">
-                          Great news! Your order is out for delivery. It'll be
-                          with you soon.
+                          Your order is currently being processed. We'll update you once it's on its way!
                         </p>
                       </div>
                       <div
@@ -173,11 +183,21 @@
                         class="bg-blue-500/10 rounded-md p-1 my-1"
                       >
                         <p class="text-xs font-light">
+                          {{ items.delivery_date }}
+                        </p>
+                        <p class="text-sm font-light text-blue-600">
+                          Great news! Your order is out for delivery. It'll be with you soon.
+                        </p>
+                      </div>
+                      <div
+                        v-if="items.status >= 4"
+                        class="bg-blue-500/10 rounded-md p-1 my-1"
+                      >
+                        <p class="text-xs font-light">
                           {{ items.delivered_date }}
                         </p>
                         <p class="text-sm font-light text-blue-600">
-                          Your order has been delivered. We hope you enjoy your
-                          purchase!
+                          Your order has been delivered. We hope you enjoy your purchase!
                         </p>
                       </div>
                     </div>
