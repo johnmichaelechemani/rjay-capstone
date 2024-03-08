@@ -20,11 +20,37 @@ switch ($action) {
     case 'EditStatus':
         EditStatus();
         break;
+    case 'getSpecs':
+        getSpecs();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+function getSpecs()
+{
+    global $conn;
+
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = $data['id'];
+
+    // Use prepared statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM product_specifications WHERE product_id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    $res = [];
+    while ($row = $result->fetch_assoc()) {
+        $res[] = $row;
+    }
+    
+    echo json_encode($res);
 }
 
 function EditStatus()

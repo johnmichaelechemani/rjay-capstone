@@ -61,28 +61,94 @@
     </div>
   </div>
   <!-- edit modal -->
-  <div v-if="showEditModal">
+  <div
+    v-if="showEditModal"
+    class="fixed inset-0 bg-gray-400/50 z-40 flex justify-center items-center"
+  >
     <div
-      class="bg-gray-400/50 fixed top-0 left-0 flex justify-center item-center z-30 w-full min-h-screen"
+      class="bg-slate-200 w-full max-w-md mx-auto my-8 overflow-auto rounded-lg shadow-lg"
+      style="max-height: 90vh"
     >
-      <div class="bg-slate-200 w-96 py-2 px-5">
+      <div class="py-2 px-5">
         <h1 class="py-5 text-2xl font-semibold text-gray-700">Edit Product</h1>
-        <div>
-          <p for="" class="text-sm">Product Name:</p>
-          <input
-            type="text"
-            v-model="product_name"
-            class="p-2 rounded-md w-full"
-          />
+
+        <!-- Form Content -->
+        <div class="space-y-2">
+          <!-- Product Name -->
+          <div>
+            <label for="productName" class="text-sm">Product Name:</label>
+            <input
+              id="productName"
+              type="text"
+              v-model="product_name"
+              class="p-2 rounded-md w-full"
+            />
+          </div>
+          <div class="py-2">
+            <p for="" class="text-sm">Price:</p>
+            <input
+              type="number"
+              v-model="product_price"
+              class="p-2 rounded-md w-full"
+            />
+          </div>
+          <div class="py-2">
+            <p for="" class="text-sm">Product Description:</p>
+            <input
+              type="text"
+              v-model="product_description"
+              class="p-2 rounded-md w-full"
+            />
+          </div>
+          <div class="py-2">
+            <p for="" class="text-sm">Shipping Fee:</p>
+            <input
+              type="number"
+              v-model="shipping_fee"
+              class="p-2 rounded-md w-full"
+            />
+          </div>
+          <div class="py-2">
+            <p for="" class="text-sm">Stocks:</p>
+            <input
+              type="number"
+              v-model="quantity"
+              class="p-2 rounded-md w-full"
+            />
+          </div>
+
+          <h1>Specifications</h1>
+          <div
+            v-for="(spec, index) in specifications"
+            :key="index"
+            class="flex flex-col md:flex-row md:items-center gap-4 mb-4"
+          >
+            <div class="flex-1">
+              <label for="'specKey-' + index" class="block text-sm"
+                >Spec Key:</label
+              >
+              <input
+                type="text"
+                v-model="spec.spec_key"
+                class="p-2 rounded-md w-full"
+                :id="'specKey-' + index"
+              />
+            </div>
+            <div class="flex-1">
+              <label for="'specValue-' + index" class="block text-sm"
+                >Spec Value:</label
+              >
+              <input
+                type="text"
+                v-model="spec.spec_value"
+                class="p-2 rounded-md w-full"
+                :id="'specValue-' + index"
+              />
+            </div>
+          </div>
         </div>
-        <div class="py-2">
-          <p for="" class="text-sm">Price:</p>
-          <input
-            type="number"
-            v-model="product_price"
-            class="p-2 rounded-md w-full"
-          />
-        </div>
+
+        <!-- Modal Actions -->
         <div class="flex justify-evenly my-5 gap-5 items-center">
           <button
             @click="closeEditModal()"
@@ -132,10 +198,30 @@ export default {
       showEditModal.value = false;
     };
     const productEditable = ref({});
+
+    //info to update
     const product_name = ref("");
+    const product_description = ref("");
     const product_price = ref("");
+    const shipping_fee = ref("");
+    const quantity = ref("");
+
+    const specifications = ref([]);
     const editProductId = ref("");
-    const editProduct = (editId) => {
+    const editProduct = async (editId) => {
+      try {
+        const response = await axios.post(
+          "http://localhost/Ecommerce/vue-project/src/backend/seller/sellerApi.php?action=getSpecs",
+          {
+            id: editId,
+          }
+        );
+        specifications.value = response.data;
+        console.log("specs ", specifications.value);
+      } catch (error) {
+        console.error("Error fetching Specs:", error);
+      }
+
       editProductId.value = editId;
       const productToEdit = Products.value.find(
         (product) => product.product_id === editId
@@ -149,6 +235,9 @@ export default {
         console.log("edit products:", productEditable.value);
         product_name.value = productEditable.value.product_name;
         product_price.value = productEditable.value.price;
+        product_description.value = productEditable.value.product_description;
+        shipping_fee.value = productEditable.value.shipping_fee;
+        quantity.value = productEditable.value.quantity;
       }
     };
 
@@ -192,10 +281,15 @@ export default {
       deleteProduct,
 
       showEditModal,
-      product_name,
-      product_price,
       closeEditModal,
       handleEditProduct,
+      specifications,
+
+      product_name,
+      product_price,
+      product_description,
+      shipping_fee,
+      quantity,
     };
   },
 };
