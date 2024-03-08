@@ -82,6 +82,33 @@
               class="p-2 rounded-md w-full"
             />
           </div>
+          <!-- Image Upload -->
+          <div class="py-2">
+            <label for="productImage" class="block text-sm"
+              >Product Image:</label
+            >
+            <input
+              id="productImage"
+              type="file"
+              @change="handleImageChange"
+              class="p-2 rounded-md w-full"
+            />
+            <!-- Optionally display the selected image -->
+            <div v-if="showimage" class="mt-2">
+              <img
+                :src="image"
+                class="max-h-40 max-w-full rounded-md shadow"
+                :alt="product_name"
+              />
+            </div>
+            <div v-else class="mt-2">
+              <img
+                :src="'data:image/png;base64,' + image"
+                class="max-h-40 max-w-full rounded-md shadow"
+                :alt="product_name"
+              />
+            </div>
+          </div>
           <div class="py-2">
             <p for="" class="text-sm">Price:</p>
             <input
@@ -191,6 +218,9 @@ export default {
     Icon,
   },
   setup() {
+    const refreshPage = () => {
+      location.reload(true);
+    };
     const Products = ref([]);
 
     const deleteProduct = (deleteId) => {
@@ -217,6 +247,22 @@ export default {
     const product_price = ref("");
     const shipping_fee = ref("");
     const quantity = ref("");
+    const image = ref("");
+    const showimage = ref(false);
+
+    const handleImageChange = (event) => {
+      const file = event.target.files[0];
+      showimage.value = true;
+      if (!file) {
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        image.value = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
 
     const specifications = ref([{ spec_key: "", spec_value: "" }]);
     const editProductId = ref("");
@@ -260,6 +306,7 @@ export default {
         product_description.value = productEditable.value.product_description;
         shipping_fee.value = productEditable.value.shipping_fee;
         quantity.value = productEditable.value.quantity;
+        image.value = productEditable.value.image;
       }
     };
 
@@ -271,6 +318,7 @@ export default {
       console.log(shipping_fee.value);
       console.log(quantity.value);
       console.log(specifications.value);
+      console.log(image.value);
 
       try {
         const response = await axios.put(
@@ -282,15 +330,15 @@ export default {
             product_description: product_description.value,
             shipping_fee: shipping_fee.value,
             quantity: quantity.value,
+            image: image.value,
             specifications: specifications.value,
           }
         );
         console.log("response after edit ", response.data);
-        closeEditModal();
-        fetchProducts();
       } catch (error) {
         console.error("Error fetching Specs:", error);
       }
+      refreshPage();
     };
 
     // Now userLogin is directly accessible here, and it's reactive
@@ -332,12 +380,15 @@ export default {
       specifications,
       addSpecification,
       removeSpecification,
+      handleImageChange,
+      showimage,
 
       product_name,
       product_price,
       product_description,
       shipping_fee,
       quantity,
+      image,
     };
   },
 };

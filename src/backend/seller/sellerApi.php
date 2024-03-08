@@ -46,6 +46,7 @@ function editProductsInfo() {
     $product_description = $data['product_description'];
     $shipping_fee = $data['shipping_fee'];
     $quantity = $data['quantity'];
+    $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data['image']));
     $specifications = $data['specifications'];
 
     // Begin transaction for atomicity
@@ -53,8 +54,8 @@ function editProductsInfo() {
     
     try {
         // Update product information in the products table
-        $stmt = $conn->prepare("UPDATE products SET product_name = ?, price = ?, product_description = ?, shipping_fee = ? WHERE product_id = ?");
-        $stmt->bind_param("sdsdi", $product_name, $product_price, $product_description, $shipping_fee, $product_id);
+        $stmt = $conn->prepare("UPDATE products SET product_name = ?, price = ?, product_description = ?, shipping_fee = ?, image = ? WHERE product_id = ?");
+        $stmt->bind_param("sdsdsi", $product_name, $product_price, $product_description, $shipping_fee, $image, $product_id);
         $stmt->execute();
         $stmt->close();
     
