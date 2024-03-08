@@ -122,7 +122,7 @@
             class="flex flex-col md:flex-row md:items-center gap-4 mb-4"
           >
             <div class="flex-1">
-              <label for="'specKey-' + index" class="block text-sm"
+              <label :for="'specKey-' + index" class="block text-sm"
                 >Spec Key:</label
               >
               <input
@@ -133,7 +133,7 @@
               />
             </div>
             <div class="flex-1">
-              <label for="'specValue-' + index" class="block text-sm"
+              <label :for="'specValue-' + index" class="block text-sm"
                 >Spec Value:</label
               >
               <input
@@ -143,7 +143,21 @@
                 :id="'specValue-' + index"
               />
             </div>
+            <button
+              @click="removeSpecification(index)"
+              class="bg-red-500 text-white p-2 rounded"
+            >
+              Remove
+            </button>
           </div>
+
+          <!-- Add Specification Button -->
+          <button
+            @click="addSpecification"
+            class="px-4 py-2 bg-blue-400 text-white w-full rounded-md shadow my-4"
+          >
+            Add Specification
+          </button>
         </div>
 
         <!-- Modal Actions -->
@@ -204,8 +218,18 @@ export default {
     const shipping_fee = ref("");
     const quantity = ref("");
 
-    const specifications = ref([]);
+    const specifications = ref([{ spec_key: "", spec_value: "" }]);
     const editProductId = ref("");
+
+    // Method to add a new specification entry
+    const addSpecification = () => {
+      specifications.value.push({ spec_key: "", spec_value: "" });
+    };
+
+    // Method to remove a specification entry by index
+    const removeSpecification = (index) => {
+      specifications.value.splice(index, 1);
+    };
     const editProduct = async (editId) => {
       try {
         const response = await axios.post(
@@ -267,7 +291,6 @@ export default {
       } catch (error) {
         console.error("Error fetching Specs:", error);
       }
-
     };
 
     // Now userLogin is directly accessible here, and it's reactive
@@ -307,6 +330,8 @@ export default {
       closeEditModal,
       handleEditProduct,
       specifications,
+      addSpecification,
+      removeSpecification,
 
       product_name,
       product_price,
