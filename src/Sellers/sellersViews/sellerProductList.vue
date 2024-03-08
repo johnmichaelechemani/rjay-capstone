@@ -15,9 +15,8 @@
               <th scope="col" class="px-6 py-3">Product ID</th>
               <th scope="col" class="px-6 py-3">Product Name</th>
               <th scope="col" class="px-6 py-3">Price</th>
+              <th scope="col" class="px-6 py-3">Shipping Fee</th>
               <th scope="col" class="px-6 py-3">Ratings</th>
-              <th scope="col" class="px-6 py-3">Date uploaded</th>
-              <th scope="col" class="px-6 py-3">Updated at</th>
               <th colspan="2" scope="col" class="px-6 py-3">Action</th>
             </tr>
           </thead>
@@ -35,9 +34,8 @@
                 {{ item.product_name }}
               </td>
               <td class="px-6 py-4">{{ item.price }}</td>
+              <td class="px-6 py-4">{{ item.shipping_fee }}</td>
               <td class="px-6 py-4">{{ item.ratings }}</td>
-              <td class="px-6 py-4">{{ item.created_at }}</td>
-              <td class="px-6 py-4">{{ item.updated_at }}</td>
               <td class="px-6 py-4">
                 <button @click="deleteProduct(item.product_id)">
                   <Icon
@@ -245,6 +243,31 @@ export default {
       console.log(editProductId.value);
       console.log(product_name.value);
       console.log(product_price.value);
+      console.log(product_description.value);
+      console.log(shipping_fee.value);
+      console.log(quantity.value);
+      console.log(specifications.value);
+
+      try {
+        const response = await axios.put(
+          "http://localhost/Ecommerce/vue-project/src/backend/seller/sellerApi.php?action=editProductsInfo",
+          {
+            product_id: editProductId,
+            product_name: product_name.value,
+            product_price: product_price.value,
+            product_description: product_description.value,
+            shipping_fee: shipping_fee.value,
+            quantity: quantity.value,
+            specifications: specifications.value,
+          }
+        );
+        console.log("response after edit ", response.data);
+        closeEditModal();
+        fetchProducts();
+      } catch (error) {
+        console.error("Error fetching Specs:", error);
+      }
+
     };
 
     // Now userLogin is directly accessible here, and it's reactive

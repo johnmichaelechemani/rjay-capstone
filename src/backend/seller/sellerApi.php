@@ -23,11 +23,74 @@ switch ($action) {
     case 'getSpecs':
         getSpecs();
         break;
+    case 'editProductsInfo':
+        editProductsInfo();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+function editProductsInfo() {
+    global $conn;
+    
+    // Decode the JSON object from the request
+    $data = json_decode(file_get_contents("php://input"), true);
+    
+    // Extract product details from the data
+    $product_id = $data['product_id'];
+    $product_name = $data['product_name'];
+    $product_price = $data['product_price'];
+    $product_description = $data['product_description'];
+    $shipping_fee = $data['shipping_fee'];
+    $quantity = $data['quantity'];
+    $specifications = $data['specifications'];
+
+    // Begin transaction for atomicity
+    $conn->begin_transaction();
+    
+    try {
+        // Update product information in the products table
+        $stmt = $conn->prepare("UPDATE products SET product_name = ?, price = ?, product_description = ?, shipping_fee = ? WHERE product_id = ?");
+        $stmt->bind_param("sdsdi", $product_name, $product_price, $product_description, $shipping_fee, $product_id);
+        $stmt->execute();
+        $stmt->close();
+    
+        // Update quantity in the inventory table
+        $stmt = $conn->prepare("UPDATE inventory SET quantity = ? WHERE product_id = ?");
+        $stmt->bind_param("ii", $quantity, $product_id);
+        $stmt->execute();
+        $stmt->close();
+    
+        // Delete existing specifications for the product
+        $stmt = $conn->prepare("DELETE FROM product_specifications WHERE product_id = ?");
+        $stmt->bind_param("i", $product_id);
+        $stmt->execute();
+        $stmt->close();
+    
+        // Insert new/updated specifications
+        $insertStmt = $conn->prepare("INSERT INTO product_specifications (product_id, spec_key, spec_value) VALUES (?, ?, ?)");
+        foreach ($specifications as $spec) {
+            $spec_key = $spec['spec_key'];
+            $spec_value = $spec['spec_value'];
+            $insertStmt->bind_param("iss", $product_id, $spec_key, $spec_value);
+            $insertStmt->execute();
+        }
+        $insertStmt->close();
+    
+        // Commit the transaction
+        $conn->commit();
+        echo "Product, inventory, and specifications updated successfully.";
+    } catch (Exception $e) {
+        // Rollback the transaction in case of error
+        $conn->rollback();
+        echo "Error occurred: " . $e->getMessage();
+    }
+
+    // Consider when to close the connection based on your application's architecture
+    // $conn->close();
 }
 
 function getSpecs()
