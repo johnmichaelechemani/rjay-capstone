@@ -90,7 +90,7 @@ function trackOrder()
     global $conn;
 
     $data = json_decode(file_get_contents("php://input"), true);
-    $id = $data['order_id'];
+    $id = $data['id'];
     
 
     // Use prepared statement to prevent SQL injection
@@ -145,32 +145,31 @@ function CheckoutOrder()
 {
     global $conn;
     $data = json_decode(file_get_contents("php://input"), true);
-    
-    $stmt = $conn->prepare("INSERT INTO orders (user_id, total_price, status, item) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $user_id, $total_price, $status, $item);
+
+    $stmt = $conn->prepare("INSERT INTO orders (user_id, total_price, item) VALUES (?, ?, ?)");
+    $stmt->bind_param("sis", $user_id, $total_price, $item); // Changed "sssss" to "sisss" assuming user_id is an integer
 
     // Set parameters and execute
     $user_id = $data['user_id'];
     $total_price = $data['total_price'];
-    $status = $data['status'];
     $item = $data['item'];
     $stmt->execute();
 
     // Capture the last inserted ID to use as a foreign key
     $order_id = $conn->insert_id;
+    $payment = $data['payment_method'];
 
-    // Insert into the second table (profiles)
-    $stmt = $conn->prepare("INSERT INTO order_details (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("isss", $order_id, $product_id, $quantity, $price);
-
-
+    // Insert into the second table (order_details)
+    $stmt = $conn->prepare("INSERT INTO order_details (order_number, order_id, product_id, quantity, total_price_products, payment_method) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("iiidds",$order_number, $order_id, $product_id, $quantity, $price, $payment); // Assumed correction to parameter types
 
     foreach ($data['product_id'] as $key => $product_id) {
         $quantity = $data['quantity'][$key];
         $price = $data['price'][$key];
+        $order_number = generateUniqueOrderNumber($conn);
     
         // Re-bind the parameters for each iteration
-        $stmt->bind_param("iiid", $order_id, $product_id, $quantity, $price);
+        $stmt->bind_param("iiidds",$order_number, $order_id, $product_id, $quantity, $price, $payment);
     
         // Execute the statement for each set of data
         $stmt->execute();
@@ -186,6 +185,23 @@ function CheckoutOrder()
 
     $stmt->close();
     $conn->close();
+}
+
+function generateUniqueOrderNumber($conn) {
+    do {
+        // Generate random 11-digit number
+        $order_number = rand(10000, 99999);
+        // Check if it already exists
+        $query = "SELECT order_number FROM order_details WHERE order_number = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $order_number);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $exists = $result->num_rows > 0;
+        $stmt->close();
+    } while ($exists); // Keep generating until unique
+
+    return $order_number;
 }
 
 function fetchSpecs()

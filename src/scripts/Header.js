@@ -60,6 +60,7 @@ export default {
           userLogin.value = JSON.parse(userData);
         }
 
+        console.log("user", userLogin.value);
         return null;
       } catch (error) {
         console.error(
@@ -234,7 +235,7 @@ export default {
     };
 
     const onDelivery = () => {
-      selectedPayment.value = "delivery";
+      selectedPayment.value = "cash on delivery";
     };
     const onPyment = () => {
       selectedPayment.value = "payment";
@@ -262,6 +263,7 @@ export default {
       let totalPrice = priceTotalAll.value;
       let orderStatus = "pending";
       let numofItems = checkoutItems.value.length;
+      let payment = selectedPayment.value;
 
       // This is for Order details
       let ids = checkoutItems.value.map((item) => item.product_id);
@@ -293,6 +295,7 @@ export default {
             product_id: ids,
             quantity: quantities,
             price: productsTotalIncludingShipping,
+            payment_method: payment,
           },
           {
             headers: {
@@ -311,65 +314,69 @@ export default {
     cartItems();
 
     //order tracking
-    const orderData = [
-      // {
-      //   id: 1,
-      //   product_id: 1,
-      //   order_id: 3456789,
-      //   total_price: 130,
-      //   product_name: "Monitor 16in 144hz",
-      //   status: "Pending",
-      //   date_purchased: "Fri, Dec 1, 2024",
-      //   date_delivery: "Fri, Dec 25, 2024",
-      // },
-      // {
-      //   id: 2,
-      //   product_id: 2,
-      //   order_id: 123455,
-      //   total_price: 300,
-      //   product_name: "Intel core I9 13gen",
-      //   status: "Processing",
-      //   date_purchased: "Fri, Dec 1, 2024",
-      //   date_delivery: "Fri, Dec 25, 2024",
-      // },
-      // {
-      //   id: 3,
-      //   product_id: 3,
-      //   order_id: 123455,
-      //   total_price: 400,
-      //   product_name: "Intel core I9 13gen",
-      //   status: "Shipping",
-      //   date_purchased: "Fri, Dec 1, 2024",
-      //   date_delivery: "Fri, Dec 25, 2024",
-      // },
-    ];
-
+    // const orderData = [
+    //   {
+    //     id: 1,
+    //     product_id: 1,
+    //     order_id: 3456789,
+    //     total_price: 130,
+    //     product_name: "Monitor 16in 144hz",
+    //     status: "processing",
+    //     date_purchased: "Fri, Dec 1, 2024",
+    //     date_delivery: "Fri, Dec 25, 2024",
+    //   },
+    //   {
+    //     id: 2,
+    //     product_id: 2,
+    //     order_id: 123455,
+    //     total_price: 300,
+    //     product_name: "Intel core I9 13gen",
+    //     status: "out_for_delivery",
+    //     date_purchased: "Fri, Dec 1, 2024",
+    //     date_delivery: "Fri, Dec 25, 2024",
+    //   },
+    //   {
+    //     id: 3,
+    //     product_id: 3,
+    //     order_id: 123455,
+    //     total_price: 400,
+    //     product_name: "Intel core I9 13gen",
+    //     status: "delivered",
+    //     date_purchased: "Fri, Dec 1, 2024",
+    //     date_delivery: "Fri, Dec 25, 2024",
+    //   },
+    // ];
+    const orderData = ref([]);
     const getTrackingOrder = async () => {
       try {
         const res = await axios.post(
           "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=getTrackOrder",
           {
-            order_id: userLogin.value.user_id, // get the user id
+            id: userLogin.value.user_id, // get the user id
           }
         );
-        orderData.value = res.data.order_records; // pass the value
-        console.log(userLogin.value.user_id);
+
+        // Assuming res.data.order_records is an array
+        const transformedData = res.data.order_records.map((item) => ({
+          ...item,
+          status: statusMapping[item.status.toLowerCase().replace(/\s+/g, "_")], // transform the status
+        }));
+
+        orderData.value = transformedData; // Update the reactive variable with the transformed data
         console.log("order value: ", orderData.value);
       } catch (error) {
-        console.error("Error fetching orders :", error); // return a error
+        console.error("Error fetching orders :", error); // return an error
       }
     };
+
     getTrackingOrder();
 
     const statusMapping = {
-      Pending: 1,
-      Processing: 2,
-      Shipping: 3,
+      pending: 1,
+      processing: 2,
+      out_for_delivery: 3,
+      delivered: 4,
     };
-    // loop in status and make the value chnage in numbers
-    orderData.forEach((item) => {
-      item.status = statusMapping[item.status];
-    });
 
     const showOrderTracking = ref(false);
     const orderTracking = (e) => {

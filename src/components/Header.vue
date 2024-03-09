@@ -49,23 +49,29 @@
                 v-for="(items, index) in orderData"
                 :key="index"
               >
-                <div v-for="item in items" :key="item.id">
+                <div>
                   <div>
                     <span class="font-semibold text-slate-800"
-                      >#{{ item.order_id }}</span
+                      >#{{ items.order_number }}</span
                     >
                   </div>
                   <div class="my-2 flex gap-2 justify-start items-center">
-                    <div class="w-10 h-10 bg-slate-900 rounded-md"></div>
+                    <div>
+                      <img
+                        :src="'data:image/png;base64,' + items.image"
+                        :alt="items.imageAlt"
+                        class="h-20 w-20 object-center"
+                      />
+                    </div>
                     <div>
                       <h1 class="text-base font-semibold">
-                        {{ item.product_name }}
+                        {{ items.product_name }}
                       </h1>
                       <p class="font-semibold">
                         Total:
                         <span
                           class="text-red-500 py-1 px-2 bg-slate-500/10 rounded-md"
-                          >${{ item.total_price }}</span
+                          >${{ items.total_price_products }}</span
                         >
                       </p>
                     </div>
@@ -75,8 +81,8 @@
                   >
                     <div>
                       <p class="text-xs font-light">Date purchased</p>
-                      <p class="text-base font-semibold">
-                        {{ item.date_purchased }}
+                      <p class="text-sm font-semibold">
+                        {{ items.date_purchased }}
                       </p>
                     </div>
                     <Icon
@@ -85,8 +91,8 @@
                     />
                     <div>
                       <p class="text-xs font-light">Estemated Delivery</p>
-                      <p class="text-base font-semibold">
-                        {{ item.date_delivery }}
+                      <p class="text-sm font-semibold">
+                        {{ items.estimated_delivery }}
                       </p>
                     </div>
                   </div>
@@ -99,13 +105,12 @@
                       <span
                         class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
                       >
-                        <div v-if="item.status >= 1">
+                        <div v-if="items.status >= 1">
                           <Icon
                             icon="lets-icons:check-fill"
                             class="text-lg text-blue-600"
                           />
                         </div>
-                        <div v-if="item.status < 1"><p class="pr-2">1</p></div>
                         Pending
                       </span>
                     </li>
@@ -115,60 +120,84 @@
                       <span
                         class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
                       >
-                        <div v-if="item.status >= 2">
+                        <div v-if="items.status >= 2">
                           <Icon
                             icon="lets-icons:check-fill"
                             class="text-lg text-blue-600"
                           />
                         </div>
-                        <div v-if="item.status < 2"><p class="pr-2">2</p></div>
                         Processing
                       </span>
                     </li>
+                    <li
+                      class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                    >
+                      <span
+                        class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                      >
+                        <div v-if="items.status >= 3">
+                          <Icon
+                            icon="lets-icons:check-fill"
+                            class="text-lg text-blue-600"
+                          />
+                        </div>
+                        Out for delivery
+                      </span>
+                    </li>
                     <li class="flex items-center text-xs">
-                      <div v-if="item.status >= 3">
+                      <div v-if="items.status >= 4">
                         <Icon
                           icon="lets-icons:check-fill"
                           class="text-lg text-blue-600"
                         />
                       </div>
-                      <div v-if="item.status < 3"><p class="pr-2">3</p></div>
-                      Shipping
+                      Delivered
                     </li>
                   </ol>
                   <div>
                     <div class="border border-blue-500/50 rounded-md p-2 my-5">
                       <div
-                        v-if="item.status >= 1"
+                        v-if="items.status >= 1"
                         class="bg-blue-500/10 rounded-md p-1"
                       >
                         <p class="text-xs font-light">
-                          {{ item.date_purchased }}
+                          {{ items.created_at }}
                         </p>
-                        <p class="text-base font-light text-blue-600">
-                          Your order is being received.
-                        </p>
-                      </div>
-                      <div
-                        v-if="item.status >= 2"
-                        class="bg-blue-500/10 rounded-md p-1 my-1"
-                      >
-                        <p class="text-xs font-light">
-                          {{ item.date_purchased }}
-                        </p>
-                        <p class="text-base font-light text-blue-600">
-                          Your order is being processed.
+                        <p class="text-sm font-light text-blue-600">
+                          Thank you for your order! It is currently pending. We're getting it ready to be processed. Stay tuned for more updates.
                         </p>
                       </div>
                       <div
-                        v-if="item.status >= 3"
+                        v-if="items.status >= 2"
                         class="bg-blue-500/10 rounded-md p-1 my-1"
                       >
                         <p class="text-xs font-light">
-                          {{ item.date_purchased }}
+                          {{ items.processing_date }}
                         </p>
-                        <p class="text-base font-light text-blue-600">
-                          Your order is being shipped.
+                        <p class="text-sm font-light text-blue-600">
+                          Your order is currently being processed. We'll update you once it's on its way!
+                        </p>
+                      </div>
+                      <div
+                        v-if="items.status >= 3"
+                        class="bg-blue-500/10 rounded-md p-1 my-1"
+                      >
+                        <p class="text-xs font-light">
+                          {{ items.delivery_date }}
+                        </p>
+                        <p class="text-sm font-light text-blue-600">
+                          Great news! Your order is out for delivery. It'll be with you soon.
+                        </p>
+                      </div>
+                      <div
+                        v-if="items.status >= 4"
+                        class="bg-blue-500/10 rounded-md p-1 my-1"
+                      >
+                        <p class="text-xs font-light">
+                          {{ items.delivered_date }}
+                        </p>
+                        <p class="text-sm font-light text-blue-600">
+                          Your order has been delivered. We hope you enjoy your purchase!
                         </p>
                       </div>
                     </div>
@@ -279,7 +308,9 @@
           />
 
           <div>
-            <h1 class="text-slate-800 font-bold">{{ userLogin.username }}</h1>
+            <h1 class="text-slate-800 truncate font-bold">
+              {{ userLogin.username }}
+            </h1>
           </div>
         </button>
 
@@ -425,11 +456,11 @@
             <div class="h-full">
               <h1 class="font-semibold text-lg">Checkout</h1>
               <div class="bg-slate-200 rounded-md p-2 my-1">
-                <span class="text-slate-900 text-sm">Delivery Address</span>
-                <div class="text-xs text-slate-800">
-                  <p>R-jay | (+63) 091234567</p>
-                  <p>Door 6, Diko makita street</p>
-                  <p>South Philippines, 3000</p>
+                <span class="text-slate-900 text-sm">Customer Information</span>
+                <div v-if="userLogin" class="text-xs text-slate-800">
+                  <p>Name: {{ userLogin.username }}</p>
+                  <p>Contact No: {{ userLogin.contact_number }}</p>
+                  <p>Address: {{ userLogin.address }}</p>
                 </div>
               </div>
               <div class="bg-slate-200 rounded-md p-2">
@@ -491,7 +522,7 @@
                         @click="onDelivery"
                         :class="{
                           ' shadow-md shadow-green-500/50 border-green-500':
-                            selectedPayment === 'delivery',
+                            selectedPayment === 'cash on delivery',
                         }"
                         class="p-2 bg-green-500/10 flex justify-center items-center gap-1 rounded-full my-1 border border-gray-600/50 w-full text-green-600 font-medium text-sm"
                       >
