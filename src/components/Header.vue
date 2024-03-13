@@ -76,129 +76,180 @@
                       </p>
                     </div>
                   </div>
-                  <div
-                    class="mb-5 flex justify-between items-center bg-blue-300/20 rounded-md p-1"
-                  >
-                    <div>
-                      <p class="text-xs font-light">Date purchased</p>
-                      <p class="text-sm font-semibold">
-                        {{ items.date_purchased }}
-                      </p>
-                    </div>
-                    <Icon
-                      icon="iconamoon:arrow-right-2-light"
-                      class="text-xl"
-                    />
-                    <div>
-                      <p class="text-xs font-light">Estemated Delivery</p>
-                      <p class="text-sm font-semibold">
-                        {{ items.estimated_delivery }}
-                      </p>
-                    </div>
-                  </div>
-                  <ol
-                    class="flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base"
-                  >
-                    <li
-                      class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
-                    >
-                      <span
-                        class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
-                      >
-                        <div v-if="items.status >= 1">
-                          <Icon
-                            icon="lets-icons:check-fill"
-                            class="text-lg text-blue-600"
-                          />
-                        </div>
-                        Pending
-                      </span>
-                    </li>
-                    <li
-                      class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
-                    >
-                      <span
-                        class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
-                      >
-                        <div v-if="items.status >= 2">
-                          <Icon
-                            icon="lets-icons:check-fill"
-                            class="text-lg text-blue-600"
-                          />
-                        </div>
-                        Processing
-                      </span>
-                    </li>
-                    <li
-                      class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
-                    >
-                      <span
-                        class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
-                      >
-                        <div v-if="items.status >= 3">
-                          <Icon
-                            icon="lets-icons:check-fill"
-                            class="text-lg text-blue-600"
-                          />
-                        </div>
-                        Out for delivery
-                      </span>
-                    </li>
-                    <li class="flex items-center text-xs">
-                      <div v-if="items.status >= 4">
-                        <Icon
-                          icon="lets-icons:check-fill"
-                          class="text-lg text-blue-600"
-                        />
-                      </div>
-                      Delivered
-                    </li>
-                  </ol>
                   <div>
-                    <div class="border border-blue-500/50 rounded-md p-2 my-5">
-                      <div
-                        v-if="items.status >= 1"
-                        class="bg-blue-500/10 rounded-md p-1"
+                    <div v-if="items.status === 5" class="my-4">
+                      <span
+                        class="text-red-500 text-sm bg-red-400/10 p-2 rounded"
+                        >Order Cancelled.</span
                       >
-                        <p class="text-xs font-light">
-                          {{ items.created_at }}
-                        </p>
-                        <p class="text-sm font-light text-blue-600">
-                          Thank you for your order! It is currently pending. We're getting it ready to be processed. Stay tuned for more updates.
+                    </div>
+                    <div v-if="items.status !== 5">
+                      <div
+                        class="mb-5 flex justify-between items-center bg-blue-300/20 rounded-md p-1"
+                      >
+                        <div>
+                          <p class="text-xs font-light">Date purchased</p>
+                          <p class="text-sm font-semibold">
+                            {{ items.date_purchased }}
+                          </p>
+                        </div>
+                        <Icon
+                          icon="iconamoon:arrow-right-2-light"
+                          class="text-xl"
+                        />
+                        <div>
+                          <p class="text-xs font-light">Estemated Delivery</p>
+                          <p class="text-sm font-semibold">
+                            {{ items.estimated_delivery }}
+                          </p>
+                        </div>
+                      </div>
+                      <ol
+                        class="flex items-center w-full text-sm font-medium text-center text-gray-500 sm:text-base"
+                      >
+                        <li
+                          class="flex md:w-full items-center sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                        >
+                          <span
+                            class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                          >
+                            <div v-if="items.status >= 1">
+                              <Icon
+                                icon="lets-icons:check-fill"
+                                class="text-lg text-blue-600"
+                              />
+                            </div>
+                            Pending
+                          </span>
+                        </li>
+                        <li
+                          class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                        >
+                          <span
+                            class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                          >
+                            <div v-if="items.status >= 2">
+                              <Icon
+                                icon="lets-icons:check-fill"
+                                class="text-lg text-blue-600"
+                              />
+                            </div>
+                            Processing
+                          </span>
+                        </li>
+                        <li
+                          class="flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-2 xl:after:mx-2 dark:after:border-gray-600"
+                        >
+                          <span
+                            class="flex text-xs items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200"
+                          >
+                            <div v-if="items.status >= 3">
+                              <Icon
+                                icon="lets-icons:check-fill"
+                                class="text-lg text-blue-600"
+                              />
+                            </div>
+                            Out for delivery
+                          </span>
+                        </li>
+                        <li class="flex items-center text-xs">
+                          <div v-if="items.status >= 4">
+                            <Icon
+                              icon="lets-icons:check-fill"
+                              class="text-lg text-blue-600"
+                            />
+                          </div>
+                          Delivered
+                        </li>
+                      </ol>
+                      <div
+                        class="border border-blue-500/50 rounded-md p-2 my-5"
+                      >
+                        <div
+                          v-if="items.status >= 1"
+                          class="bg-blue-500/10 rounded-md p-1"
+                        >
+                          <p class="text-xs font-light">
+                            {{ items.created_at }}
+                          </p>
+                          <p class="text-sm font-light text-blue-600">
+                            Thank you for your order! It is currently pending.
+                            We're getting it ready to be processed. Stay tuned
+                            for more updates.
+                          </p>
+                        </div>
+                        <div
+                          v-if="items.status >= 2"
+                          class="bg-blue-500/10 rounded-md p-1 my-1"
+                        >
+                          <p class="text-xs font-light">
+                            {{ items.processing_date }}
+                          </p>
+                          <p class="text-sm font-light text-blue-600">
+                            Your order is currently being processed. We'll
+                            update you once it's on its way!
+                          </p>
+                        </div>
+                        <div
+                          v-if="items.status >= 3"
+                          class="bg-blue-500/10 rounded-md p-1 my-1"
+                        >
+                          <p class="text-xs font-light">
+                            {{ items.delivery_date }}
+                          </p>
+                          <p class="text-sm font-light text-blue-600">
+                            Great news! Your order is out for delivery. It'll be
+                            with you soon.
+                          </p>
+                        </div>
+                        <div
+                          v-if="items.status >= 4"
+                          class="bg-blue-500/10 rounded-md p-1 my-1"
+                        >
+                          <p class="text-xs font-light">
+                            {{ items.delivered_date }}
+                          </p>
+                          <p class="text-sm font-light text-blue-600">
+                            Your order has been delivered. We hope you enjoy
+                            your purchase!
+                          </p>
+                        </div>
+                      </div>
+                      <!-- if review sent -->
+                      <div v-if="items.comment !== null">
+                        <p
+                          class="text-base font-semibold text-gray-500 px-5 py-2 bg-gray-300 rounded border my-2"
+                        >
+                          Review Sent
                         </p>
                       </div>
+                      <!-- ratings and comment here -->
                       <div
-                        v-if="items.status >= 2"
-                        class="bg-blue-500/10 rounded-md p-1 my-1"
+                        v-if="items.status === 4 && items.comment === null"
+                        class="rating-and-comment"
                       >
-                        <p class="text-xs font-light">
-                          {{ items.processing_date }}
-                        </p>
-                        <p class="text-sm font-light text-blue-600">
-                          Your order is currently being processed. We'll update you once it's on its way!
-                        </p>
-                      </div>
-                      <div
-                        v-if="items.status >= 3"
-                        class="bg-blue-500/10 rounded-md p-1 my-1"
-                      >
-                        <p class="text-xs font-light">
-                          {{ items.delivery_date }}
-                        </p>
-                        <p class="text-sm font-light text-blue-600">
-                          Great news! Your order is out for delivery. It'll be with you soon.
-                        </p>
-                      </div>
-                      <div
-                        v-if="items.status >= 4"
-                        class="bg-blue-500/10 rounded-md p-1 my-1"
-                      >
-                        <p class="text-xs font-light">
-                          {{ items.delivered_date }}
-                        </p>
-                        <p class="text-sm font-light text-blue-600">
-                          Your order has been delivered. We hope you enjoy your purchase!
-                        </p>
+                        <div class="ratings flex justify-center">
+                          <button
+                            v-for="number in 5"
+                            :key="`rating-${number}-${index}`"
+                            @click="items.userRating = number"
+                            :class="{ active: items.userRating >= number }"
+                          >
+                            <span v-if="items.userRating >= number">★</span>
+                            <span v-else>☆</span>
+                          </button>
+                        </div>
+                        <textarea
+                          v-model="items.userComment"
+                          placeholder="Leave a comment"
+                          class="my-4 p-2 rounded"
+                        ></textarea>
+                        <button
+                          class="px-3 py-1 bg-blue-500 text-white rounded"
+                          @click="submitComment(items, index)"
+                        >
+                          Submit
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -643,7 +694,7 @@ export default {
   ...Header,
 };
 </script>
-<style>
+<style scoped>
 /* WebKit (Chrome, Safari, Edge) */
 *::-webkit-scrollbar {
   width: 0;
@@ -657,5 +708,22 @@ export default {
   background-color: transparent;
   border-radius: 14px;
   border: 3px solid var(--primary);
+}
+.ratings button {
+  margin: 0 5px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.ratings button.active {
+  color: #ffcc00; /* Gold color for active stars */
+}
+
+textarea {
+  display: block;
+  margin-top: 20px;
+  width: 100%;
 }
 </style>

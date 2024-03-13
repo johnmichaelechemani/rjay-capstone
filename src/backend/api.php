@@ -39,11 +39,66 @@ switch ($action) {
     case 'fetchcategories':
         fetchcategories();
         break;
+    case 'submitReviews':
+        submitReviews();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+function submitReviews() {
+    global $conn;
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!$data['userId'] || !$data['productId'] || !$data['rating'] || $data['comment'] === null) {
+        echo json_encode(['error' => 'Missing required fields']);
+        exit;
+    }
+
+    $stmt = $conn->prepare("INSERT INTO reviews (product_id, user_id, rating, comment) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("iiis", $product_id, $user_id, $rating, $comment);
+
+    // Set parameters and execute
+    $product_id = $data['productId'];
+    $user_id = $data['userId'];
+    $rating = $data['rating'];
+    $comment = $data['comment'];
+    $stmt->execute();
+
+    if ($stmt->affected_rows > 0) {
+        // Calculate the average rating
+        $query = "SELECT AVG(rating) AS average_rating FROM reviews WHERE product_id = ?";
+        $avgStmt = $conn->prepare($query);
+        $avgStmt->bind_param("i", $product_id);
+        $avgStmt->execute();
+        $result = $avgStmt->get_result();
+        $row = $result->fetch_assoc();
+        $avgRating = $row['average_rating'];
+        
+        // Update the product's rating
+        $updateQuery = "UPDATE products SET ratings = ? WHERE product_id = ?";
+        $stmtUpdate = $conn->prepare($updateQuery);
+        $stmtUpdate->bind_param("di", $avgRating, $product_id);
+        $stmtUpdate->execute();
+
+        $res['success'] = true;
+        $res['message'] = 'Comment added successfully.';
+    } else {
+        $res['success'] = false;
+        $res['message'] = 'Failed to add comment.';
+    }
+    $stmt->close();
+    // Optionally, close other statements if not using persistent connections
+    if (isset($avgStmt)) {
+        $avgStmt->close();
+    }
+    if (isset($stmtUpdate)) {
+        $stmtUpdate->close();
+    }
+    echo json_encode($res);
 }
 
 function fetchcategories()
@@ -97,13 +152,16 @@ function trackOrder()
     $stmt = $conn->prepare("SELECT 
     p.*, 
     o.*,
-    od.*
+    od.*,
+    r.comment
 FROM 
     products AS p
 LEFT JOIN 
 order_details AS od ON p.product_id = od.product_id
 LEFT JOIN
-    orders AS o ON od.order_id = o.order_id
+    orders AS o ON od.order_id = o.order_id 
+LEFT JOIN
+    reviews AS r ON r.product_id = od.product_id AND r.user_id = o.user_id
 WHERE 
     o.user_id = ?");
     $stmt->bind_param("i", $id);

@@ -176,8 +176,12 @@
                           'star-colored': star.colored,
                           'star-grey': !star.colored,
                         }"
-                        >&#9733;</span
                       >
+                        <template v-if="!star.half">&#9733;</template>
+                        <!-- Full star -->
+                        <template v-else>&#9734;</template>
+                        <!-- Assuming &#9734; is your half star or modify as needed -->
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -360,13 +364,30 @@ export default {
       }
     };
 
-    const getStars = (averageRating) => {
-      const totalStars = 5;
-      const roundedRating = Math.round(averageRating);
-      return Array.from({ length: totalStars }, (_, i) => {
-        return { id: i, colored: i < roundedRating };
-      });
+    const getStars = (rating) => {
+      const fullStars = Math.floor(rating);
+      const halfStar = rating % 1 >= 0.5 ? 1 : 0;
+      const emptyStars = 5 - fullStars - halfStar;
+      const stars = [];
+
+      // Push full stars
+      for (let i = 0; i < fullStars; i++) {
+        stars.push({ id: `full${i}`, colored: true, half: false });
+      }
+
+      // Push half star
+      if (halfStar) {
+        stars.push({ id: "half", colored: true, half: true });
+      }
+
+      // Push empty stars
+      for (let i = 0; i < emptyStars; i++) {
+        stars.push({ id: `empty${i}`, colored: false, half: false });
+      }
+
+      return stars;
     };
+
     // Use axios.post instead of axios.get, and pass data in the request body
     const filterByCategory = async (id, name) => {
       temp_data_for_ratings.value = "";

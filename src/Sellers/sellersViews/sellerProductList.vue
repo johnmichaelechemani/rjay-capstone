@@ -223,10 +223,22 @@ export default {
     };
     const Products = ref([]);
 
-    const deleteProduct = (deleteId) => {
+    const deleteProduct = async (deleteId) => {
       console.log(deleteId);
       if (confirm("Are you sure you want to delete this product?")) {
         console.log(deleteId);
+        try {
+          const response = await axios.post(
+          "http://localhost/Ecommerce/vue-project/src/backend/seller/sellerApi.php?action=deleteProduct",
+          {
+            id: deleteId,
+          }
+          );
+          console.log("delet message:", response.data);
+        } catch (error) {
+          console.error("Error deleting:", error);
+        }
+        fetchProducts();
       } else {
         console.log("delete canceled");
       }

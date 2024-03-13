@@ -26,11 +26,181 @@ switch ($action) {
     case 'editProductsInfo':
         editProductsInfo();
         break;
+    case 'deleteProduct':
+        deleteProduct();
+        break;
+    case 'fetchcategories':
+        fetchcategories();
+        break;
+    case 'AddCategory':
+        AddCategory();
+        break;
+    case 'SaveProduct':
+        SaveProduct();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+function SaveProduct() {
+    global $conn;
+    // Decode the JSON body from the request
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    // Extract the product details and image data from the decoded data
+    $selectedCategory = $data['selectedCategory'];
+    $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data['image'])); // This could be a base64 string or a URL
+    $productName = $data['productName'];
+    $productDescription = $data['productDescription'];
+    $price = $data['price'];
+    $shipping = $data['shipping'];
+    $specifications = $data['specifications'];
+    $quantity = $data['quantity'];
+    $storeID = $data['store_id'];
+
+    $stmt = $conn->prepare("INSERT INTO products (category_id, product_name, product_description, price, shipping_fee, image, store_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("issddsi", $selectedCategory, $productName, $productDescription, $price, $shipping, $imageData, $storeID);
+
+    if ($stmt->execute()) {
+        $product_id = $conn->insert_id;
+        // Insert specifications as before...
+        $insertStmt = $conn->prepare("INSERT INTO product_specifications (product_id, spec_key, spec_value) VALUES (?, ?, ?)");
+        foreach ($specifications as $spec) {
+            $spec_key = $spec['Spec_key']; // Adjust these based on your actual JSON keys
+            $spec_value = $spec['Spec_value']; // Adjust these based on your actual JSON keys
+            $insertStmt->bind_param("iss", $product_id, $spec_key, $spec_value);
+            $insertStmt->execute();
+        }
+        $insertStmt->close();
+
+        $insertquant = $conn->prepare("INSERT INTO inventory (product_id, quantity) VALUES (?, ?)");
+        $insertquant->bind_param("ii", $product_id, $quantity);
+        $insertquant->execute();
+        $insertquant->close();
+
+        echo json_encode('Product and specifications saved successfully');
+    } else {
+        echo json_encode('Failed to save product');
+    }
+
+    $stmt->close();
+}
+
+
+function AddCategory() {
+    global $conn;
+    // Decode the JSON body from the request
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    // Check if the necessary data is available
+    if (isset($data['category_name']) && isset($data['category_description'])) {
+        $catname = $conn->real_escape_string($data['category_name']);
+        $catdesc = $conn->real_escape_string($data['category_description']);
+
+        // Prepare the query to check if the category name already exists
+        $checkQuery = $conn->prepare("SELECT category_name FROM categories WHERE category_name = ?");
+        $checkQuery->bind_param("s", $catname);
+        $checkQuery->execute();
+        $result = $checkQuery->get_result();
+        $checkQuery->close();
+
+        if ($result->num_rows > 0) {
+            // Category name exists, send an error response
+            http_response_code(409); // Conflict
+            echo json_encode(['error' => 'Category name already exists.']);
+            return;
+        } 
+
+        // Proceed with insertion since the category name does not exist
+        $stmt = $conn->prepare("INSERT INTO categories (category_name, category_description) VALUES (?, ?)");
+        $stmt->bind_param("ss", $catname, $catdesc);
+        if (!$stmt->execute()) {
+            // Insertion failed, send an error response
+            http_response_code(500); // Internal Server Error
+            echo json_encode(['error' => 'Failed to add category.']);
+        } else {
+            // Successfully inserted, send a success response
+            http_response_code(200); // OK
+            echo json_encode(['success' => 'Category added successfully.']);
+        }
+        $stmt->close();
+    } else {
+        // Missing data, send an error response
+        http_response_code(400); // Bad Request
+        echo json_encode(['error' => 'Missing category name or description.']);
+    }
+}
+
+function deleteProduct() {
+    global $conn;
+    $data = json_decode(file_get_contents("php://input"), true);
+    $product_id = $data['id'];
+
+    // Begin a transaction
+    $conn->begin_transaction();
+
+    try {
+        // Delete from inventory table first to avoid foreign key constraint failure
+        $stmt = $conn->prepare("DELETE FROM inventory WHERE product_id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $product_id);
+            $stmt->execute();
+            $stmt->close();
+            echo "Product deleted from inventory table.\n";
+        } else {
+            // If preparation fails, throw an exception
+            throw new Exception("Error preparing statement to delete from inventory table.\n");
+        }
+
+        // Delete from product_specifications table
+        $stmt = $conn->prepare("DELETE FROM product_specifications WHERE product_id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $product_id);
+            $stmt->execute();
+            $stmt->close();
+            echo "Product deleted from product_specifications table.\n";
+        } else {
+            throw new Exception("Error preparing statement to delete from product_specifications table.\n");
+        }
+
+        // Finally, delete from products table
+        $stmt = $conn->prepare("DELETE FROM products WHERE product_id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $product_id);
+            $stmt->execute();
+            $stmt->close();
+            echo "Product deleted from products table.\n";
+        } else {
+            throw new Exception("Error preparing statement to delete from products table.\n");
+        }
+
+        // If everything is fine, commit the transaction
+        $conn->commit();
+    } catch (Exception $e) {
+        // An error occurred, roll back the transaction and print the error message
+        $conn->rollback();
+        echo $e->getMessage();
+    }
+}
+
+function fetchcategories()
+{
+    global $conn;
+    // Use prepared statements to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM categories");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+
+    $cat = [];
+    while ($res = $result->fetch_assoc()) {
+        $cat[] = $res;
+    }
+
+    echo json_encode($cat);
 }
 
 function editProductsInfo() {
@@ -138,6 +308,9 @@ function EditStatus()
         $stmt->bind_param("ssi", $newStatus, $UpdateDate, $id);
     } elseif ($newStatus == 'delivered') {
         $stmt = $conn->prepare("UPDATE order_details SET status = ?, delivered_date = ? WHERE order_detail_id = ?");
+        $stmt->bind_param("ssi", $newStatus, $UpdateDate, $id);
+    } elseif ($newStatus == 'cancelled') {
+        $stmt = $conn->prepare("UPDATE order_details SET status = ?, processing_date = ? WHERE order_detail_id = ?");
         $stmt->bind_param("ssi", $newStatus, $UpdateDate, $id);
     }
 

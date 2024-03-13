@@ -313,39 +313,6 @@ export default {
     getUserFromLocalStorage();
     cartItems();
 
-    //order tracking
-    // const orderData = [
-    //   {
-    //     id: 1,
-    //     product_id: 1,
-    //     order_id: 3456789,
-    //     total_price: 130,
-    //     product_name: "Monitor 16in 144hz",
-    //     status: "processing",
-    //     date_purchased: "Fri, Dec 1, 2024",
-    //     date_delivery: "Fri, Dec 25, 2024",
-    //   },
-    //   {
-    //     id: 2,
-    //     product_id: 2,
-    //     order_id: 123455,
-    //     total_price: 300,
-    //     product_name: "Intel core I9 13gen",
-    //     status: "out_for_delivery",
-    //     date_purchased: "Fri, Dec 1, 2024",
-    //     date_delivery: "Fri, Dec 25, 2024",
-    //   },
-    //   {
-    //     id: 3,
-    //     product_id: 3,
-    //     order_id: 123455,
-    //     total_price: 400,
-    //     product_name: "Intel core I9 13gen",
-    //     status: "delivered",
-    //     date_purchased: "Fri, Dec 1, 2024",
-    //     date_delivery: "Fri, Dec 25, 2024",
-    //   },
-    // ];
     const orderData = ref([]);
     const getTrackingOrder = async () => {
       try {
@@ -359,6 +326,8 @@ export default {
         // Assuming res.data.order_records is an array
         const transformedData = res.data.order_records.map((item) => ({
           ...item,
+          userRating: 0, // Default user rating
+          userComment: "", // Default user comment
           status: statusMapping[item.status.toLowerCase().replace(/\s+/g, "_")], // transform the status
         }));
 
@@ -376,6 +345,7 @@ export default {
       processing: 2,
       out_for_delivery: 3,
       delivered: 4,
+      cancelled: 5,
     };
 
     const showOrderTracking = ref(false);
@@ -386,7 +356,38 @@ export default {
       showOrderTracking.value = false;
     };
 
+    const submitComment = async (items, index) => {
+      console.log("product id:", items.product_id);
+      console.log(`Rating for order ${index}:`, items.userRating);
+      console.log(`Comment for order ${index}:`, items.userComment);
+      console.log(`User ID:`, userLogin.value.user_id);
+
+      // Adjust the URL to your comment submission endpoint and ensure the body contains all necessary data
+      try {
+        const response = await axios.post(
+          "http://localhost/Ecommerce/vue-project/src/backend/api.php?action=submitReviews", // Update this URL to your actual comment submission endpoint
+          {
+            userId: userLogin.value.user_id,
+            productId: items.product_id,
+            rating: items.userRating,
+            comment: items.userComment,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        getTrackingOrder();
+        // Handle response here, e.g., showing a success message
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error submitting rating and review: ", error);
+      }
+    };
+
     return {
+      submitComment,
       //tracking
       showOrderTracking,
       orderTracking,

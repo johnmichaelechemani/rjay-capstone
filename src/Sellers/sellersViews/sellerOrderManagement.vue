@@ -30,6 +30,7 @@
               <option value="">Pending</option>
               <option value="">Out for Delivery</option>
               <option value="">Delivered</option>
+              <option value="">Cancelled</option>
             </select>
           </form>
         </div>
@@ -87,6 +88,8 @@
                           item.status === 'out_for_delivery',
                         'text-green-500 bg-red-300/10':
                           item.status === 'delivered',
+                        'text-red-500 bg-red-300/10':
+                          item.status === 'cancelled',
                       }"
                     >
                       {{ item.status }}
@@ -161,11 +164,10 @@
           <option value="processing">Processing</option>
           <option value="out_for_delivery">Out for delivery</option>
           <option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
         </select>
       </div>
-      <div
-        v-if="selectValue === 'pending' || selectValue === 'processing'"
-      >
+      <div v-if="selectValue === 'pending' || selectValue === 'processing'">
         <h1 class="text-lg font-semibold text-blue-400 mt-4">
           Estimated Delivery Date:
         </h1>
