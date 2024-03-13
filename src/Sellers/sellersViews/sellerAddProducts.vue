@@ -16,13 +16,13 @@
     <div class="gap-5">
       <!-- Add Category Section -->
       <div class="my-4">
-        <h1 class="text-sm font-medium">Add New Category:</h1>
+        <h1 class="text-base font-medium text-gray-700">Add New Category:</h1>
         <div class="my-2">
           <input
             type="text"
             v-model="newCategory.category_name"
             placeholder="New Category Name"
-            class="w-full p-2 rounded-md border outline-none"
+            class="w-full p-2 rounded-md placeholder:text-sm border outline-none"
           />
         </div>
         <div class="my-2">
@@ -30,12 +30,12 @@
             v-model="newCategory.category_description"
             placeholder="Category Description"
             rows="3"
-            class="w-full p-2 rounded-md border outline-none"
+            class="w-full p-2 placeholder:text-sm rounded-md border outline-none"
           ></textarea>
         </div>
         <button
           @click="addNewCategory"
-          class="px-3 py-1 bg-blue-500 text-white rounded"
+          class="px-4 py-1 bg-blue-500 hover:bg-blue-600 transition text-gray-100 rounded-md shadow"
         >
           Add Category
         </button>
@@ -48,7 +48,7 @@
           {{ message.content }}
         </p>
       </div>
-      <hr class="boarder"/> 
+      <hr class="boarder" />
       <div
         class="bg-slate-400/10 rounded-md h-full w-1/2 text-slate-700 shadow my-5 p-4"
       >

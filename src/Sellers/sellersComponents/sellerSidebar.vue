@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-gray-100/10 shadow h-screen w-60">
-    <div class="h-full">
+  <div class="bg-gray-100/10 shadow h-full w-60">
+    <div class="min-h-full">
       <div class="py-3 px-3 font-semibold text-gray-700"><h1>Logo</h1></div>
       <div class="px-2">
         <hr />
