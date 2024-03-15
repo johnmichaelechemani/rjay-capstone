@@ -10,7 +10,7 @@
     >
       <div class="mt-3 text-center">
         <div class="mt-2">
-          <form @submit.prevent="send" method="get">
+          <form @submit.prevent="performSearch" method="get">
             <input
               type="text"
               class="border rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -18,6 +18,7 @@
               placeholder="Search..."
               required
               v-focus="isVisible"
+              @keyup.enter="closeModalOnEnter"
             />
           </form>
         </div>
@@ -25,21 +26,17 @@
       </div>
       <div>
         <h1 class="font-semibold text-base text-sky-900">Recent searches</h1>
-        <div v-for="item in searchrecent">
+        <div v-if="recentSearches.length > 0">
           <p
-            class="px-3 text-sm py-1 my-1 border border-slate-700/10 rounded-md"
+            v-for="(term, index) in recentSearches"
+            :key="index"
+            class="px-3 text-sm py-1 my-1 border border-slate-700/10 rounded-md cursor-pointer"
+            @click="reSearch(term)"
           >
-            {{ item.productName }}
+            {{ term }}
           </p>
         </div>
-      </div>
-      <div class="my-3">
-        <h1 class="font-semibold text-base text-sky-900">Recommendations</h1>
-        <div v-for="item in searchrecent">
-          <p class="px-3 text-sm py-1 my-1 border border-sky-700/20 rounded-md">
-            {{ item.productName }}
-          </p>
-        </div>
+        <p v-else>No recent searches</p>
       </div>
     </div>
   </div>
@@ -47,7 +44,8 @@
 
 <script>
 import axios from "axios";
-import { ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
+import Fuse from "fuse.js";
 
 export default {
   props: {
@@ -67,42 +65,99 @@ export default {
   },
   setup(props, { emit }) {
     const searchQuery = ref("");
-    const searchProduct = ref([]);
+    const products = ref([]);
+
+    const recentSearches = ref(
+      JSON.parse(localStorage.getItem("recentSearches")) || []
+    );
+
+    const options = {
+      keys: ["product_name", "product_description"],
+      threshold: 0.2,
+    };
+
+    const fetchAllProducts = async () => {
+      try {
+        const url =
+          "http://localhost/Ecommerce/vue-project/src/backend/search.php";
+        const response = await axios.post(url);
+        products.value = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    onMounted(() => {
+      fetchAllProducts();
+      const storedSearches =
+        JSON.parse(localStorage.getItem("recentSearches")) || [];
+      recentSearches.value = storedSearches;
+    });
+
+    const fuse = computed(() => new Fuse(products.value, options));
+
+    const performSearch = () => {
+      const trimmedQuery = searchQuery.value.trim();
+      if (!trimmedQuery) {
+        return products.value;
+      }
+      const results = fuse.value.search(trimmedQuery);
+      emit(
+        "search-completed",
+        results.map((result) => result.item)
+      );
+      updateRecentSearches(trimmedQuery); // Pass the trimmed query
+      return results.map((result) => result.item);
+    };
+
+    const updateRecentSearches = (query) => {
+      const trimmedQuery = query.trim();
+
+      // Remove the trimmed query from the existing recent searches array
+      const updatedSearches = recentSearches.value.filter(
+        (term) => term !== trimmedQuery
+      );
+
+      // Add the trimmed query to the beginning of the updated array
+      updatedSearches.unshift(trimmedQuery);
+
+      // Limit to the last 3 entries
+      recentSearches.value = updatedSearches.slice(0, 3);
+
+      // Update localStorage
+      localStorage.setItem(
+        "recentSearches",
+        JSON.stringify(recentSearches.value)
+      );
+    };
+
+    watch(searchQuery, (newValue, oldValue) => {
+      if (newValue.trim() !== oldValue.trim()) {
+        performSearch();
+      }
+    });
+
+    const closeModalOnEnter = () => {
+      close();
+    };
 
     const close = () => {
       emit("update:isVisible", false);
     };
 
-    const searchrecent = ref([
-      {
-        productName: "intel i9 13gen",
-      },
-      {
-        productName: "intel i9 13gen",
-      },
-    ]);
-    const send = async () => {
-      try {
-        const url =
-          "http://localhost/Ecommerce/vue-project/src/backend/search.php";
-        const response = await axios.post(url, { query: searchQuery.value });
-
-        searchProduct.value = response.data;
-        emit("search-completed", searchProduct.value);
-        //   console.log("Response:", searchProduct.value);
-      } catch (error) {
-        console.log(error);
-      }
-
-      searchQuery.value = "";
-      close();
+    const reSearch = (term) => {
+      searchQuery.value = term;
+      performSearch(); // Assuming performSearch can be called directly
+      close(); // Optionally close the modal after searching
     };
 
     return {
       searchQuery,
-      searchrecent,
-      send,
+      performSearch, // Now using performSearch as a method instead of a computed property
       close,
+      closeModalOnEnter,
+      reSearch,
+      recentSearches,
     };
   },
 };

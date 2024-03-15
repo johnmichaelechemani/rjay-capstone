@@ -11,7 +11,9 @@
             class="border rounded-md w-60 shadow flex justify-between items-center px-4"
           >
             <input
-              type="text"
+              type="number"
+              v-model="searchQuery"
+              @change="filterBySearch"
               placeholder="Search by order id"
               class="outline-none placeholder:text-sm placeholder:font-light py-2 pl-2 w-full rounded-full"
             />
@@ -21,16 +23,20 @@
             />
           </div>
 
-          <form class="">
+          <form class="flex justify-center items-center ml-3 text-sm gap-3">
+            <label for="">Status: </label>
             <select
               id="status"
+              v-model="selectedStatus"
+              @change="filteredOrders"
               class="shadow border text-gray-900 outline-none text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-32 px-3 py-2.5"
             >
-              <option selected>Status</option>
-              <option value="">Pending</option>
-              <option value="">Out for Delivery</option>
-              <option value="">Delivered</option>
-              <option value="">Cancelled</option>
+              <option value="">Default</option>
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="out_for_delivery">Out for Delivery</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
             </select>
           </form>
         </div>
@@ -213,6 +219,8 @@ export default {
       location.reload(true);
     };
 
+    const selectedStatus = ref("");
+
     const orders = ref([]);
 
     let selectValue = ref("");
@@ -225,7 +233,38 @@ export default {
 
     const userOrderName = ref(""); // constaining  the name of the order that is being edited in status modal
 
-    let orderIdToEdit = ref(null); // pass the id to this
+    let orderIdToEdit = ref(null);
+
+    const temp_orders = ref([]); // pass the id to this
+
+    const searchQuery = ref("");
+
+    const filterBySearch = () => {
+      if (!searchQuery.value) {
+        fetchOrders(); // Fetch all orders if no status is selected or reset to default
+      } else {
+        // Filter directly if there's a selected status
+        orders.value = orders.value.filter(
+          (order) => order.order_number === searchQuery.value
+        );
+      }
+    };
+
+    const filteredOrders = () => {
+      if (temp_orders.value.length === 0) {
+        temp_orders.value = orders.value;
+      } else {
+        orders.value = temp_orders.value;
+      }
+      if (!selectedStatus.value) {
+        fetchOrders(); // Fetch all orders if no status is selected or reset to default
+      } else {
+        // Filter directly if there's a selected status
+        orders.value = orders.value.filter(
+          (order) => order.status === selectedStatus.value
+        );
+      }
+    };
 
     const editStatus = (orderId) => {
       orderIdToEdit.value = orderId;
@@ -303,6 +342,11 @@ export default {
       orders,
       editData,
       selectValue,
+      selectedStatus,
+      filteredOrders,
+      temp_orders,
+      searchQuery,
+      filterBySearch,
 
       editStatus,
       showStatusModal,

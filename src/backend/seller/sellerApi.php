@@ -38,11 +38,139 @@ switch ($action) {
     case 'SaveProduct':
         SaveProduct();
         break;
+    case 'fetchSalesData':
+        fetchSalesData();
+        break;
+    case 'fetchRealTimeMonthlySales':
+        fetchRealTimeMonthlySales();
+        break;
+    case 'fetchStocks':
+        fetchStocks();
+        break;
     default:
         $res['error'] = true;
         $res['message'] = 'Invalid action.';
         echo json_encode($res);
         break;
+}
+
+function fetchStocks() {
+    global $conn;
+    header('Content-Type: application/json');
+
+    $data = json_decode(file_get_contents("php://input"), true);
+    
+    if (!isset($data['store_id'])) {
+        echo json_encode(['error' => true, 'message' => 'store_id is missing']);
+        exit;
+    }
+    
+    $storeId = $data['store_id'];
+
+    // Adjusted query with LEFT JOIN to include products table
+    $stmt = $conn->prepare("
+        SELECT SUM(inventory.quantity) AS totalQuantity
+        FROM inventory
+        LEFT JOIN products ON products.product_id = inventory.product_id
+        WHERE products.store_id = ?
+    ");
+    
+    $stmt->bind_param("i", $storeId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if($row = $result->fetch_assoc()) {
+        echo json_encode(['totalQuantity' => $row['totalQuantity']]);
+    } else {
+        echo json_encode(['error' => true, 'message' => 'Failed to fetch inventory status.']);
+    }
+
+    $stmt->close();
+}
+
+
+function fetchRealTimeMonthlySales() {
+    global $conn;
+    header('Content-Type: application/json'); // Ensure JSON response
+
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!isset($data['store_id'])) {
+        echo json_encode(['error' => true, 'message' => 'store_id is missing']);
+        exit;
+    }
+
+    $storeId = $data['store_id']; // Now we're sure this exists
+    // var_dump($storeId); // Use for debugging only
+
+    $currentYear = date('Y');
+    $stmt = $conn->prepare("
+        SELECT MONTH(order_details.delivered_date) AS saleMonth, 
+               SUM(order_details.total_price_products) AS totalSales
+        FROM order_details
+        LEFT JOIN products ON products.product_id = order_details.product_id
+        WHERE YEAR(order_details.delivered_date) = ?
+          AND products.store_id = ?
+          AND order_details.status = 'delivered'
+        GROUP BY MONTH(order_details.delivered_date)
+        ORDER BY MONTH(order_details.delivered_date)
+    ");
+
+    $stmt->bind_param("si", $currentYear, $storeId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $monthlySales = [];
+    while($row = $result->fetch_assoc()) {
+        $monthlySales[] = $row;
+    }
+
+    echo json_encode($monthlySales);
+    $stmt->close();
+}
+
+function fetchSalesData() {
+    global $conn;
+    $data = json_decode(file_get_contents("php://input"), true);
+    // Fetch the 'start', 'end', and 'store_id' from the query parameters
+    $startDate = $data['start'];
+    $endDate = $data['end'];
+    $storeId = $data['store_id']; // Dynamic store_id
+    
+    // Ensure the start and end dates include the entire day
+    $startDate .= " 00:00:00";
+    $endDate .= " 23:59:59";
+
+    // Update your query to include status check and use LEFT JOIN for products
+    $stmt = $conn->prepare("
+        SELECT SUM(order_details.total_price_products) AS totalSales 
+        FROM order_details 
+        LEFT JOIN products 
+        ON products.product_id = order_details.product_id 
+        WHERE order_details.delivered_date BETWEEN ? AND ? 
+        AND products.store_id = ? 
+        AND order_details.status = 'delivered'
+    ");
+
+    // Bind the parameters to the query
+    $stmt->bind_param("ssi", $startDate, $endDate, $storeId);
+
+    // Execute the query
+    $stmt->execute();
+    
+    // Get the result
+    $result = $stmt->get_result();
+    
+    // Fetch the data
+    $value = $result->fetch_assoc();
+    
+    // Assuming you want to return the sum as a part of a JSON response
+    echo json_encode([
+        'totalSales' => $value['totalSales'] ? $value['totalSales'] : 0
+    ]);
+
+    // Close the statement
+    $stmt->close();
 }
 
 function SaveProduct() {
@@ -296,25 +424,41 @@ function EditStatus()
     $newStatus = $data['status'];
     $estdate = $data['estimated_delivery'];
     $UpdateDate = $data['date'];
+    var_dump($newStatus);
 
-    // Use '==' for comparison (or '===' for strict comparison)
     if ($newStatus == 'processing') {
-        // Assuming 'delivered_date' is the correct column name when the status is 'delivered'
         $stmt = $conn->prepare("UPDATE order_details SET status = ?, estimated_delivery = ?, processing_date = ? WHERE order_detail_id = ?");
         $stmt->bind_param("sssi", $newStatus, $estdate, $UpdateDate, $id);
+        $stmt->execute();
     } elseif ($newStatus == 'out_for_delivery') {
-        // Adjust accordingly if 'delivery_date' or another column should be used here
         $stmt = $conn->prepare("UPDATE order_details SET status = ?, delivery_date = ? WHERE order_detail_id = ?");
         $stmt->bind_param("ssi", $newStatus, $UpdateDate, $id);
+        $stmt->execute();
     } elseif ($newStatus == 'delivered') {
+        // First, update the status and delivered_date
         $stmt = $conn->prepare("UPDATE order_details SET status = ?, delivered_date = ? WHERE order_detail_id = ?");
         $stmt->bind_param("ssi", $newStatus, $UpdateDate, $id);
+        $stmt->execute();
+        
+        // Fetch the quantity of the product ordered
+        $stmt = $conn->prepare("SELECT quantity, product_id FROM order_details WHERE order_detail_id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_assoc()) {
+            $quantity = $row['quantity'];
+            $productId = $row['product_id'];
+            
+            // Update the inventory
+            $stmt = $conn->prepare("UPDATE inventory SET quantity = quantity - ? WHERE product_id = ?");
+            $stmt->bind_param("ii", $quantity, $productId);
+            $stmt->execute();
+        }
     } elseif ($newStatus == 'cancelled') {
         $stmt = $conn->prepare("UPDATE order_details SET status = ?, processing_date = ? WHERE order_detail_id = ?");
         $stmt->bind_param("ssi", $newStatus, $UpdateDate, $id);
+        $stmt->execute();
     }
-
-    $stmt->execute();
 
     // Check if the update was successful
     if ($stmt->affected_rows > 0) {
@@ -325,6 +469,7 @@ function EditStatus()
 
     $stmt->close();
 }
+
 
 function getProducts()
 {
@@ -380,7 +525,9 @@ LEFT JOIN
 LEFT JOIN
     users As u ON u.user_id = o.user_id
 WHERE 
-    p.store_id = ?");
+    p.store_id = ?
+ORDER BY 
+    od.order_detail_id");
     $stmt->bind_param("i", $id);
     $stmt->execute();
 

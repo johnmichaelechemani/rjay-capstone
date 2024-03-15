@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-gray-100/10 shadow h-full w-60">
-    <div class="min-h-full">
+  <div class="bg-gray-100/10 shadow h-screen w-60">
+    <div class="h-full">
       <div class="py-3 px-3 font-semibold text-gray-700"><h1>Logo</h1></div>
       <div class="px-2">
         <hr />
@@ -83,7 +83,6 @@
         <hr />
         <div class="my-1">
           <button
-            @click="logout"
             class="flex gap-3 justify-start items-center font-semibold hover:bg-slate-400/20 rounded-md text-slate-700 w-full py-2"
           >
             <div class="bg-blue-500/20 shadow-sm rounded-full">

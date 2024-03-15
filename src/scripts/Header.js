@@ -361,6 +361,7 @@ export default {
       console.log(`Rating for order ${index}:`, items.userRating);
       console.log(`Comment for order ${index}:`, items.userComment);
       console.log(`User ID:`, userLogin.value.user_id);
+      console.log(`order_number:`, items.order_number);
 
       // Adjust the URL to your comment submission endpoint and ensure the body contains all necessary data
       try {
@@ -371,6 +372,7 @@ export default {
             productId: items.product_id,
             rating: items.userRating,
             comment: items.userComment,
+            order_number:  items.order_number,
           },
           {
             headers: {

@@ -58,14 +58,15 @@ function submitReviews() {
         exit;
     }
 
-    $stmt = $conn->prepare("INSERT INTO reviews (product_id, user_id, rating, comment) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("iiis", $product_id, $user_id, $rating, $comment);
+    $stmt = $conn->prepare("INSERT INTO reviews (product_id, user_id, rating, comment, order_number) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("iiisi", $product_id, $user_id, $rating, $comment, $orderNumber);
 
     // Set parameters and execute
     $product_id = $data['productId'];
     $user_id = $data['userId'];
     $rating = $data['rating'];
     $comment = $data['comment'];
+    $orderNumber = $data['order_number'];
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
@@ -161,7 +162,7 @@ order_details AS od ON p.product_id = od.product_id
 LEFT JOIN
     orders AS o ON od.order_id = o.order_id 
 LEFT JOIN
-    reviews AS r ON r.product_id = od.product_id AND r.user_id = o.user_id
+    reviews AS r ON r.product_id = od.product_id AND r.user_id = o.user_id AND  r.order_number = od.order_number
 WHERE 
     o.user_id = ?");
     $stmt->bind_param("i", $id);

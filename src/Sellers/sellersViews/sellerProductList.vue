@@ -17,6 +17,7 @@
               <th scope="col" class="px-6 py-3">Price</th>
               <th scope="col" class="px-6 py-3">Shipping Fee</th>
               <th scope="col" class="px-6 py-3">Ratings</th>
+              <th scope="col" class="px-6 py-3">Stock</th>
               <th colspan="2" scope="col" class="px-6 py-3">Action</th>
             </tr>
           </thead>
@@ -36,6 +37,7 @@
               <td class="px-6 py-4">{{ item.price }}</td>
               <td class="px-6 py-4">{{ item.shipping_fee }}</td>
               <td class="px-6 py-4">{{ item.ratings }}</td>
+              <td class="px-6 py-4">{{ item.quantity }}</td>
               <td class="px-6 py-4">
                 <button @click="deleteProduct(item.product_id)">
                   <Icon
