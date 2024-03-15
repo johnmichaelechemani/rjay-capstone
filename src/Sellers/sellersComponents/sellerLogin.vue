@@ -14,6 +14,7 @@
           <input
             id="email"
             name="email"
+            required
             v-model="loginEmail"
             type="email"
             autocomplete="email"
@@ -34,12 +35,18 @@
           <input
             id="password"
             name="password"
+            required
             v-model="loginPassword"
             type="password"
             autocomplete="current-password"
             class="block w-full px-2 rounded-md py-1.5 text-gray-900 bg-slate-400/20 border border-blue-500/25 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 outline-none focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
+            :class="{ 'border-red-500': passwordError }"
           />
         </div>
+
+        <span v-if="passwordError" class="text-red-500 text-sm py-1">{{
+          passwordError
+        }}</span>
       </div>
 
       <div>
@@ -68,7 +75,9 @@ export default {
     const loginEmail = ref("");
     const loginPassword = ref("");
     const router = useRouter();
+    const passwordError = ref("");
     let name = ref("");
+
     const signIn = async () => {
       try {
         const url =
@@ -81,7 +90,9 @@ export default {
           },
           { headers: { "Content-Type": "application/json" } }
         );
-
+        if (res.data.error) {
+          passwordError.value = res.data.message;
+        }
         name.value = res.data.store;
         localStorage.setItem("seller", JSON.stringify(name.value));
 
@@ -98,6 +109,7 @@ export default {
       loginEmail,
       loginPassword,
       signIn,
+      passwordError,
     };
   },
 };

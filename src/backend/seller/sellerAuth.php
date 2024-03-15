@@ -1,6 +1,6 @@
 <?php
 
-include('../db.php');
+include ('../db.php');
 
 // Set headers for CORS
 header("Access-Control-Allow-Origin: http://localhost:5173"); // Update this to match your Vue.js development server URL
@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
 
 $res = ['error' => false];
-$action = isset($_GET['action']) ? $_GET['action'] : '';
+$action = isset ($_GET['action']) ? $_GET['action'] : '';
 switch ($action) {
     case 'register':
         register();
@@ -79,11 +79,11 @@ function login()
             $res['store'] = $store;
         } else {
             $res['error'] = true;
-            $res['message'] = 'logging in';
+            $res['message'] = 'Invalid Password';
         }
     } else {
         $res['error'] = true;
-        $res['message'] = 'Invalid password';
+        $res['message'] = 'User not Found!';
     }
     // Encode the final response array and send as HTTP response
     echo json_encode($res);
