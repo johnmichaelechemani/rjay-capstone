@@ -94,7 +94,21 @@
       <div>
         <button
           type="submit"
-          class="flex w-full justify-center rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
+          :class="{
+            'bg-gray-800/20 cursor-not-allowed pointer-events-none hover:bg-none':
+              !registerName ||
+              !registerEmail ||
+              !registerPassword ||
+              !contactNumber ||
+              passwordError,
+            'bg-sky-600 hover:bg-sky-500':
+              registerName &&
+              registerEmail &&
+              registerPassword &&
+              contactNumber &&
+              !passwordError,
+          }"
+          class="flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
         >
           Sign in
         </button>
@@ -121,6 +135,9 @@ export default {
     const registerResponseMessage = ref("");
     const passwordError = ref("");
 
+    // const emailError = ref("")  this is for email error container
+    // const validateEmail = () =>{}   ------------- check if theres already email in database and return a error
+
     const validatePassword = () => {
       const passwordRegex =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
@@ -133,6 +150,7 @@ export default {
     };
     const signUp = async () => {
       validatePassword();
+      // validateEmail(); call the email validation function here
       if (!passwordError.value) {
         try {
           const url =
